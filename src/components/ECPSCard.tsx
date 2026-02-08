@@ -72,46 +72,46 @@ const ECPSCard = ({
           />
 
           {/* Card content */}
-          <div className="relative z-10 h-full p-5 flex flex-col">
-            <h3 className="text-white font-bold text-sm tracking-wide text-center mb-3">
+          <div className="relative z-10 h-full p-3 flex flex-col overflow-hidden">
+            <h3 className="text-white font-bold text-[11px] tracking-wide text-center mb-1">
               RÉPUBLIQUE GABONAISE
             </h3>
 
             {/* Emblem area */}
-            <div className="flex-1 flex flex-col items-center justify-center">
-              {/* Simplified emblem representation */}
-              <div className="w-40 h-40 mb-3 flex items-center justify-center">
+            <div className="flex-1 flex flex-col items-center justify-center min-h-0">
+              {/* Logo */}
+              <div className="w-20 h-20 flex items-center justify-center flex-shrink-0">
                 <img 
                   src={logoCnom} 
                   alt="Logo CNOM" 
-                  className="w-32 h-32 object-contain drop-shadow-lg"
+                  className="w-16 h-16 object-contain drop-shadow-lg"
                 />
               </div>
 
               {/* Title */}
-              <div className="text-center">
-                <h2 className="text-white font-bold text-lg tracking-wide leading-tight">
+              <div className="text-center mt-1">
+                <h2 className="text-white font-bold text-sm tracking-wide leading-tight">
                   CONSEIL NATIONAL
                 </h2>
-                <h2 className="text-white font-bold text-lg tracking-wide leading-tight">
+                <h2 className="text-white font-bold text-sm tracking-wide leading-tight">
                   DE L'ORDRE DES MÉDECINS
                 </h2>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="text-center mt-auto">
-              <p className="text-white/80 text-[10px]">
+            <div className="text-center mt-1 flex-shrink-0">
+              <p className="text-white/80 text-[8px]">
                 B.P : 12 075 Libreville
               </p>
-              <p className="text-white/90 text-xs font-medium">
+              <p className="text-white/90 text-[10px] font-medium">
                 www.cnom.ga
               </p>
             </div>
 
             {/* Flip hint */}
-            <div className="absolute bottom-2 right-2 text-white/50 text-[9px] flex items-center gap-1">
-              <RotateCcw className="w-3 h-3" />
+            <div className="absolute bottom-1 right-1 text-white/50 text-[8px] flex items-center gap-1">
+              <RotateCcw className="w-2.5 h-2.5" />
               Retourner
             </div>
           </div>
