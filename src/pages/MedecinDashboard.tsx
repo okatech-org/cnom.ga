@@ -392,13 +392,16 @@ const ECPSTabContent = ({ profile, isValidated, statusInfo }: ECPSTabContentProp
         </CardHeader>
         <CardContent>
           <ECPSCard
-            doctorName={`Dr. ${profile.prenom} ${profile.nom}`}
+            doctorName={profile.nom}
+            firstName={profile.prenom}
             specialty={profile.specialite}
-            orderNumber={profile.numero_ordre}
+            orderNumber={profile.numero_ordre || "0000"}
+            nip="198505051234"
             province={profile.province}
             city={profile.ville}
             status="active"
             validUntil="31 décembre 2025"
+            fonction="MEMBRE"
           />
         </CardContent>
       </Card>
