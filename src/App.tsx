@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import Pharmacovigilance from "./pages/Pharmacovigilance";
 import Inscription from "./pages/Inscription";
 import Auth from "./pages/Auth";
+import AdminDashboard from "./pages/AdminDashboard";
+import SuiviDossier from "./pages/SuiviDossier";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/pharmacovigilance" element={<Pharmacovigilance />} />
           <Route path="/inscription" element={<Inscription />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/suivi" element={<SuiviDossier />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
