@@ -57,7 +57,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo - Oversized with overflow effect */}
           <Link to="/" className="flex items-center gap-3 group relative">
-            <div className="absolute -top-4 lg:-top-2">
+            <div className="absolute -top-4 md:top-2 lg:-top-2">
               <img 
                 src={logoCnom} 
                 alt="Logo CNOM Gabon" 
