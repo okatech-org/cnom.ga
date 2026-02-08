@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useDemo } from "@/contexts/DemoContext";
 import { useAuth } from "@/hooks/useAuth";
 import logoCnom from "@/assets/logo-cnom.png";
+import drDansouPhoto from "@/assets/dr-dansou-photo.jpeg";
 
 interface MedecinSidebarProps {
   isOpen: boolean;
@@ -95,9 +96,19 @@ export const MedecinSidebar = ({
         {/* User Info Card */}
         <div className="p-4 border-b border-border">
           <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
-            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-primary" />
-            </div>
+            {isDemoMode && demoUser?.role === "medecin" ? (
+              <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                <img 
+                  src={drDansouPhoto} 
+                  alt={`Dr. ${displayName}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <User className="w-5 h-5 text-primary" />
+              </div>
+            )}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground truncate">
                 Dr. {displayName}
