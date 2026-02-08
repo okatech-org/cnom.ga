@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, User, LogOut } from "lucide-react";
+import logoCnom from "@/assets/logo-cnom.png";
 import { supabase } from "@/integrations/supabase/client";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
@@ -56,9 +57,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-hero-gradient rounded-xl flex items-center justify-center shadow-cnom group-hover:shadow-cnom-elevated transition-shadow">
-              <span className="text-white font-bold text-lg lg:text-xl">⚕</span>
-            </div>
+            <img 
+              src={logoCnom} 
+              alt="CNOM Gabon" 
+              className="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+            />
             <div className="flex flex-col">
               <span className="font-display font-bold text-primary text-lg lg:text-xl leading-tight">
                 CNOM
