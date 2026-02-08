@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import carteRectoBackground from "@/assets/cnom-carte-recto.png";
 import carteVersoBackground from "@/assets/cnom-carte-verso.png";
+import logoCnom from "@/assets/logo-cnom.png";
 
 interface ECPSCardProps {
   doctorName: string;
@@ -80,18 +81,11 @@ const ECPSCard = ({
             <div className="flex-1 flex flex-col items-center justify-center">
               {/* Simplified emblem representation */}
               <div className="w-20 h-20 mb-3 flex items-center justify-center">
-                <div className="relative">
-                  {/* Shield with flag colors */}
-                  <div className="w-14 h-16 rounded-b-full overflow-hidden border-2 border-[#FCD116] shadow-lg">
-                    <div className="h-1/3 bg-[#009639]"></div>
-                    <div className="h-1/3 bg-[#FCD116]"></div>
-                    <div className="h-1/3 bg-[#0055A4]"></div>
-                  </div>
-                  {/* Caduceus symbol */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-2xl drop-shadow-md">⚕️</span>
-                  </div>
-                </div>
+                <img 
+                  src={logoCnom} 
+                  alt="Logo CNOM" 
+                  className="w-16 h-16 object-contain drop-shadow-lg"
+                />
               </div>
 
               {/* Title */}
