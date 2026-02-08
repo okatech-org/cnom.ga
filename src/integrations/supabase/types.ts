@@ -14,16 +14,289 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      applications: {
+        Row: {
+          created_at: string
+          id: string
+          numero_dossier: string | null
+          profile_id: string
+          rejection_reason: string | null
+          status: Database["public"]["Enums"]["application_status"]
+          submission_date: string | null
+          updated_at: string
+          validated_by: string | null
+          validation_date: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          numero_dossier?: string | null
+          profile_id: string
+          rejection_reason?: string | null
+          status?: Database["public"]["Enums"]["application_status"]
+          submission_date?: string | null
+          updated_at?: string
+          validated_by?: string | null
+          validation_date?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          numero_dossier?: string | null
+          profile_id?: string
+          rejection_reason?: string | null
+          status?: Database["public"]["Enums"]["application_status"]
+          submission_date?: string | null
+          updated_at?: string
+          validated_by?: string | null
+          validation_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          document_type: Database["public"]["Enums"]["document_type"]
+          file_name: string
+          file_size: number | null
+          file_url: string
+          id: string
+          profile_id: string
+          uploaded_at: string
+        }
+        Insert: {
+          document_type: Database["public"]["Enums"]["document_type"]
+          file_name: string
+          file_size?: number | null
+          file_url: string
+          id?: string
+          profile_id: string
+          uploaded_at?: string
+        }
+        Update: {
+          document_type?: Database["public"]["Enums"]["document_type"]
+          file_name?: string
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          profile_id?: string
+          uploaded_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          paid_at: string | null
+          payment_method: string | null
+          payment_status: Database["public"]["Enums"]["payment_status"]
+          payment_type: Database["public"]["Enums"]["payment_type"]
+          profile_id: string
+          transaction_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          paid_at?: string | null
+          payment_method?: string | null
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          payment_type: Database["public"]["Enums"]["payment_type"]
+          profile_id: string
+          transaction_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          paid_at?: string | null
+          payment_method?: string | null
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          payment_type?: Database["public"]["Enums"]["payment_type"]
+          profile_id?: string
+          transaction_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          adresse: string
+          adresse_cabinet: string | null
+          annee_obtention: number
+          created_at: string
+          date_naissance: string
+          diplome: string
+          email: string
+          etablissement: string | null
+          genre: Database["public"]["Enums"]["gender_type"]
+          id: string
+          lieu_naissance: string
+          nationalite: string
+          nom: string
+          nom_naissance: string | null
+          numero_ordre: string | null
+          pays_obtention: string
+          prenom: string
+          province: string
+          secteur: Database["public"]["Enums"]["sector_type"]
+          sous_specialite: string | null
+          specialite: string
+          telephone: string
+          universite: string
+          updated_at: string
+          user_id: string
+          ville: string
+          ville_cabinet: string
+        }
+        Insert: {
+          adresse: string
+          adresse_cabinet?: string | null
+          annee_obtention: number
+          created_at?: string
+          date_naissance: string
+          diplome: string
+          email: string
+          etablissement?: string | null
+          genre: Database["public"]["Enums"]["gender_type"]
+          id?: string
+          lieu_naissance: string
+          nationalite: string
+          nom: string
+          nom_naissance?: string | null
+          numero_ordre?: string | null
+          pays_obtention: string
+          prenom: string
+          province: string
+          secteur: Database["public"]["Enums"]["sector_type"]
+          sous_specialite?: string | null
+          specialite: string
+          telephone: string
+          universite: string
+          updated_at?: string
+          user_id: string
+          ville: string
+          ville_cabinet: string
+        }
+        Update: {
+          adresse?: string
+          adresse_cabinet?: string | null
+          annee_obtention?: number
+          created_at?: string
+          date_naissance?: string
+          diplome?: string
+          email?: string
+          etablissement?: string | null
+          genre?: Database["public"]["Enums"]["gender_type"]
+          id?: string
+          lieu_naissance?: string
+          nationalite?: string
+          nom?: string
+          nom_naissance?: string | null
+          numero_ordre?: string | null
+          pays_obtention?: string
+          prenom?: string
+          province?: string
+          secteur?: Database["public"]["Enums"]["sector_type"]
+          sous_specialite?: string | null
+          specialite?: string
+          telephone?: string
+          universite?: string
+          updated_at?: string
+          user_id?: string
+          ville?: string
+          ville_cabinet?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          role: Database["public"]["Enums"]["admin_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["admin_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["admin_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_dossier_number: { Args: never; Returns: string }
+      get_profile_id: { Args: { check_user_id: string }; Returns: string }
+      is_admin: { Args: { check_user_id: string }; Returns: boolean }
+      is_profile_owner: {
+        Args: { check_user_id: string; profile_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      admin_role: "super_admin" | "approver" | "treasurer"
+      application_status:
+        | "draft"
+        | "submitted"
+        | "under_review"
+        | "validated"
+        | "rejected"
+      document_type:
+        | "photo_identite_1"
+        | "photo_identite_2"
+        | "diplome"
+        | "casier_judiciaire"
+        | "cv"
+        | "homologation"
+        | "lettre_inscription"
+        | "autre"
+      gender_type: "M" | "F"
+      payment_status: "pending" | "completed" | "failed" | "refunded"
+      payment_type: "inscription" | "cotisation_semestrielle" | "autre"
+      sector_type: "public" | "prive" | "mixte" | "militaire"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +423,29 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      admin_role: ["super_admin", "approver", "treasurer"],
+      application_status: [
+        "draft",
+        "submitted",
+        "under_review",
+        "validated",
+        "rejected",
+      ],
+      document_type: [
+        "photo_identite_1",
+        "photo_identite_2",
+        "diplome",
+        "casier_judiciaire",
+        "cv",
+        "homologation",
+        "lettre_inscription",
+        "autre",
+      ],
+      gender_type: ["M", "F"],
+      payment_status: ["pending", "completed", "failed", "refunded"],
+      payment_type: ["inscription", "cotisation_semestrielle", "autre"],
+      sector_type: ["public", "prive", "mixte", "militaire"],
+    },
   },
 } as const
