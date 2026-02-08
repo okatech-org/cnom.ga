@@ -57,7 +57,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo - Oversized with overflow effect */}
           <Link to="/" className="flex items-center gap-3 group relative">
-            <div className="absolute top-0 lg:-top-2">
+            <div className="absolute -top-4 md:top-2 lg:-top-2">
               <img 
                 src={logoCnom} 
                 alt="Logo CNOM Gabon" 
@@ -66,7 +66,7 @@ const Header = () => {
             </div>
             <div className="flex flex-col ml-28 lg:ml-36">
               <span className="font-display font-bold text-primary text-lg lg:text-xl leading-tight">
-                CNOM
+                CNOM Gabon
               </span>
               <span className="text-xs text-muted-foreground leading-tight hidden sm:block">
                 Ordre des Médecins du Gabon
