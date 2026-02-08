@@ -149,7 +149,7 @@ const ECPSCard = ({
             {/* Main content - Photo left, Info right */}
             <div className="flex-1 flex gap-4">
               {/* Left column: Photo, N° ORDRE, FONCTION */}
-              <div className="w-24 flex-shrink-0 flex flex-col items-center">
+              <div className="w-24 flex-shrink-0 flex flex-col items-center ml-2">
                 {/* Photo circle */}
                 <div className="w-[125px] h-[125px] bg-gray-200 rounded-full flex items-center justify-center overflow-hidden mb-1">
                   {photoUrl ? (
