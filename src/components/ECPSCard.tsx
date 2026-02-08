@@ -73,9 +73,14 @@ const ECPSCard = ({
 
           {/* Card content */}
           <div className="relative z-10 h-full p-3 flex flex-col overflow-hidden">
-            <h3 className="text-white font-bold text-[11px] tracking-wide text-center mb-1">
-              RÉPUBLIQUE GABONAISE
-            </h3>
+            <div className="text-center mb-1">
+              <h3 className="text-white font-bold text-[11px] tracking-wide">
+                RÉPUBLIQUE GABONAISE
+              </h3>
+              <p className="text-white/80 text-[9px] italic">
+                Union - Travail - Justice
+              </p>
+            </div>
 
             {/* Emblem area */}
             <div className="flex-1 flex flex-col items-center justify-center min-h-0">
