@@ -167,7 +167,7 @@ const ECPSCard = ({
               </div>
 
               {/* Info labels */}
-              <div className="flex-1 space-y-1 text-[11px]">
+              <div className="flex-1 space-y-1 text-[11px] ml-8">
                 <div>
                   <span className="text-gray-500 font-medium italic text-[10px]">NOM</span>
                   <p className="font-bold text-gray-900 text-sm uppercase">{doctorName}</p>
