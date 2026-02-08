@@ -55,14 +55,16 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <img 
-              src={logoCnom} 
-              alt="Logo CNOM Gabon" 
-              className="w-10 h-10 lg:w-12 lg:h-12 object-contain group-hover:scale-105 transition-transform"
-            />
-            <div className="flex flex-col">
+          {/* Logo - Oversized with overflow effect */}
+          <Link to="/" className="flex items-center gap-3 group relative">
+            <div className="absolute -top-2 lg:-top-4">
+              <img 
+                src={logoCnom} 
+                alt="Logo CNOM Gabon" 
+                className="w-20 h-20 lg:w-24 lg:h-24 object-contain group-hover:scale-105 transition-transform drop-shadow-lg"
+              />
+            </div>
+            <div className="flex flex-col ml-24 lg:ml-28">
               <span className="font-display font-bold text-primary text-lg lg:text-xl leading-tight">
                 CNOM
               </span>
