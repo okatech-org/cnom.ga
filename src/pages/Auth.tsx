@@ -3,9 +3,10 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, ArrowLeft, Mail, Lock, Loader2 } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, Mail, Lock, Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Form,
   FormControl,
@@ -35,6 +36,11 @@ type SignupFormData = z.infer<typeof signupSchema>;
 const Auth = () => {
   const [searchParams] = useSearchParams();
   const mode = searchParams.get("mode");
+  const demoEmail = searchParams.get("email");
+  const demoPassword = searchParams.get("password");
+  const demoRole = searchParams.get("role");
+  const isDemo = !!demoEmail && !!demoPassword;
+  
   const [isLogin, setIsLogin] = useState(mode !== "signup");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,25 +52,54 @@ const Auth = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (session?.user) {
-          navigate("/inscription");
+          // Redirect based on role if in demo mode
+          if (demoRole) {
+            const roleRoutes: Record<string, string> = {
+              admin: "/admin",
+              president: "/dashboard/president",
+              sg: "/dashboard/sg",
+              tresorier: "/dashboard/tresorier",
+              agent: "/dashboard/agent",
+              commission: "/dashboard/commission",
+              regional: "/dashboard/regional",
+              medecin: "/suivi",
+            };
+            navigate(roleRoutes[demoRole] || "/inscription");
+          } else {
+            navigate("/inscription");
+          }
         }
       }
     );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        navigate("/inscription");
+        if (demoRole) {
+          const roleRoutes: Record<string, string> = {
+            admin: "/admin",
+            president: "/dashboard/president",
+            sg: "/dashboard/sg",
+            tresorier: "/dashboard/tresorier",
+            agent: "/dashboard/agent",
+            commission: "/dashboard/commission",
+            regional: "/dashboard/regional",
+            medecin: "/suivi",
+          };
+          navigate(roleRoutes[demoRole] || "/inscription");
+        } else {
+          navigate("/inscription");
+        }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, demoRole]);
 
   const loginForm = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: demoEmail || "",
+      password: demoPassword || "",
     },
   });
 
@@ -112,7 +147,23 @@ const Auth = () => {
         title: "Connexion réussie",
         description: "Bienvenue sur la plateforme CNOM.",
       });
-      navigate("/inscription");
+      
+      // Redirect based on role
+      if (demoRole) {
+        const roleRoutes: Record<string, string> = {
+          admin: "/admin",
+          president: "/dashboard/president",
+          sg: "/dashboard/sg",
+          tresorier: "/dashboard/tresorier",
+          agent: "/dashboard/agent",
+          commission: "/dashboard/commission",
+          regional: "/dashboard/regional",
+          medecin: "/suivi",
+        };
+        navigate(roleRoutes[demoRole] || "/inscription");
+      } else {
+        navigate("/inscription");
+      }
     } catch (error) {
       toast({
         title: "Erreur",
@@ -193,6 +244,16 @@ const Auth = () => {
               : "Inscrivez-vous pour déposer votre dossier"}
           </p>
         </div>
+
+        {/* Demo Alert */}
+        {isDemo && (
+          <Alert className="mb-6 border-amber-200 bg-amber-50">
+            <AlertCircle className="h-4 w-4 text-amber-600" />
+            <AlertDescription className="text-amber-800">
+              <strong>Mode démonstration</strong> — Les identifiants sont pré-remplis pour le profil <strong>{demoRole}</strong>. Cliquez sur "Se connecter" pour accéder à l'espace.
+            </AlertDescription>
+          </Alert>
+        )}
 
         {/* Form Card */}
         <div className="bg-background rounded-2xl p-6 lg:p-8 shadow-cnom border border-border">
@@ -382,9 +443,9 @@ const Auth = () => {
 
         {/* Back link */}
         <div className="mt-6 text-center">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <Link to={isDemo ? "/demo" : "/"} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="w-4 h-4" />
-            Retour à l'accueil
+            {isDemo ? "Retour à la démo" : "Retour à l'accueil"}
           </Link>
         </div>
       </div>

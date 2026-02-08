@@ -15,6 +15,14 @@ import Contact from "./pages/Contact";
 import Demo from "./pages/Demo";
 import NotFound from "./pages/NotFound";
 
+// Role-based dashboards
+import PresidentDashboard from "./pages/dashboards/PresidentDashboard";
+import SGDashboard from "./pages/dashboards/SGDashboard";
+import TresorierDashboard from "./pages/dashboards/TresorierDashboard";
+import AgentDashboard from "./pages/dashboards/AgentDashboard";
+import CommissionDashboard from "./pages/dashboards/CommissionDashboard";
+import RegionalDashboard from "./pages/dashboards/RegionalDashboard";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -34,6 +42,15 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/suivi" element={<SuiviDossier />} />
+          
+          {/* Role-based dashboards */}
+          <Route path="/dashboard/president" element={<PresidentDashboard />} />
+          <Route path="/dashboard/sg" element={<SGDashboard />} />
+          <Route path="/dashboard/tresorier" element={<TresorierDashboard />} />
+          <Route path="/dashboard/agent" element={<AgentDashboard />} />
+          <Route path="/dashboard/commission" element={<CommissionDashboard />} />
+          <Route path="/dashboard/regional" element={<RegionalDashboard />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
