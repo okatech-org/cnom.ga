@@ -6,6 +6,8 @@ import ChallengesSection from "@/components/ChallengesSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import DirectoryPreview from "@/components/DirectoryPreview";
 import EcpsSection from "@/components/EcpsSection";
+import DashboardSection from "@/components/DashboardSection";
+import GabonMap from "@/components/GabonMap";
 import RoadmapSection from "@/components/RoadmapSection";
 import ActualitesSection from "@/components/ActualitesSection";
 import PharmacovigilanceSection from "@/components/PharmacovigilanceSection";
@@ -26,6 +28,8 @@ const Index = () => {
         <FeaturesSection />
         <DirectoryPreview />
         <EcpsSection />
+        <DashboardSection />
+        <GabonMap />
         <RoadmapSection />
         <ActualitesSection />
         <PharmacovigilanceSection />
