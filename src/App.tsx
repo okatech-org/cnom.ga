@@ -10,6 +10,7 @@ import Inscription from "./pages/Inscription";
 import Auth from "./pages/Auth";
 import AdminDashboard from "./pages/AdminDashboard";
 import SuiviDossier from "./pages/SuiviDossier";
+import MedecinDashboard from "./pages/MedecinDashboard";
 import Annuaire from "./pages/Annuaire";
 import Actualites from "./pages/Actualites";
 import Contact from "./pages/Contact";
@@ -56,7 +57,8 @@ const App = () => (
             <Route path="/inscription" element={<Inscription />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/suivi" element={<SuiviDossier />} />
+            <Route path="/suivi" element={<MedecinDashboard />} />
+            <Route path="/medecin" element={<MedecinDashboard />} />
             
             {/* Role-based dashboards */}
             <Route path="/dashboard/president" element={<PresidentDashboard />} />
