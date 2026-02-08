@@ -61,10 +61,10 @@ const Header = () => {
               <img 
                 src={logoCnom} 
                 alt="Logo CNOM Gabon" 
-                className="w-20 h-20 lg:w-24 lg:h-24 object-contain group-hover:scale-105 transition-transform drop-shadow-lg"
+                className="w-24 h-24 lg:w-32 lg:h-32 object-contain group-hover:scale-105 transition-transform drop-shadow-lg"
               />
             </div>
-            <div className="flex flex-col ml-24 lg:ml-28">
+            <div className="flex flex-col ml-28 lg:ml-36">
               <span className="font-display font-bold text-primary text-lg lg:text-xl leading-tight">
                 CNOM
               </span>
