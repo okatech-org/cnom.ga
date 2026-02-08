@@ -60,9 +60,9 @@ const DEMO_USERS: Record<NonNullable<DemoRole>, DemoUser> = {
     title: "Conseil Régional",
   },
   medecin: {
-    email: "medecin@cnom-gabon.ga",
+    email: "jd.dansou@cnom-gabon.ga",
     role: "medecin",
-    name: "Dr Jean NZOGHE",
+    name: "Jean Davy DANSOU OGANDAGA",
     title: "Médecin Inscrit",
   },
 };
