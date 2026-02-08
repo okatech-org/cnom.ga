@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Check, Copy, ChevronDown, Shield, Users, AlertTriangle, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
+import { useDemo, DemoRole } from "@/contexts/DemoContext";
 const ROLES = [
   {
     id: "admin",
@@ -180,17 +180,25 @@ interface RoleCardProps {
 function RoleCard({ role, expanded, onToggle }: RoleCardProps) {
   const isOpen = expanded === role.id;
   const navigate = useNavigate();
+  const { enterDemoMode } = useDemo();
 
   const handleAccessClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (role.email && role.password) {
-      // Navigate to auth with pre-filled credentials
-      const params = new URLSearchParams({
-        email: role.email,
-        password: role.password,
-        role: role.id
-      });
-      navigate(`/auth?${params.toString()}`);
+      // Enter demo mode and navigate to appropriate dashboard
+      enterDemoMode(role.id as DemoRole);
+      
+      const roleRoutes: Record<string, string> = {
+        admin: "/admin",
+        president: "/dashboard/president",
+        sg: "/dashboard/sg",
+        tresorier: "/dashboard/tresorier",
+        agent: "/dashboard/agent",
+        commission: "/dashboard/commission",
+        regional: "/dashboard/regional",
+        medecin: "/suivi",
+      };
+      navigate(roleRoutes[role.id] || "/demo");
     } else {
       // Public access - go to annuaire
       navigate("/annuaire");
