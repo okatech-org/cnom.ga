@@ -9,6 +9,10 @@ import Inscription from "./pages/Inscription";
 import Auth from "./pages/Auth";
 import AdminDashboard from "./pages/AdminDashboard";
 import SuiviDossier from "./pages/SuiviDossier";
+import Annuaire from "./pages/Annuaire";
+import Actualites from "./pages/Actualites";
+import Contact from "./pages/Contact";
+import Demo from "./pages/Demo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,7 +25,11 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/annuaire" element={<Annuaire />} />
           <Route path="/pharmacovigilance" element={<Pharmacovigilance />} />
+          <Route path="/actualites" element={<Actualites />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/demo" element={<Demo />} />
           <Route path="/inscription" element={<Inscription />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<AdminDashboard />} />

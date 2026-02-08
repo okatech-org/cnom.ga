@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
@@ -71,45 +71,24 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
-            <a href="#annuaire" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
+            <Link to="/" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
+              Accueil
+            </Link>
+            <Link to="/annuaire" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
               Annuaire Public
-            </a>
-            <div className="relative group">
-              <button className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent flex items-center gap-1">
-                Modules
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <div className="bg-white rounded-xl shadow-cnom-elevated border border-border p-2 min-w-[200px]">
-                  <Link to="/inscription" className="block px-4 py-2 text-sm hover:bg-accent rounded-lg transition-colors">
-                    Inscription en ligne
-                  </Link>
-                  <a href="#ecps" className="block px-4 py-2 text-sm hover:bg-accent rounded-lg transition-colors">
-                    Carte e-CPS
-                  </a>
-                  <a href="#cotisations" className="block px-4 py-2 text-sm hover:bg-accent rounded-lg transition-colors">
-                    Cotisations
-                  </a>
-                  {user && (
-                    <Link to="/suivi" className="block px-4 py-2 text-sm hover:bg-accent rounded-lg transition-colors">
-                      Suivi de dossier
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
-            <a href="#actualites" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
-              Actualités
-            </a>
+            </Link>
             <Link to="/pharmacovigilance" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
               Pharmacovigilance
             </Link>
-            <a href="#demo" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
-              Démo
-            </a>
-            <a href="#contact" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
+            <Link to="/actualites" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
+              Actualités
+            </Link>
+            <Link to="/contact" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
               Contact
-            </a>
+            </Link>
+            <Link to="/demo" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
+              Démo
+            </Link>
             {isAdmin && (
               <Link to="/admin" className="px-4 py-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors rounded-lg hover:bg-accent">
                 Administration
@@ -156,30 +135,24 @@ const Header = () => {
         {isMenuOpen && (
           <div className="lg:hidden py-4 border-t border-border animate-fade-in">
             <nav className="flex flex-col gap-1">
-              <a href="#annuaire" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
-                Annuaire Public
-              </a>
-              <Link to="/inscription" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
-                Inscription en ligne
+              <Link to="/" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+                Accueil
               </Link>
-              <a href="#ecps" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
-                Carte e-CPS
-              </a>
-              <a href="#cotisations" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
-                Cotisations
-              </a>
-              <a href="#actualites" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
-                Actualités
-              </a>
+              <Link to="/annuaire" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+                Annuaire Public
+              </Link>
               <Link to="/pharmacovigilance" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Pharmacovigilance
               </Link>
-              <a href="#demo" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
-                Démo
-              </a>
-              <a href="#contact" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+              <Link to="/actualites" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+                Actualités
+              </Link>
+              <Link to="/contact" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Contact
-              </a>
+              </Link>
+              <Link to="/demo" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+                Démo
+              </Link>
               {user && (
                 <Link to="/suivi" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                   Suivi de dossier
