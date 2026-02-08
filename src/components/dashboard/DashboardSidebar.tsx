@@ -1,20 +1,20 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, Users, FileCheck, CreditCard, BarChart3, 
-  Settings, LogOut, X, User, QrCode, Bell, FileText, MapPin,
-  CheckCircle2, AlertTriangle, Clock, Download
+  Settings, LogOut, X, User, QrCode, FileText, MapPin
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useDemo } from "@/contexts/DemoContext";
 import { useAuth } from "@/hooks/useAuth";
+import { useRealtimeNotifications } from "@/hooks/useRealtimeNotifications";
 
 interface NavItem {
   label: string;
   href: string;
   icon: React.ReactNode;
-  badge?: string;
+  badgeKey?: string;
 }
 
 interface DashboardSidebarProps {
@@ -26,44 +26,44 @@ interface DashboardSidebarProps {
   onClose: () => void;
 }
 
-// Navigation items par rôle
+// Navigation items par rôle avec clés de badge dynamiques
 const roleNavItems: Record<string, NavItem[]> = {
   admin: [
     { label: "Tableau de bord", href: "/admin", icon: <LayoutDashboard className="w-4 h-4" /> },
     { label: "Répertoire", href: "/admin/repertoire", icon: <Users className="w-4 h-4" /> },
-    { label: "Inscriptions", href: "/admin/inscriptions", icon: <FileCheck className="w-4 h-4" />, badge: "12" },
-    { label: "Paiements", href: "/admin/paiements", icon: <CreditCard className="w-4 h-4" /> },
+    { label: "Inscriptions", href: "/admin/inscriptions", icon: <FileCheck className="w-4 h-4" />, badgeKey: "inscriptions" },
+    { label: "Paiements", href: "/admin/paiements", icon: <CreditCard className="w-4 h-4" />, badgeKey: "paiements_pending" },
     { label: "Analytics", href: "/admin/analytics", icon: <BarChart3 className="w-4 h-4" /> },
     { label: "Paramètres", href: "/admin/parametres", icon: <Settings className="w-4 h-4" /> },
   ],
   president: [
     { label: "Tableau de bord", href: "/dashboard/president", icon: <LayoutDashboard className="w-4 h-4" /> },
     { label: "Répertoire", href: "/dashboard/president/repertoire", icon: <Users className="w-4 h-4" /> },
-    { label: "Validations finales", href: "/dashboard/president/validations", icon: <FileCheck className="w-4 h-4" />, badge: "5" },
+    { label: "Validations finales", href: "/dashboard/president/validations", icon: <FileCheck className="w-4 h-4" />, badgeKey: "validations" },
     { label: "Indicateurs BI", href: "/dashboard/president/bi", icon: <BarChart3 className="w-4 h-4" /> },
   ],
   sg: [
     { label: "Tableau de bord", href: "/dashboard/sg", icon: <LayoutDashboard className="w-4 h-4" /> },
     { label: "Répertoire", href: "/dashboard/sg/repertoire", icon: <Users className="w-4 h-4" /> },
-    { label: "Inscriptions", href: "/dashboard/sg/inscriptions", icon: <FileCheck className="w-4 h-4" />, badge: "8" },
+    { label: "Inscriptions", href: "/dashboard/sg/inscriptions", icon: <FileCheck className="w-4 h-4" />, badgeKey: "inscriptions" },
     { label: "Suivi financier", href: "/dashboard/sg/finances", icon: <CreditCard className="w-4 h-4" /> },
     { label: "Indicateurs BI", href: "/dashboard/sg/bi", icon: <BarChart3 className="w-4 h-4" /> },
   ],
   tresorier: [
     { label: "Tableau de bord", href: "/dashboard/tresorier", icon: <LayoutDashboard className="w-4 h-4" /> },
     { label: "Cotisations", href: "/dashboard/tresorier/cotisations", icon: <CreditCard className="w-4 h-4" /> },
-    { label: "Recouvrement", href: "/dashboard/tresorier/recouvrement", icon: <Users className="w-4 h-4" />, badge: "23" },
+    { label: "Recouvrement", href: "/dashboard/tresorier/recouvrement", icon: <Users className="w-4 h-4" />, badgeKey: "recouvrement" },
     { label: "Rapport financier", href: "/dashboard/tresorier/rapport", icon: <BarChart3 className="w-4 h-4" /> },
   ],
   agent: [
     { label: "Tableau de bord", href: "/dashboard/agent", icon: <LayoutDashboard className="w-4 h-4" /> },
-    { label: "Saisie fiches", href: "/dashboard/agent/fiches", icon: <Users className="w-4 h-4" /> },
-    { label: "Vérification dossiers", href: "/dashboard/agent/verification", icon: <FileCheck className="w-4 h-4" />, badge: "15" },
-    { label: "Paiements", href: "/dashboard/agent/paiements", icon: <CreditCard className="w-4 h-4" /> },
+    { label: "Saisie fiches", href: "/dashboard/agent/fiches", icon: <Users className="w-4 h-4" />, badgeKey: "fiches" },
+    { label: "Vérification dossiers", href: "/dashboard/agent/verification", icon: <FileCheck className="w-4 h-4" />, badgeKey: "verification" },
+    { label: "Paiements", href: "/dashboard/agent/paiements", icon: <CreditCard className="w-4 h-4" />, badgeKey: "paiements" },
   ],
   commission: [
     { label: "Tableau de bord", href: "/dashboard/commission", icon: <LayoutDashboard className="w-4 h-4" /> },
-    { label: "Dossiers à valider", href: "/dashboard/commission/validation", icon: <FileCheck className="w-4 h-4" />, badge: "7" },
+    { label: "Dossiers à valider", href: "/dashboard/commission/validation", icon: <FileCheck className="w-4 h-4" />, badgeKey: "validation" },
     { label: "Historique", href: "/dashboard/commission/historique", icon: <Users className="w-4 h-4" /> },
   ],
   regional: [
@@ -76,7 +76,7 @@ const roleNavItems: Record<string, NavItem[]> = {
     { label: "Tableau de bord", href: "/medecin", icon: <LayoutDashboard className="w-4 h-4" /> },
     { label: "Carte e-CPS", href: "/medecin/ecps", icon: <QrCode className="w-4 h-4" /> },
     { label: "Mon dossier", href: "/medecin/dossier", icon: <FileText className="w-4 h-4" /> },
-    { label: "Mes paiements", href: "/medecin/paiements", icon: <CreditCard className="w-4 h-4" /> },
+    { label: "Mes paiements", href: "/medecin/paiements", icon: <CreditCard className="w-4 h-4" />, badgeKey: "paiements" },
     { label: "Mon profil", href: "/medecin/profil", icon: <User className="w-4 h-4" /> },
   ],
 };
@@ -93,6 +93,7 @@ export const DashboardSidebar = ({
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const { isDemoMode, demoUser, exitDemoMode } = useDemo();
+  const { counts } = useRealtimeNotifications({ role });
 
   const navItems = roleNavItems[role] || [];
 
@@ -107,6 +108,12 @@ export const DashboardSidebar = ({
   };
 
   const displayName = isDemoMode ? demoUser?.name : user?.email?.split("@")[0];
+
+  const getBadgeCount = (badgeKey?: string): number | null => {
+    if (!badgeKey) return null;
+    const count = counts[badgeKey];
+    return typeof count === "number" && count > 0 ? count : null;
+  };
 
   return (
     <>
@@ -147,6 +154,7 @@ export const DashboardSidebar = ({
         <nav className="p-4 space-y-1 overflow-y-auto" style={{ height: "calc(100% - 180px)" }}>
           {navItems.map((item) => {
             const isActive = location.pathname === item.href;
+            const badgeCount = getBadgeCount(item.badgeKey);
             return (
               <Link
                 key={item.href}
@@ -161,9 +169,15 @@ export const DashboardSidebar = ({
               >
                 {item.icon}
                 <span className="flex-1">{item.label}</span>
-                {item.badge && (
-                  <Badge variant={isActive ? "secondary" : "outline"} className="text-xs">
-                    {item.badge}
+                {badgeCount !== null && (
+                  <Badge 
+                    variant={isActive ? "secondary" : "default"} 
+                    className={cn(
+                      "text-xs min-w-[20px] justify-center",
+                      !isActive && "bg-destructive text-destructive-foreground animate-pulse"
+                    )}
+                  >
+                    {badgeCount}
                   </Badge>
                 )}
               </Link>

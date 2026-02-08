@@ -1,102 +1,183 @@
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import DashboardLayout from "@/components/DashboardLayout";
+import { ValidationPanel } from "@/components/dashboard/ValidationPanel";
+import { WorkflowVisualizer } from "@/components/dashboard/WorkflowVisualizer";
 import { 
   Users, FileCheck, TrendingUp, Clock, CheckCircle2, XCircle, 
   AlertCircle, ArrowRight, BarChart3
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useDemo } from "@/contexts/DemoContext";
 
-const stats = [
-  {
-    title: "Médecins inscrits",
-    value: "1,247",
-    change: "+12%",
-    trend: "up",
-    icon: Users,
-    color: "text-primary",
-    bgColor: "bg-primary/10",
-  },
-  {
-    title: "Dossiers en attente",
-    value: "5",
-    change: "validation finale",
-    trend: "neutral",
-    icon: Clock,
-    color: "text-amber-600",
-    bgColor: "bg-amber-100",
-  },
-  {
-    title: "Taux de conformité",
-    value: "94%",
-    change: "+3%",
-    trend: "up",
-    icon: CheckCircle2,
-    color: "text-emerald-600",
-    bgColor: "bg-emerald-100",
-  },
-  {
-    title: "Cotisations perçues",
-    value: "89M FCFA",
-    change: "ce semestre",
-    trend: "up",
-    icon: TrendingUp,
-    color: "text-blue-600",
-    bgColor: "bg-blue-100",
-  },
-];
+interface ApplicationForValidation {
+  id: string;
+  numero_dossier: string | null;
+  current_step: string;
+  profile: {
+    nom: string;
+    prenom: string;
+    specialite: string;
+    province: string;
+  } | null;
+  submission_date: string | null;
+}
 
-const pendingValidations = [
-  { 
-    id: 1, 
-    name: "Dr. Jean-Pierre MOUELE", 
-    specialite: "Cardiologie", 
-    date: "08/02/2026",
-    status: "pending",
-    province: "Estuaire"
+// Demo data for president review
+const DEMO_PRESIDENT_APPLICATIONS: ApplicationForValidation[] = [
+  {
+    id: "demo-pres-1",
+    numero_dossier: "INS-2026-00041",
+    current_step: "president_review",
+    profile: { nom: "OBAME", prenom: "Albert", specialite: "Neurochirurgie", province: "Estuaire" },
+    submission_date: "2026-02-05T10:00:00Z",
   },
-  { 
-    id: 2, 
-    name: "Dr. Marie ONDO", 
-    specialite: "Pédiatrie", 
-    date: "07/02/2026",
-    status: "pending",
-    province: "Ogooué-Maritime"
+  {
+    id: "demo-pres-2",
+    numero_dossier: "INS-2026-00042",
+    current_step: "president_review",
+    profile: { nom: "MBOUMBA", prenom: "Claire", specialite: "Oncologie", province: "Haut-Ogooué" },
+    submission_date: "2026-02-04T14:30:00Z",
   },
-  { 
-    id: 3, 
-    name: "Dr. Paul NZUE", 
-    specialite: "Chirurgie générale", 
-    date: "06/02/2026",
-    status: "pending",
-    province: "Woleu-Ntem"
-  },
-  { 
-    id: 4, 
-    name: "Dr. Suzanne NDONG", 
-    specialite: "Gynécologie", 
-    date: "05/02/2026",
-    status: "pending",
-    province: "Estuaire"
-  },
-  { 
-    id: 5, 
-    name: "Dr. Emmanuel BIBANG", 
-    specialite: "Médecine générale", 
-    date: "04/02/2026",
-    status: "pending",
-    province: "Haut-Ogooué"
-  },
-];
-
-const recentDecisions = [
-  { name: "Dr. Alice MBOUMBA", decision: "approved", date: "03/02/2026" },
-  { name: "Dr. Pierre OBIANG", decision: "approved", date: "02/02/2026" },
-  { name: "Dr. Marc ESSONO", decision: "rejected", date: "01/02/2026", reason: "Diplôme non conforme" },
 ];
 
 const PresidentDashboard = () => {
+  const [applications, setApplications] = useState<ApplicationForValidation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [statsData, setStatsData] = useState({
+    totalMedecins: 1247,
+    pending: 5,
+    tauxConformite: 94,
+    cotisations: "89M",
+  });
+  const { isDemoMode } = useDemo();
+
+  const stats = [
+    {
+      title: "Médecins inscrits",
+      value: statsData.totalMedecins.toLocaleString(),
+      change: "+12%",
+      trend: "up",
+      icon: Users,
+      color: "text-primary",
+      bgColor: "bg-primary/10",
+    },
+    {
+      title: "Dossiers en attente",
+      value: String(applications.length || statsData.pending),
+      change: "validation finale",
+      trend: "neutral",
+      icon: Clock,
+      color: "text-amber-600",
+      bgColor: "bg-amber-100",
+    },
+    {
+      title: "Taux de conformité",
+      value: `${statsData.tauxConformite}%`,
+      change: "+3%",
+      trend: "up",
+      icon: CheckCircle2,
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-100",
+    },
+    {
+      title: "Cotisations perçues",
+      value: `${statsData.cotisations} FCFA`,
+      change: "ce semestre",
+      trend: "up",
+      icon: TrendingUp,
+      color: "text-blue-600",
+      bgColor: "bg-blue-100",
+    },
+  ];
+
+  const recentDecisions = [
+    { name: "Dr. Alice MBOUMBA", decision: "approved", date: "03/02/2026" },
+    { name: "Dr. Pierre OBIANG", decision: "approved", date: "02/02/2026" },
+    { name: "Dr. Marc ESSONO", decision: "rejected", date: "01/02/2026", reason: "Diplôme non conforme" },
+  ];
+
+  const fetchApplications = useCallback(async () => {
+    if (isDemoMode) {
+      setApplications(DEMO_PRESIDENT_APPLICATIONS);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data: appData, error } = await supabase
+        .from("applications")
+        .select("id, numero_dossier, current_step, submission_date, profile_id")
+        .eq("current_step", "president_review")
+        .order("submission_date", { ascending: true });
+
+      if (error) {
+        console.error("Error fetching applications:", error);
+        setApplications([]);
+        return;
+      }
+
+      if (appData && appData.length > 0) {
+        const profileIds = appData.map((a) => a.profile_id);
+        const { data: profiles } = await supabase
+          .from("profiles")
+          .select("id, nom, prenom, specialite, province")
+          .in("id", profileIds);
+
+        const appsWithProfiles = appData.map((app) => ({
+          ...app,
+          current_step: app.current_step || "president_review",
+          profile: profiles?.find((p) => p.id === app.profile_id) || null,
+        }));
+
+        setApplications(appsWithProfiles);
+      } else {
+        setApplications([]);
+      }
+
+      // Fetch stats
+      const { count: medecinCount } = await supabase
+        .from("profiles")
+        .select("*", { count: "exact", head: true })
+        .not("numero_ordre", "is", null);
+
+      setStatsData((prev) => ({
+        ...prev,
+        totalMedecins: medecinCount || prev.totalMedecins,
+      }));
+    } catch (err) {
+      console.error("Error:", err);
+      setApplications([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [isDemoMode]);
+
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
+
+  // Realtime subscription
+  useEffect(() => {
+    if (isDemoMode) return;
+
+    const channel = supabase
+      .channel("president-applications")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "applications" },
+        () => fetchApplications()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isDemoMode, fetchApplications]);
+
   return (
     <DashboardLayout
       role="president"
@@ -137,46 +218,45 @@ const PresidentDashboard = () => {
           ))}
         </div>
 
+        {/* Workflow Visualizer */}
+        {applications.length > 0 && (
+          <WorkflowVisualizer currentStep="president_review" />
+        )}
+
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Pending Validations */}
-          <Card className="lg:col-span-2">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <FileCheck className="w-5 h-5 text-primary" />
-                Dossiers en attente de validation finale
-              </CardTitle>
-              <Badge variant="secondary">{pendingValidations.length} dossiers</Badge>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {pendingValidations.map((item) => (
-                  <div 
-                    key={item.id} 
-                    className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                        <Users className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground">{item.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {item.specialite} • {item.province}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs text-muted-foreground">{item.date}</span>
-                      <Button size="sm" variant="outline">
-                        Examiner
-                        <ArrowRight className="w-4 h-4 ml-1" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="lg:col-span-2">
+            {loading ? (
+              <Card>
+                <CardContent className="py-12 text-center">
+                  <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                  <p className="text-muted-foreground">Chargement...</p>
+                </CardContent>
+              </Card>
+            ) : applications.length > 0 ? (
+              <ValidationPanel
+                applications={applications}
+                role="president"
+                onActionComplete={fetchApplications}
+              />
+            ) : (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileCheck className="w-5 h-5 text-primary" />
+                    Dossiers en attente de validation finale
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="py-8 text-center">
+                  <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
+                  <p className="font-medium text-foreground">Aucun dossier en attente</p>
+                  <p className="text-sm text-muted-foreground">
+                    Tous les dossiers ont été traités
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
 
           {/* Recent Decisions */}
           <Card>
