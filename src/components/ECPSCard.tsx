@@ -148,9 +148,22 @@ const ECPSCard = ({
 
             {/* Main content - Photo left, Info right */}
             <div className="flex-1 flex gap-4">
-              {/* Photo circle */}
-              <div className="w-24 h-28 flex-shrink-0 flex items-start">
-                <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+              {/* Left column: N° ORDRE, FONCTION, Photo */}
+              <div className="w-24 flex-shrink-0 flex flex-col items-center">
+                {/* Order number above photo */}
+                <div className="text-center mb-1">
+                  <span className="text-gray-500 font-medium italic text-[10px] block">N° ORDRE</span>
+                  <p className="font-bold text-gray-900 text-sm">{orderNumber}</p>
+                </div>
+                
+                {/* Function below N° ORDRE */}
+                <div className="text-center mb-1">
+                  <span className="text-gray-500 font-medium italic text-[10px] block">FONCTION</span>
+                  <p className="font-bold text-[#009639] text-[11px] uppercase">{fonction}</p>
+                </div>
+
+                {/* Photo circle */}
+                <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
                   {photoUrl ? (
                     <img
                       src={photoUrl}
@@ -158,7 +171,7 @@ const ECPSCard = ({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <svg viewBox="0 0 24 24" className="w-14 h-14 text-gray-400">
+                    <svg viewBox="0 0 24 24" className="w-12 h-12 text-gray-400">
                       <circle cx="12" cy="8" r="4" fill="currentColor" opacity="0.5"/>
                       <path d="M4 22c0-5 4-8 8-8s8 3 8 8" fill="currentColor" opacity="0.4"/>
                     </svg>
@@ -187,20 +200,8 @@ const ECPSCard = ({
               </div>
             </div>
 
-            {/* Bottom row - N° ORDRE, FONCTION, QR Code */}
-            <div className="flex items-end justify-between mt-2">
-              {/* Order number */}
-              <div className="text-center">
-                <span className="text-gray-500 font-medium italic text-[10px] block">N° ORDRE</span>
-                <p className="font-bold text-gray-900 text-lg">{orderNumber}</p>
-              </div>
-
-              {/* Function */}
-              <div className="text-center">
-                <span className="text-gray-500 font-medium italic text-[10px] block">FONCTION</span>
-                <p className="font-bold text-[#009639] text-sm uppercase">{fonction}</p>
-              </div>
-
+            {/* Bottom row - QR Code only */}
+            <div className="flex items-end justify-end mt-2">
               {/* QR Code */}
               <div className="bg-white p-1 rounded shadow-sm">
                 <QRCodeSVG
