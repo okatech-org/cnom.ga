@@ -68,7 +68,7 @@ export const PaiementsPage = () => {
   const [typeFilter, setTypeFilter] = useState("all");
 
   const filteredPaiements = MOCK_PAIEMENTS.filter((p) => {
-    const matchSearch = 
+    const matchSearch =
       p.medecin.toLowerCase().includes(search.toLowerCase()) ||
       p.transactionId.toLowerCase().includes(search.toLowerCase());
     const matchStatut = statutFilter === "all" || p.statut === statutFilter;
@@ -114,9 +114,9 @@ export const PaiementsPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-green-600">{formatMontant(totalCompleted)}</p>
+            <p className="text-2xl font-bold text-teal-600">{formatMontant(totalCompleted)}</p>
             <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
-              <TrendingUp className="w-3 h-3 text-green-500" />
+              <TrendingUp className="w-3 h-3 text-teal-500" />
               +12% vs mois dernier
             </p>
           </CardContent>

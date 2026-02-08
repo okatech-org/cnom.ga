@@ -41,7 +41,7 @@ const Auth = () => {
   const demoPassword = searchParams.get("password");
   const demoRole = searchParams.get("role") as DemoRole | null;
   const isDemo = !!demoEmail && !!demoPassword && !!demoRole;
-  
+
   const [isLogin, setIsLogin] = useState(mode !== "signup");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -145,7 +145,7 @@ const Auth = () => {
         title: "Connexion réussie",
         description: "Bienvenue sur la plateforme CNOM.",
       });
-      
+
       // Redirect based on role
       if (demoRole) {
         const roleRoutes: Record<string, string> = {
@@ -177,7 +177,7 @@ const Auth = () => {
     setIsLoading(true);
     try {
       const redirectUrl = `${window.location.origin}/inscription`;
-      
+
       const { error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
@@ -237,17 +237,17 @@ const Auth = () => {
             {isLogin ? "Connexion" : "Créer un compte"}
           </h1>
           <p className="text-muted-foreground">
-            {isLogin 
-              ? "Accédez à votre espace médecin" 
+            {isLogin
+              ? "Accédez à votre espace médecin"
               : "Inscrivez-vous pour déposer votre dossier"}
           </p>
         </div>
 
         {/* Demo Alert */}
         {isDemo && (
-          <Alert className="mb-6 border-amber-200 bg-amber-50">
-            <AlertCircle className="h-4 w-4 text-amber-600" />
-            <AlertDescription className="text-amber-800">
+          <Alert className="mb-6 border-amber-200 bg-amber-50 dark:bg-amber-950/40 dark:border-amber-900">
+            <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-500" />
+            <AlertDescription className="text-amber-800 dark:text-amber-200">
               <strong>Mode démonstration</strong> — Les identifiants sont pré-remplis pour le profil <strong>{demoRole}</strong>. Cliquez sur "Se connecter" pour accéder à l'espace.
             </AlertDescription>
           </Alert>
@@ -267,11 +267,11 @@ const Auth = () => {
                       <FormControl>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input 
-                            type="email" 
-                            placeholder="docteur@email.com" 
+                          <Input
+                            type="email"
+                            placeholder="docteur@email.com"
                             className="pl-10"
-                            {...field} 
+                            {...field}
                           />
                         </div>
                       </FormControl>
@@ -289,11 +289,11 @@ const Auth = () => {
                       <FormControl>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input 
-                            type={showPassword ? "text" : "password"} 
-                            placeholder="••••••••" 
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
                             className="pl-10 pr-10"
-                            {...field} 
+                            {...field}
                           />
                           <button
                             type="button"
@@ -333,11 +333,11 @@ const Auth = () => {
                       <FormControl>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input 
-                            type="email" 
-                            placeholder="docteur@email.com" 
+                          <Input
+                            type="email"
+                            placeholder="docteur@email.com"
                             className="pl-10"
-                            {...field} 
+                            {...field}
                           />
                         </div>
                       </FormControl>
@@ -355,11 +355,11 @@ const Auth = () => {
                       <FormControl>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input 
-                            type={showPassword ? "text" : "password"} 
-                            placeholder="••••••••" 
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
                             className="pl-10 pr-10"
-                            {...field} 
+                            {...field}
                           />
                           <button
                             type="button"
@@ -384,11 +384,11 @@ const Auth = () => {
                       <FormControl>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input 
-                            type={showPassword ? "text" : "password"} 
-                            placeholder="••••••••" 
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
                             className="pl-10"
-                            {...field} 
+                            {...field}
                           />
                         </div>
                       </FormControl>

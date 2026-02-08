@@ -40,7 +40,7 @@ const getStatutBadge = (hasOrderNumber: boolean) => {
 
 const getCotisationBadge = (cotisation: string) => {
   const variants: Record<string, { className: string; label: string }> = {
-    "à_jour": { className: "bg-green-100 text-green-800", label: "À jour" },
+    "à_jour": { className: "bg-teal-100 text-teal-800", label: "À jour" },
     "en_retard": { className: "bg-amber-100 text-amber-800", label: "En retard" },
     "impayé": { className: "bg-red-100 text-red-800", label: "Impayé" },
     "exonéré": { className: "bg-gray-100 text-gray-800", label: "Exonéré" },
@@ -110,7 +110,7 @@ export const RepertoirePage = () => {
             <CardTitle className="text-sm font-medium text-muted-foreground">Actifs</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-green-600">{stats.activeProfiles}</p>
+            <p className="text-2xl font-bold text-teal-600">{stats.activeProfiles}</p>
           </CardContent>
         </Card>
         <Card>

@@ -17,7 +17,7 @@ const provinceData = [
 ];
 
 const specialtyData = [
-  { name: "Médecine Générale", value: 892, color: "#0D6E3F" },
+  { name: "Médecine Générale", value: 892, color: "#0D7377" },
   { name: "Chirurgie", value: 234, color: "#F5A623" },
   { name: "Pédiatrie", value: 189, color: "#3B82F6" },
   { name: "Gynécologie", value: 156, color: "#EC4899" },
@@ -69,7 +69,7 @@ const DashboardSection = () => {
             Démographie médicale du Gabon
           </h2>
           <p className="text-muted-foreground text-lg">
-            Visualisation en temps réel de la répartition du corps médical gabonais 
+            Visualisation en temps réel de la répartition du corps médical gabonais
             pour le pilotage de la carte sanitaire nationale.
           </p>
         </div>
@@ -96,8 +96,8 @@ const DashboardSection = () => {
           </div>
           <div className="bg-background rounded-xl p-5 border border-border shadow-cnom">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Activity className="w-5 h-5 text-blue-600" />
+              <div className="w-10 h-10 bg-cnom-sky-light rounded-lg flex items-center justify-center">
+                <Activity className="w-5 h-5 text-cnom-sky-dark" />
               </div>
             </div>
             <p className="text-2xl lg:text-3xl font-bold text-foreground">{avgRatio}</p>
@@ -105,8 +105,8 @@ const DashboardSection = () => {
           </div>
           <div className="bg-background rounded-xl p-5 border border-border shadow-cnom">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-pink-600" />
+              <div className="w-10 h-10 bg-cnom-rose-light rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-cnom-rose" />
               </div>
             </div>
             <p className="text-2xl lg:text-3xl font-bold text-foreground">35%</p>
@@ -132,18 +132,18 @@ const DashboardSection = () => {
                   <BarChart data={provinceData} layout="vertical" margin={{ left: 20, right: 30 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis type="number" stroke="hsl(var(--muted-foreground))" />
-                    <YAxis 
-                      type="category" 
-                      dataKey="name" 
+                    <YAxis
+                      type="category"
+                      dataKey="name"
                       stroke="hsl(var(--muted-foreground))"
                       width={100}
                       tick={{ fontSize: 12 }}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Bar 
-                      dataKey="medecins" 
+                    <Bar
+                      dataKey="medecins"
                       name="Médecins"
-                      fill="hsl(var(--primary))" 
+                      fill="hsl(var(--primary))"
                       radius={[0, 4, 4, 0]}
                     />
                   </BarChart>
@@ -199,25 +199,25 @@ const DashboardSection = () => {
                   <BarChart data={ageData} layout="vertical" margin={{ left: 20, right: 30 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis type="number" stroke="hsl(var(--muted-foreground))" />
-                    <YAxis 
-                      type="category" 
-                      dataKey="tranche" 
+                    <YAxis
+                      type="category"
+                      dataKey="tranche"
                       stroke="hsl(var(--muted-foreground))"
                       width={80}
                       tick={{ fontSize: 12 }}
                     />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
-                    <Bar 
-                      dataKey="hommes" 
+                    <Bar
+                      dataKey="hommes"
                       name="Hommes"
-                      fill="#3B82F6" 
+                      fill="#3B82F6"
                       radius={[0, 4, 4, 0]}
                     />
-                    <Bar 
-                      dataKey="femmes" 
+                    <Bar
+                      dataKey="femmes"
                       name="Femmes"
-                      fill="#EC4899" 
+                      fill="#EC4899"
                       radius={[0, 4, 4, 0]}
                     />
                   </BarChart>

@@ -3,16 +3,16 @@ import logoCnom from "@/assets/logo-cnom.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-foreground text-white/90">
+    <footer className="bg-[hsl(178,75%,12%)] text-white/90">
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <img 
-                src={logoCnom} 
-                alt="Logo CNOM Gabon" 
+              <img
+                src={logoCnom}
+                alt="Logo CNOM Gabon"
                 className="w-12 h-12 object-contain"
               />
               <div>
@@ -25,7 +25,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-white/60 text-sm leading-relaxed mb-6">
-              L'Ordre National des Médecins du Gabon garantit la qualité et 
+              L'Ordre National des Médecins du Gabon garantit la qualité et
               l'éthique de l'exercice médical sur le territoire national.
             </p>
             <div className="flex gap-4">

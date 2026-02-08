@@ -34,13 +34,13 @@ const pharmacovigilanceSchema = z.object({
   declarantEmail: z.string().trim().email("Email invalide").max(255, "Email trop long"),
   declarantTelephone: z.string().trim().min(8, "Numéro de téléphone invalide").max(20, "Numéro de téléphone trop long"),
   declarantEtablissement: z.string().trim().max(200, "Nom d'établissement trop long").optional(),
-  
+
   // Patient
   patientInitiales: z.string().trim().min(2, "Initiales requises (ex: A.B.)").max(10, "Initiales trop longues"),
   patientAge: z.string().trim().min(1, "Âge requis").max(3, "Âge invalide"),
   patientSexe: z.enum(["M", "F"], { required_error: "Sexe requis" }),
   patientPoids: z.string().trim().max(5, "Poids invalide").optional(),
-  
+
   // Médicament suspect
   medicamentNom: z.string().trim().min(2, "Nom du médicament requis").max(200, "Nom trop long"),
   medicamentDCI: z.string().trim().max(200, "DCI trop longue").optional(),
@@ -49,7 +49,7 @@ const pharmacovigilanceSchema = z.object({
   medicamentDateDebut: z.string().trim().min(1, "Date de début requise"),
   medicamentDateFin: z.string().trim().optional(),
   medicamentIndication: z.string().trim().max(300, "Indication trop longue").optional(),
-  
+
   // Effet indésirable
   effetDescription: z.string().trim().min(10, "Description trop courte (min. 10 caractères)").max(2000, "Description trop longue (max. 2000 caractères)"),
   effetDateSurvenue: z.string().trim().min(1, "Date de survenue requise"),
@@ -91,10 +91,10 @@ const Pharmacovigilance = () => {
   const onSubmit = async (data: PharmacovigilanceFormData) => {
     // In a real app, this would send data to a backend
     console.log("Form submitted with validated data");
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     setIsSubmitted(true);
     toast({
       title: "Déclaration envoyée",
@@ -114,7 +114,7 @@ const Pharmacovigilance = () => {
               Déclaration envoyée avec succès
             </h1>
             <p className="text-muted-foreground text-lg mb-8">
-              Votre déclaration d'effet indésirable a été transmise au Centre National de Pharmacovigilance. 
+              Votre déclaration d'effet indésirable a été transmise au Centre National de Pharmacovigilance.
               Vous recevrez un accusé de réception par email.
             </p>
             <div className="flex justify-center gap-4">
@@ -160,7 +160,7 @@ const Pharmacovigilance = () => {
         <div className="max-w-4xl mx-auto">
           {/* Title */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-700 rounded-full mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full mb-4">
               <AlertTriangle className="w-4 h-4" />
               <span className="text-sm font-medium">Pharmacovigilance</span>
             </div>
@@ -168,7 +168,7 @@ const Pharmacovigilance = () => {
               Déclaration d'effet indésirable
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Signalez tout effet indésirable suspecté lié à l'utilisation d'un médicament. 
+              Signalez tout effet indésirable suspecté lié à l'utilisation d'un médicament.
               Cette déclaration est confidentielle et obligatoire pour les effets graves.
             </p>
           </div>
@@ -459,7 +459,7 @@ const Pharmacovigilance = () => {
                       <FormItem>
                         <FormLabel>Description détaillée *</FormLabel>
                         <FormControl>
-                          <Textarea 
+                          <Textarea
                             placeholder="Décrivez l'effet indésirable observé : nature, localisation, intensité, chronologie par rapport à la prise du médicament..."
                             className="min-h-[150px]"
                             {...field}
@@ -579,13 +579,13 @@ const Pharmacovigilance = () => {
           </Form>
 
           {/* Info box */}
-          <div className="mt-8 p-6 bg-amber-50 border border-amber-200 rounded-xl">
+          <div className="mt-8 p-6 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 rounded-xl">
             <div className="flex items-start gap-4">
-              <AlertTriangle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" />
+              <AlertTriangle className="w-6 h-6 text-amber-600 dark:text-amber-500 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-amber-800 mb-2">Confidentialité</h4>
-                <p className="text-amber-700 text-sm">
-                  Les informations recueillies font l'objet d'un traitement informatique destiné au Centre National de Pharmacovigilance. 
+                <h4 className="font-semibold text-amber-800 dark:text-amber-200 mb-2">Confidentialité</h4>
+                <p className="text-amber-700 dark:text-amber-300 text-sm">
+                  Les informations recueillies font l'objet d'un traitement informatique destiné au Centre National de Pharmacovigilance.
                   Conformément à la Loi n°001/2011, vous disposez d'un droit d'accès et de rectification des données vous concernant.
                 </p>
               </div>

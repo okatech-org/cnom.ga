@@ -46,7 +46,7 @@ const revenueData = [
 ];
 
 const specialitesData = [
-  { name: "Médecine Générale", value: 542, color: "#0D6E3F" },
+  { name: "Médecine Générale", value: 542, color: "#0D7377" },
   { name: "Cardiologie", value: 89, color: "#3B82F6" },
   { name: "Pédiatrie", value: 124, color: "#F59E0B" },
   { name: "Gynécologie", value: 98, color: "#EC4899" },
@@ -67,8 +67,8 @@ const provincesData = [
 ];
 
 const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("fr-FR", { 
-    style: "currency", 
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
     currency: "XAF",
     notation: "compact",
     maximumFractionDigits: 1
@@ -109,7 +109,7 @@ export const AnalyticsPage = () => {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">1,247</p>
-            <p className="text-sm text-green-600 flex items-center gap-1 mt-1">
+            <p className="text-sm text-cnom-sky flex items-center gap-1 mt-1">
               <TrendingUp className="w-3 h-3" />
               +8.2% ce semestre
             </p>
@@ -136,7 +136,7 @@ export const AnalyticsPage = () => {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{formatCurrency(36100000)}</p>
-            <p className="text-sm text-green-600 flex items-center gap-1 mt-1">
+            <p className="text-sm text-cnom-sky flex items-center gap-1 mt-1">
               <TrendingUp className="w-3 h-3" />
               +15.8% vs mois dernier
             </p>
@@ -179,7 +179,7 @@ export const AnalyticsPage = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Area type="monotone" dataKey="inscriptions" stackId="1" stroke="#0D6E3F" fill="#0D6E3F" fillOpacity={0.6} name="Inscriptions" />
+                    <Area type="monotone" dataKey="inscriptions" stackId="1" stroke="#0D7377" fill="#0D7377" fillOpacity={0.6} name="Inscriptions" />
                     <Area type="monotone" dataKey="validations" stackId="2" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.6} name="Validations" />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -231,7 +231,7 @@ export const AnalyticsPage = () => {
                   <YAxis tickFormatter={(value) => formatCurrency(value)} />
                   <Tooltip formatter={(value: number) => formatCurrency(value)} />
                   <Legend />
-                  <Bar dataKey="cotisations" name="Cotisations" fill="#0D6E3F" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="cotisations" name="Cotisations" fill="#0D7377" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="inscriptions" name="Inscriptions" fill="#3B82F6" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -255,7 +255,7 @@ export const AnalyticsPage = () => {
                     <div className="w-32 text-sm font-medium">{item.province}</div>
                     <div className="flex-1">
                       <div className="h-6 bg-muted rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full bg-primary rounded-full transition-all duration-500"
                           style={{ width: `${item.pourcentage}%` }}
                         />

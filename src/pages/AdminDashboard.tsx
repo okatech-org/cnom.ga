@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { 
-  Users, FileText, CreditCard, CheckCircle, XCircle, Clock, 
+import {
+  Users, FileText, CreditCard, CheckCircle, XCircle, Clock,
   Eye, Check, X, Search, ArrowLeft, LogOut, BarChart3, Settings
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -85,7 +85,7 @@ const statusColors: Record<ApplicationStatus, string> = {
   draft: "bg-muted text-muted-foreground",
   submitted: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
   under_review: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
-  validated: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+  validated: "bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200",
   rejected: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
 };
 
@@ -98,7 +98,7 @@ const paymentStatusLabels: Record<PaymentStatus, string> = {
 
 const paymentStatusColors: Record<PaymentStatus, string> = {
   pending: "bg-yellow-100 text-yellow-800",
-  completed: "bg-green-100 text-green-800",
+  completed: "bg-teal-100 text-teal-800",
   failed: "bg-red-100 text-red-800",
   refunded: "bg-gray-100 text-gray-800",
 };
@@ -149,7 +149,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      
+
       // Fetch applications with profiles
       const { data: appData, error: appError } = await supabase
         .from("applications")
@@ -221,7 +221,7 @@ const AdminDashboard = () => {
 
   const handleApprove = async (application: ApplicationWithProfile) => {
     setProcessingId(application.id);
-    
+
     const { error } = await supabase
       .from("applications")
       .update({
@@ -242,15 +242,15 @@ const AdminDashboard = () => {
         title: "Dossier validé",
         description: `Le dossier ${application.numero_dossier || application.id.slice(0, 8)} a été validé.`,
       });
-      setApplications(apps => 
-        apps.map(app => 
-          app.id === application.id 
+      setApplications(apps =>
+        apps.map(app =>
+          app.id === application.id
             ? { ...app, status: "validated" as ApplicationStatus }
             : app
         )
       );
     }
-    
+
     setProcessingId(null);
   };
 
@@ -265,7 +265,7 @@ const AdminDashboard = () => {
     }
 
     setProcessingId(selectedApplication.id);
-    
+
     const { error } = await supabase
       .from("applications")
       .update({
@@ -287,15 +287,15 @@ const AdminDashboard = () => {
         title: "Dossier rejeté",
         description: `Le dossier a été rejeté.`,
       });
-      setApplications(apps => 
-        apps.map(app => 
-          app.id === selectedApplication.id 
+      setApplications(apps =>
+        apps.map(app =>
+          app.id === selectedApplication.id
             ? { ...app, status: "rejected" as ApplicationStatus, rejection_reason: rejectionReason }
             : app
         )
       );
     }
-    
+
     setProcessingId(null);
     setShowRejectDialog(false);
     setSelectedApplication(null);
@@ -303,14 +303,14 @@ const AdminDashboard = () => {
   };
 
   const filteredApplications = applications.filter(app => {
-    const matchesSearch = 
+    const matchesSearch =
       app.profile?.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
       app.profile?.prenom.toLowerCase().includes(searchQuery.toLowerCase()) ||
       app.profile?.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
       app.numero_dossier?.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     const matchesStatus = statusFilter === "all" || app.status === statusFilter;
-    
+
     return matchesSearch && matchesStatus;
   });
 
@@ -370,8 +370,8 @@ const AdminDashboard = () => {
           </div>
           <div className="bg-background rounded-xl p-5 border border-border shadow-cnom">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                <CheckCircle className="w-5 h-5 text-green-600" />
+              <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-teal-600" />
               </div>
             </div>
             <p className="text-2xl font-bold text-foreground">{stats.validated}</p>
@@ -489,7 +489,7 @@ const AdminDashboard = () => {
                           </Badge>
                         </TableCell>
                         <TableCell className="hidden sm:table-cell">
-                          {app.submission_date 
+                          {app.submission_date
                             ? new Date(app.submission_date).toLocaleDateString("fr-FR")
                             : new Date(app.created_at).toLocaleDateString("fr-FR")
                           }
@@ -501,7 +501,7 @@ const AdminDashboard = () => {
                                 <Button
                                   size="sm"
                                   variant="ghost"
-                                  className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                                  className="text-teal-600 hover:text-teal-700 hover:bg-teal-50"
                                   onClick={() => handleApprove(app)}
                                   disabled={processingId === app.id}
                                 >
@@ -589,7 +589,7 @@ const AdminDashboard = () => {
                           {payment.payment_method || "-"}
                         </TableCell>
                         <TableCell className="hidden md:table-cell">
-                          {payment.paid_at 
+                          {payment.paid_at
                             ? new Date(payment.paid_at).toLocaleDateString("fr-FR")
                             : new Date(payment.created_at).toLocaleDateString("fr-FR")
                           }
@@ -623,8 +623,8 @@ const AdminDashboard = () => {
             <Button variant="outline" onClick={() => setShowRejectDialog(false)}>
               Annuler
             </Button>
-            <Button 
-              variant="destructive" 
+            <Button
+              variant="destructive"
               onClick={handleReject}
               disabled={!rejectionReason.trim()}
             >

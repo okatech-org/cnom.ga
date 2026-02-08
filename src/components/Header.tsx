@@ -5,6 +5,7 @@ import { Menu, X, User, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import logoCnom from "@/assets/logo-cnom.png";
+import { ModeToggle } from "@/components/mode-toggle";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +16,7 @@ const Header = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setUser(session?.user ?? null);
-        
+
         if (session?.user) {
           // Check if user is admin
           const { data } = await supabase
@@ -52,15 +53,15 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-border/50 shadow-sm">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo - Oversized with overflow effect */}
           <Link to="/" className="flex items-center gap-3 group relative">
             <div className="absolute -top-4 md:top-2 lg:-top-2">
-              <img 
-                src={logoCnom} 
-                alt="Logo CNOM Gabon" 
+              <img
+                src={logoCnom}
+                alt="Logo CNOM Gabon"
                 className="w-24 h-24 lg:w-32 lg:h-32 object-contain group-hover:scale-105 transition-transform drop-shadow-lg"
               />
             </div>
@@ -88,8 +89,8 @@ const Header = () => {
             <Link to="/actualites" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
               Actualités
             </Link>
-            <Link to="/contact" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
-              Contact
+            <Link to="/statistiques" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
+              Statistiques
             </Link>
             <Link to="/demo" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
               Démo
@@ -103,6 +104,7 @@ const Header = () => {
 
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center gap-3">
+            <ModeToggle />
             {user ? (
               <>
                 <Button variant="outline" size="sm" asChild>
@@ -127,13 +129,17 @@ const Header = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 text-foreground hover:bg-accent rounded-lg transition-colors"
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+
+          {/* Theme Toggle & Mobile Menu Button */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <ModeToggle />
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 text-foreground hover:bg-accent rounded-lg transition-colors"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -152,8 +158,8 @@ const Header = () => {
               <Link to="/actualites" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Actualités
               </Link>
-              <Link to="/contact" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
-                Contact
+              <Link to="/statistiques" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+                Statistiques
               </Link>
               <Link to="/demo" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Démo

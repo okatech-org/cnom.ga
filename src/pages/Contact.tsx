@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import contactMap from "@/assets/contact-map.png";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -22,7 +23,7 @@ const Contact = () => {
                 Contactez-nous
               </h1>
               <p className="text-muted-foreground text-lg">
-                Une question ? Une demande d'information ? L'équipe du CNOM est à votre disposition 
+                Une question ? Une demande d'information ? L'équipe du CNOM est à votre disposition
                 pour répondre à toutes vos interrogations.
               </p>
             </div>
@@ -63,9 +64,9 @@ const Contact = () => {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="message">Message</Label>
-                    <Textarea 
-                      id="message" 
-                      placeholder="Décrivez votre demande..." 
+                    <Textarea
+                      id="message"
+                      placeholder="Décrivez votre demande..."
                       className="min-h-[150px]"
                     />
                   </div>
@@ -83,7 +84,7 @@ const Contact = () => {
                     Informations de contact
                   </h2>
                   <p className="text-muted-foreground mb-8">
-                    Vous pouvez nous contacter par téléphone, email ou en vous rendant 
+                    Vous pouvez nous contacter par téléphone, email ou en vous rendant
                     directement au siège de l'Ordre.
                   </p>
                 </div>
@@ -141,8 +142,12 @@ const Contact = () => {
                 </div>
 
                 {/* Map placeholder */}
-                <div className="aspect-video bg-muted rounded-xl flex items-center justify-center border border-border">
-                  <span className="text-muted-foreground">Carte interactive</span>
+                <div className="aspect-video bg-muted rounded-xl overflow-hidden border border-border shadow-sm">
+                  <img
+                    src={contactMap}
+                    alt="Carte de localisation du CNOM à Libreville"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>

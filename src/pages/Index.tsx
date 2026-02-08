@@ -1,42 +1,37 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
-import StatsSection from "@/components/StatsSection";
-import AboutSection from "@/components/AboutSection";
-import ChallengesSection from "@/components/ChallengesSection";
-import FeaturesSection from "@/components/FeaturesSection";
-import DirectoryPreview from "@/components/DirectoryPreview";
-import EcpsSection from "@/components/EcpsSection";
-import DashboardSection from "@/components/DashboardSection";
-import GabonMap from "@/components/GabonMap";
-import RoadmapSection from "@/components/RoadmapSection";
+import InstitutionSection from "@/components/InstitutionSection";
+import ServicesHub from "@/components/ServicesHub";
+import InscriptionModalites from "@/components/InscriptionModalites";
 import ActualitesSection from "@/components/ActualitesSection";
-import PharmacovigilanceSection from "@/components/PharmacovigilanceSection";
-import DemoSection from "@/components/DemoSection";
 import PartnersSection from "@/components/PartnersSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
-import InscriptionModalites from "@/components/InscriptionModalites";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
+        {/* 1. Hero */}
         <HeroSection />
-        <StatsSection />
-        <AboutSection />
-        <ChallengesSection />
-        <FeaturesSection />
+
+        {/* 2. Institution (About + Stats + Challenges) */}
+        <InstitutionSection />
+
+        {/* 3. Services Hub (Directory + Map + e-CPS + Pharmaco) */}
+        <ServicesHub />
+
+        {/* 4. Inscription (Action) */}
         <InscriptionModalites />
-        <DirectoryPreview />
-        <EcpsSection />
-        <DashboardSection />
-        <GabonMap />
-        <RoadmapSection />
+
+        {/* 5. News (Updates) */}
         <ActualitesSection />
-        <PharmacovigilanceSection />
-        <DemoSection />
+
+        {/* 6. Partners */}
         <PartnersSection />
+
+        {/* 7. CTA (Médecin + Patient + Contact) */}
         <CTASection />
       </main>
       <Footer />

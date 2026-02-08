@@ -3,6 +3,12 @@ import Footer from "@/components/Footer";
 import { Calendar, ArrowRight, Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import newsBureau from "@/assets/news-bureau.png";
+import newsEcps from "@/assets/news-ecps.png";
+import newsFormation from "@/assets/news-formation.png";
+import newsPartnership from "@/assets/news-partnership.png";
+import newsDeontology from "@/assets/news-deontology.png";
+import newsAg from "@/assets/news-ag.png";
 
 const actualites = [
   {
@@ -11,7 +17,7 @@ const actualites = [
     excerpt: "Élection des nouveaux membres du bureau pour le mandat 2026-2029. Le Dr Emmanuel OGANDAGA reconduit à la présidence.",
     date: "05 Fév 2026",
     category: "Institutionnel",
-    image: "/placeholder.svg"
+    image: newsBureau
   },
   {
     id: 2,
@@ -19,7 +25,7 @@ const actualites = [
     excerpt: "La nouvelle carte professionnelle virtuelle est désormais disponible pour tous les médecins inscrits au Tableau.",
     date: "28 Jan 2026",
     category: "Digitalisation",
-    image: "/placeholder.svg"
+    image: newsEcps
   },
   {
     id: 3,
@@ -27,7 +33,7 @@ const actualites = [
     excerpt: "Prochaine session de formation sur les nouvelles recommandations en matière de prescription antibiotique.",
     date: "20 Jan 2026",
     category: "Formation",
-    image: "/placeholder.svg"
+    image: newsFormation
   },
   {
     id: 4,
@@ -35,7 +41,7 @@ const actualites = [
     excerpt: "Signature d'une convention cadre pour améliorer la coordination des soins sur le territoire national.",
     date: "15 Jan 2026",
     category: "Partenariat",
-    image: "/placeholder.svg"
+    image: newsPartnership
   },
   {
     id: 5,
@@ -43,7 +49,7 @@ const actualites = [
     excerpt: "Nouvelles dispositions relatives à la télémédecine et aux consultations à distance.",
     date: "10 Jan 2026",
     category: "Réglementation",
-    image: "/placeholder.svg"
+    image: newsDeontology
   },
   {
     id: 6,
@@ -51,7 +57,7 @@ const actualites = [
     excerpt: "Convocation de tous les membres pour l'Assemblée Générale qui se tiendra le 15 mars 2026.",
     date: "05 Jan 2026",
     category: "Institutionnel",
-    image: "/placeholder.svg"
+    image: newsAg
   }
 ];
 
@@ -111,13 +117,13 @@ const Actualites = () => {
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {actualites.map((news) => (
-                <article 
+                <article
                   key={news.id}
                   className="bg-card rounded-2xl overflow-hidden shadow-cnom hover:shadow-cnom-elevated transition-all duration-300 group border border-border"
                 >
                   <div className="aspect-video bg-gradient-to-br from-primary/20 to-cnom-gold/20 relative overflow-hidden">
-                    <img 
-                      src={news.image} 
+                    <img
+                      src={news.image}
                       alt={news.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -136,8 +142,8 @@ const Actualites = () => {
                     <p className="text-muted-foreground text-sm line-clamp-3 mb-4">
                       {news.excerpt}
                     </p>
-                    <a 
-                      href="#" 
+                    <a
+                      href="#"
                       className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:gap-3 transition-all"
                     >
                       Lire la suite

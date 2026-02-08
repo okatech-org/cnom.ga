@@ -90,7 +90,7 @@ export const InscriptionsPage = () => {
     setActionLoading(true);
     const result = await validateApplication(selectedApp.id, orderNumber);
     setActionLoading(false);
-    
+
     toast({
       title: result.success ? "Succès" : "Erreur",
       description: result.message,
@@ -110,7 +110,7 @@ export const InscriptionsPage = () => {
     setActionLoading(true);
     const result = await rejectApplication(selectedApp.id, rejectReason);
     setActionLoading(false);
-    
+
     toast({
       title: result.success ? "Dossier rejeté" : "Erreur",
       description: result.message,
@@ -188,7 +188,7 @@ export const InscriptionsPage = () => {
             <p className="text-2xl font-bold">{countByStatut("under_review")}</p>
           </CardContent>
         </Card>
-        <Card className="border-l-4 border-l-green-400">
+        <Card className="border-l-4 border-l-teal-400">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Validés</CardTitle>
           </CardHeader>
@@ -299,7 +299,7 @@ export const InscriptionsPage = () => {
                                 <>
                                   <DropdownMenuSeparator />
                                   <DropdownMenuItem
-                                    className="text-green-600"
+                                    className="text-teal-600"
                                     onClick={() => openValidateDialog(dossier)}
                                   >
                                     <Check className="w-4 h-4 mr-2" />

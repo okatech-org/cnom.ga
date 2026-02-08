@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DemoProvider } from "@/contexts/DemoContext";
@@ -13,7 +14,7 @@ import SuiviDossier from "./pages/SuiviDossier";
 import MedecinDashboard from "./pages/MedecinDashboard";
 import Annuaire from "./pages/Annuaire";
 import Actualites from "./pages/Actualites";
-import Contact from "./pages/Contact";
+import Statistiques from "./pages/Statistiques";
 import Demo from "./pages/Demo";
 import NotFound from "./pages/NotFound";
 
@@ -41,77 +42,79 @@ const AnalyticsPage = () => <DashboardPageWrapper><AnalyticsPageRaw /></Dashboar
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <DemoProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/annuaire" element={<Annuaire />} />
-            <Route path="/pharmacovigilance" element={<Pharmacovigilance />} />
-            <Route path="/actualites" element={<Actualites />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/demo" element={<Demo />} />
-            <Route path="/inscription" element={<Inscription />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/suivi" element={<MedecinDashboard />} />
-            <Route path="/medecin" element={<MedecinDashboard />} />
-            <Route path="/medecin/ecps" element={<MedecinDashboard />} />
-            <Route path="/medecin/dossier" element={<MedecinDashboard />} />
-            <Route path="/medecin/paiements" element={<MedecinDashboard />} />
-            <Route path="/medecin/profil" element={<MedecinDashboard />} />
-            
-            {/* Role-based dashboards */}
-            <Route path="/dashboard/president" element={<PresidentDashboard />} />
-            <Route path="/dashboard/sg" element={<SGDashboard />} />
-            <Route path="/dashboard/tresorier" element={<TresorierDashboard />} />
-            <Route path="/dashboard/agent" element={<AgentDashboard />} />
-            <Route path="/dashboard/commission" element={<CommissionDashboard />} />
-            <Route path="/dashboard/regional" element={<RegionalDashboard />} />
+  <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <DemoProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/annuaire" element={<Annuaire />} />
+              <Route path="/pharmacovigilance" element={<Pharmacovigilance />} />
+              <Route path="/actualites" element={<Actualites />} />
+              <Route path="/statistiques" element={<Statistiques />} />
+              <Route path="/demo" element={<Demo />} />
+              <Route path="/inscription" element={<Inscription />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/suivi" element={<MedecinDashboard />} />
+              <Route path="/medecin" element={<MedecinDashboard />} />
+              <Route path="/medecin/ecps" element={<MedecinDashboard />} />
+              <Route path="/medecin/dossier" element={<MedecinDashboard />} />
+              <Route path="/medecin/paiements" element={<MedecinDashboard />} />
+              <Route path="/medecin/profil" element={<MedecinDashboard />} />
 
-            {/* Dashboard sub-pages - President */}
-            <Route path="/dashboard/president/repertoire" element={<RepertoirePage />} />
-            <Route path="/dashboard/president/bi" element={<AnalyticsPage />} />
+              {/* Role-based dashboards */}
+              <Route path="/dashboard/president" element={<PresidentDashboard />} />
+              <Route path="/dashboard/sg" element={<SGDashboard />} />
+              <Route path="/dashboard/tresorier" element={<TresorierDashboard />} />
+              <Route path="/dashboard/agent" element={<AgentDashboard />} />
+              <Route path="/dashboard/commission" element={<CommissionDashboard />} />
+              <Route path="/dashboard/regional" element={<RegionalDashboard />} />
 
-            {/* Dashboard sub-pages - SG */}
-            <Route path="/dashboard/sg/repertoire" element={<RepertoirePage />} />
-            <Route path="/dashboard/sg/inscriptions" element={<InscriptionsPage />} />
-            <Route path="/dashboard/sg/finances" element={<PaiementsPage />} />
-            <Route path="/dashboard/sg/bi" element={<AnalyticsPage />} />
+              {/* Dashboard sub-pages - President */}
+              <Route path="/dashboard/president/repertoire" element={<RepertoirePage />} />
+              <Route path="/dashboard/president/bi" element={<AnalyticsPage />} />
 
-            {/* Dashboard sub-pages - Tresorier */}
-            <Route path="/dashboard/tresorier/cotisations" element={<PaiementsPage />} />
-            <Route path="/dashboard/tresorier/rapport" element={<AnalyticsPage />} />
+              {/* Dashboard sub-pages - SG */}
+              <Route path="/dashboard/sg/repertoire" element={<RepertoirePage />} />
+              <Route path="/dashboard/sg/inscriptions" element={<InscriptionsPage />} />
+              <Route path="/dashboard/sg/finances" element={<PaiementsPage />} />
+              <Route path="/dashboard/sg/bi" element={<AnalyticsPage />} />
 
-            {/* Dashboard sub-pages - Agent */}
-            <Route path="/dashboard/agent/fiches" element={<RepertoirePage />} />
-            <Route path="/dashboard/agent/verification" element={<InscriptionsPage />} />
-            <Route path="/dashboard/agent/paiements" element={<PaiementsPage />} />
+              {/* Dashboard sub-pages - Tresorier */}
+              <Route path="/dashboard/tresorier/cotisations" element={<PaiementsPage />} />
+              <Route path="/dashboard/tresorier/rapport" element={<AnalyticsPage />} />
 
-            {/* Dashboard sub-pages - Commission */}
-            <Route path="/dashboard/commission/validation" element={<InscriptionsPage />} />
+              {/* Dashboard sub-pages - Agent */}
+              <Route path="/dashboard/agent/fiches" element={<RepertoirePage />} />
+              <Route path="/dashboard/agent/verification" element={<InscriptionsPage />} />
+              <Route path="/dashboard/agent/paiements" element={<PaiementsPage />} />
 
-            {/* Dashboard sub-pages - Regional */}
-            <Route path="/dashboard/regional/medecins" element={<RepertoirePage />} />
-            <Route path="/dashboard/regional/cotisations" element={<PaiementsPage />} />
-            <Route path="/dashboard/regional/indicateurs" element={<AnalyticsPage />} />
+              {/* Dashboard sub-pages - Commission */}
+              <Route path="/dashboard/commission/validation" element={<InscriptionsPage />} />
 
-            {/* Admin sub-pages */}
-            <Route path="/admin/repertoire" element={<RepertoirePage />} />
-            <Route path="/admin/inscriptions" element={<InscriptionsPage />} />
-            <Route path="/admin/paiements" element={<PaiementsPage />} />
-            <Route path="/admin/analytics" element={<AnalyticsPage />} />
-            
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </DemoProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+              {/* Dashboard sub-pages - Regional */}
+              <Route path="/dashboard/regional/medecins" element={<RepertoirePage />} />
+              <Route path="/dashboard/regional/cotisations" element={<PaiementsPage />} />
+              <Route path="/dashboard/regional/indicateurs" element={<AnalyticsPage />} />
+
+              {/* Admin sub-pages */}
+              <Route path="/admin/repertoire" element={<RepertoirePage />} />
+              <Route path="/admin/inscriptions" element={<InscriptionsPage />} />
+              <Route path="/admin/paiements" element={<PaiementsPage />} />
+              <Route path="/admin/analytics" element={<AnalyticsPage />} />
+
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </DemoProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ThemeProvider>
 );
 
 export default App;

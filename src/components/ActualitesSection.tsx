@@ -1,5 +1,9 @@
+import { Link } from "react-router-dom";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import newsBureau from "@/assets/news-bureau.png";
+import newsEcps from "@/assets/news-ecps.png";
+import newsFormation from "@/assets/news-formation.png";
 
 const actualites = [
   {
@@ -8,7 +12,7 @@ const actualites = [
     excerpt: "Élection des nouveaux membres du bureau pour le mandat 2026-2029. Le Dr Emmanuel OGANDAGA reconduit à la présidence.",
     date: "05 Fév 2026",
     category: "Institutionnel",
-    image: "/placeholder.svg"
+    image: newsBureau
   },
   {
     id: 2,
@@ -16,7 +20,7 @@ const actualites = [
     excerpt: "La nouvelle carte professionnelle virtuelle est désormais disponible pour tous les médecins inscrits au Tableau.",
     date: "28 Jan 2026",
     category: "Digitalisation",
-    image: "/placeholder.svg"
+    image: newsEcps
   },
   {
     id: 3,
@@ -24,7 +28,7 @@ const actualites = [
     excerpt: "Prochaine session de formation sur les nouvelles recommandations en matière de prescription antibiotique.",
     date: "20 Jan 2026",
     category: "Formation",
-    image: "/placeholder.svg"
+    image: newsFormation
   }
 ];
 
@@ -48,13 +52,13 @@ const ActualitesSection = () => {
         {/* News Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {actualites.map((news) => (
-            <article 
+            <article
               key={news.id}
               className="bg-background rounded-2xl overflow-hidden shadow-cnom hover:shadow-cnom-elevated transition-all duration-300 group"
             >
               <div className="aspect-video bg-gradient-to-br from-primary/20 to-cnom-gold/20 relative overflow-hidden">
-                <img 
-                  src={news.image} 
+                <img
+                  src={news.image}
                   alt={news.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -73,8 +77,8 @@ const ActualitesSection = () => {
                 <p className="text-muted-foreground text-sm line-clamp-3 mb-4">
                   {news.excerpt}
                 </p>
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:gap-3 transition-all"
                 >
                   Lire la suite
@@ -87,10 +91,12 @@ const ActualitesSection = () => {
 
         {/* CTA */}
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg" className="gap-2">
-            Voir toutes les actualités
-            <ArrowRight className="w-4 h-4" />
-          </Button>
+          <Link to="/actualites">
+            <Button variant="outline" size="lg" className="gap-2">
+              Voir toutes les actualités
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

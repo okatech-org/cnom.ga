@@ -34,7 +34,7 @@ export const PaymentForm = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!phone || phone.length < 8) {
       toast({
         title: "Numéro invalide",
@@ -49,7 +49,7 @@ export const PaymentForm = ({
 
     try {
       const { data: session } = await supabase.auth.getSession();
-      
+
       if (!session?.session?.access_token) {
         throw new Error("Non authentifié");
       }
@@ -74,7 +74,7 @@ export const PaymentForm = ({
           title: data.demo_mode ? "Paiement simulé" : "Paiement initié",
           description: data.message,
         });
-        
+
         // Wait a moment then call onSuccess
         setTimeout(() => {
           onSuccess();
@@ -98,8 +98,8 @@ export const PaymentForm = ({
   if (paymentStatus === "success") {
     return (
       <div className="text-center py-8">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 className="w-8 h-8 text-green-600" />
+        <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <CheckCircle2 className="w-8 h-8 text-teal-600" />
         </div>
         <h3 className="text-lg font-semibold text-foreground mb-2">
           Paiement réussi !

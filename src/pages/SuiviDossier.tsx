@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { 
-  ArrowLeft, FileText, CheckCircle, Clock, XCircle, 
+import {
+  ArrowLeft, FileText, CheckCircle, Clock, XCircle,
   AlertCircle, Download, RefreshCw, User, CreditCard
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -47,43 +47,43 @@ interface PaymentData {
   paid_at: string | null;
 }
 
-const statusConfig: Record<ApplicationStatus, { 
-  label: string; 
-  color: string; 
+const statusConfig: Record<ApplicationStatus, {
+  label: string;
+  color: string;
   icon: typeof CheckCircle;
   progress: number;
   description: string;
 }> = {
-  draft: { 
-    label: "Brouillon", 
+  draft: {
+    label: "Brouillon",
     color: "bg-muted text-muted-foreground",
     icon: FileText,
     progress: 20,
     description: "Votre dossier est en cours de préparation. Complétez toutes les étapes pour le soumettre."
   },
-  submitted: { 
-    label: "Soumis", 
+  submitted: {
+    label: "Soumis",
     color: "bg-blue-100 text-blue-800",
     icon: Clock,
     progress: 40,
     description: "Votre dossier a été reçu et est en attente de traitement par nos services."
   },
-  under_review: { 
-    label: "En cours d'examen", 
+  under_review: {
+    label: "En cours d'examen",
     color: "bg-yellow-100 text-yellow-800",
     icon: AlertCircle,
     progress: 60,
     description: "Votre dossier est actuellement examiné par la Commission d'inscription."
   },
-  validated: { 
-    label: "Validé", 
-    color: "bg-green-100 text-green-800",
+  validated: {
+    label: "Validé",
+    color: "bg-teal-100 text-teal-800",
     icon: CheckCircle,
     progress: 100,
     description: "Félicitations ! Votre dossier a été approuvé. Votre numéro d'Ordre sera bientôt disponible."
   },
-  rejected: { 
-    label: "Rejeté", 
+  rejected: {
+    label: "Rejeté",
     color: "bg-red-100 text-red-800",
     icon: XCircle,
     progress: 0,
@@ -231,12 +231,11 @@ const SuiviDossier = () => {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <CardTitle className="flex items-center gap-3">
-                    <StatusIcon className={`w-6 h-6 ${
-                      currentStatus === "validated" ? "text-green-600" :
-                      currentStatus === "rejected" ? "text-red-600" :
-                      currentStatus === "under_review" ? "text-yellow-600" :
-                      "text-blue-600"
-                    }`} />
+                    <StatusIcon className={`w-6 h-6 ${currentStatus === "validated" ? "text-teal-600" :
+                        currentStatus === "rejected" ? "text-red-600" :
+                          currentStatus === "under_review" ? "text-yellow-600" :
+                            "text-blue-600"
+                      }`} />
                     Statut: {statusInfo.label}
                   </CardTitle>
                   <CardDescription className="mt-2">
@@ -309,9 +308,8 @@ const SuiviDossier = () => {
                   )}
                   {application?.validation_date && (
                     <div className="flex items-center gap-3">
-                      <div className={`w-3 h-3 rounded-full ${
-                        currentStatus === "validated" ? "bg-green-500" : "bg-red-500"
-                      }`} />
+                      <div className={`w-3 h-3 rounded-full ${currentStatus === "validated" ? "bg-teal-500" : "bg-red-500"
+                        }`} />
                       <span className="text-sm text-muted-foreground">
                         Dossier {currentStatus === "validated" ? "validé" : "traité"} le{" "}
                         {new Date(application.validation_date).toLocaleDateString("fr-FR", {
@@ -385,7 +383,7 @@ const SuiviDossier = () => {
               ) : (
                 <div className="space-y-4">
                   {payments.map((payment) => (
-                    <div 
+                    <div
                       key={payment.id}
                       className="flex items-center justify-between p-4 bg-muted/50 rounded-lg"
                     >
@@ -394,7 +392,7 @@ const SuiviDossier = () => {
                           {payment.payment_type.replace("_", " ")}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {payment.paid_at 
+                          {payment.paid_at
                             ? new Date(payment.paid_at).toLocaleDateString("fr-FR")
                             : new Date(payment.created_at).toLocaleDateString("fr-FR")
                           }
@@ -403,14 +401,14 @@ const SuiviDossier = () => {
                       <div className="text-right">
                         <p className="font-bold">{Number(payment.amount).toLocaleString()} FCFA</p>
                         <Badge className={
-                          payment.payment_status === "completed" 
-                            ? "bg-green-100 text-green-800"
+                          payment.payment_status === "completed"
+                            ? "bg-teal-100 text-teal-800"
                             : payment.payment_status === "pending"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-red-100 text-red-800"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-red-100 text-red-800"
                         }>
                           {payment.payment_status === "completed" ? "Payé" :
-                           payment.payment_status === "pending" ? "En attente" : "Échoué"}
+                            payment.payment_status === "pending" ? "En attente" : "Échoué"}
                         </Badge>
                       </div>
                     </div>

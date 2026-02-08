@@ -1,7 +1,7 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { 
-  LayoutDashboard, QrCode, FileText, CreditCard, User, 
-  LogOut, X, Bell, Settings, HelpCircle
+import { Link, useNavigate } from "react-router-dom";
+import {
+  LayoutDashboard, QrCode, FileText, CreditCard, User,
+  LogOut, X, Bell, HelpCircle, FileCheck, Phone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,20 +16,25 @@ interface MedecinSidebarProps {
   onClose: () => void;
   activeTab?: string;
   onTabChange?: (tab: string) => void;
+  unreadNotifications?: number;
 }
 
 const navItems = [
+  { id: "dashboard", label: "Tableau de bord", icon: LayoutDashboard, badge: null },
   { id: "ecps", label: "Carte e-CPS", icon: QrCode, badge: null },
   { id: "dossier", label: "Mon dossier", icon: FileText, badge: null },
-  { id: "paiements", label: "Mes paiements", icon: CreditCard, badge: "2" },
+  { id: "paiements", label: "Mes paiements", icon: CreditCard, badge: null },
+  { id: "documents", label: "Mes documents", icon: FileCheck, badge: null },
+  { id: "notifications", label: "Notifications", icon: Bell, badge: null },
   { id: "profil", label: "Mon profil", icon: User, badge: null },
 ];
 
-export const MedecinSidebar = ({ 
-  isOpen, 
+export const MedecinSidebar = ({
+  isOpen,
   onClose,
-  activeTab = "ecps",
-  onTabChange
+  activeTab = "dashboard",
+  onTabChange,
+  unreadNotifications = 0,
 }: MedecinSidebarProps) => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
@@ -45,9 +50,12 @@ export const MedecinSidebar = ({
     }
   };
 
-  const displayName = isDemoMode 
-    ? demoUser?.name 
+  const displayName = isDemoMode
+    ? "Arnaud A. DANSOU"
     : user?.email?.split("@")[0] || "Médecin";
+
+  const displaySpecialty = isDemoMode ? "Médecine Générale" : "Médecin inscrit";
+  const displayOrderNum = isDemoMode ? "N° 1547" : "";
 
   const handleNavClick = (tabId: string) => {
     onTabChange?.(tabId);
@@ -58,24 +66,24 @@ export const MedecinSidebar = ({
     <>
       {/* Mobile Overlay */}
       {isOpen && (
-        <div 
-          className="lg:hidden fixed inset-0 z-40 bg-black/50" 
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-black/50"
           onClick={onClose}
         />
       )}
 
       {/* Sidebar */}
       <aside className={cn(
-        "fixed top-0 left-0 z-50 h-full w-64 bg-background border-r border-border transition-transform duration-300",
+        "fixed top-0 left-0 z-50 h-full w-64 bg-background border-r border-border transition-transform duration-300 flex flex-col",
         "lg:translate-x-0",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         {/* Header with Logo */}
-        <div className="h-20 flex items-center justify-between px-4 border-b border-border bg-gradient-to-r from-primary to-cnom-green-dark">
+        <div className="h-20 flex items-center justify-between px-4 border-b border-border bg-gradient-to-r from-primary to-cnom-green-dark flex-shrink-0">
           <div className="flex items-center gap-3">
-            <img 
-              src={logoCnom} 
-              alt="CNOM Gabon" 
+            <img
+              src={logoCnom}
+              alt="CNOM Gabon"
               className="w-12 h-12 object-contain"
             />
             <div>
@@ -83,9 +91,9 @@ export const MedecinSidebar = ({
               <p className="text-white/70 text-xs">Médecin inscrit</p>
             </div>
           </div>
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             className="lg:hidden text-white hover:bg-white/10"
             onClick={onClose}
           >
@@ -94,12 +102,12 @@ export const MedecinSidebar = ({
         </div>
 
         {/* User Info Card */}
-        <div className="p-4 border-b border-border">
+        <div className="p-4 border-b border-border flex-shrink-0">
           <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
             {isDemoMode && demoUser?.role === "medecin" ? (
-              <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-                <img 
-                  src={drDansouPhoto} 
+              <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-emerald-400">
+                <img
+                  src={drDansouPhoto}
                   alt={`Dr. ${displayName}`}
                   className="w-full h-full object-cover"
                 />
@@ -113,37 +121,47 @@ export const MedecinSidebar = ({
               <p className="text-sm font-medium text-foreground truncate">
                 Dr. {displayName}
               </p>
-              <p className="text-xs text-muted-foreground">
-                {isDemoMode ? "Mode démonstration" : "Médecin inscrit"}
-              </p>
+              <p className="text-xs text-muted-foreground">{displaySpecialty}</p>
+              {displayOrderNum && (
+                <Badge variant="outline" className="mt-1 text-[10px] bg-primary/5 text-primary border-primary/20">
+                  {displayOrderNum}
+                </Badge>
+              )}
             </div>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="p-4 space-y-1">
+        <nav className="p-4 space-y-1 flex-1 overflow-y-auto">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide px-3 mb-3">
             Navigation
           </p>
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             const Icon = item.icon;
+            const isNotifTab = item.id === "notifications";
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
                 className={cn(
                   "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                  isActive 
-                    ? "bg-primary text-primary-foreground" 
+                  isActive
+                    ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
                 <Icon className="w-4 h-4" />
                 <span className="flex-1 text-left">{item.label}</span>
-                {item.badge && (
-                  <Badge variant={isActive ? "secondary" : "outline"} className="text-xs">
-                    {item.badge}
+                {isNotifTab && unreadNotifications > 0 && (
+                  <Badge
+                    variant={isActive ? "secondary" : "default"}
+                    className={cn(
+                      "text-xs min-w-[20px] justify-center",
+                      !isActive && "bg-red-500 text-white"
+                    )}
+                  >
+                    {unreadNotifications}
                   </Badge>
                 )}
               </button>
@@ -151,22 +169,29 @@ export const MedecinSidebar = ({
           })}
         </nav>
 
-        {/* Quick Links */}
-        <div className="px-4 mt-4">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide px-3 mb-3">
+        {/* Help Section */}
+        <div className="px-4 py-3 border-t border-border flex-shrink-0">
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide px-3 mb-2">
             Aide
           </p>
-          <Link 
-            to="/contact" 
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          <Link
+            to="/#contact"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           >
             <HelpCircle className="w-4 h-4" />
             <span>Assistance</span>
           </Link>
+          <a
+            href="tel:+24101440000"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          >
+            <Phone className="w-4 h-4" />
+            <span>+241 01 44 00 00</span>
+          </a>
         </div>
 
         {/* Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border bg-background">
+        <div className="p-4 border-t border-border bg-background flex-shrink-0">
           {isDemoMode && (
             <div className="mb-3 p-2 bg-amber-50 dark:bg-amber-950/30 rounded-lg border border-amber-200 dark:border-amber-800">
               <p className="text-xs text-amber-800 dark:text-amber-200 text-center">
@@ -175,16 +200,16 @@ export const MedecinSidebar = ({
             </div>
           )}
           <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               className="flex-1"
               onClick={() => navigate("/")}
             >
               Accueil
             </Button>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="icon"
               onClick={handleSignOut}
               title={isDemoMode ? "Quitter la démo" : "Déconnexion"}

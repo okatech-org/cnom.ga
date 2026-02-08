@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  ArrowRight, CheckCircle2, Clock, User, 
+import {
+  ArrowRight, CheckCircle2, Clock, User,
   FileCheck, Send, XCircle
 } from "lucide-react";
 
@@ -56,9 +56,9 @@ interface WorkflowVisualizerProps {
   showDetails?: boolean;
 }
 
-export const WorkflowVisualizer = ({ 
-  currentStep, 
-  showDetails = true 
+export const WorkflowVisualizer = ({
+  currentStep,
+  showDetails = true
 }: WorkflowVisualizerProps) => {
   const currentIndex = WORKFLOW_STEPS.findIndex((s) => s.id === currentStep);
   const isRejected = currentStep === "rejected";
@@ -97,13 +97,12 @@ export const WorkflowVisualizer = ({
                   return (
                     <div key={step.id} className="flex flex-col items-center relative z-10">
                       <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                          isCompleted
-                            ? "bg-green-500 text-white"
+                        className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isCompleted
+                            ? "bg-teal-500 text-white"
                             : isCurrent
-                            ? "bg-primary text-primary-foreground animate-pulse"
-                            : "bg-muted text-muted-foreground"
-                        }`}
+                              ? "bg-primary text-primary-foreground animate-pulse"
+                              : "bg-muted text-muted-foreground"
+                          }`}
                       >
                         {isCompleted ? (
                           <CheckCircle2 className="w-5 h-5" />
@@ -113,9 +112,8 @@ export const WorkflowVisualizer = ({
                       </div>
                       {showDetails && (
                         <div className="mt-2 text-center max-w-[100px]">
-                          <p className={`text-xs font-medium ${
-                            isCurrent ? "text-primary" : "text-muted-foreground"
-                          }`}>
+                          <p className={`text-xs font-medium ${isCurrent ? "text-primary" : "text-muted-foreground"
+                            }`}>
                             {step.label}
                           </p>
                         </div>
@@ -128,7 +126,7 @@ export const WorkflowVisualizer = ({
               {/* Connecting Lines */}
               <div className="absolute top-5 left-0 right-0 h-0.5 bg-muted -z-0">
                 <div
-                  className="h-full bg-green-500 transition-all duration-500"
+                  className="h-full bg-teal-500 transition-all duration-500"
                   style={{
                     width: `${Math.max(0, (currentIndex / (WORKFLOW_STEPS.length - 1)) * 100)}%`,
                   }}

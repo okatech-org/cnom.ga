@@ -6,110 +6,132 @@
 
 @layer base {
   :root {
-    /* CNOM Gabon Institutional Colors */
-    --background: 210 20% 98%;
-    --foreground: 152 75% 15%;
+    /* CNOM Gabon - Turquoise Institutional Identity */
+    --background: 195 20% 98%;
+    --foreground: 178 75% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 152 75% 15%;
+    --card-foreground: 178 75% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 152 75% 15%;
+    --popover-foreground: 178 75% 12%;
 
-    /* Primary: Institutional Green */
-    --primary: 152 80% 24%;
+    /* Primary: Institutional Turquoise */
+    --primary: 174 72% 30%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Gold/Amber */
+    /* Secondary: Gold/Amber (preserved) */
     --secondary: 38 92% 55%;
-    --secondary-foreground: 152 75% 15%;
+    --secondary-foreground: 178 75% 12%;
 
-    --muted: 152 15% 92%;
-    --muted-foreground: 152 20% 40%;
+    --muted: 178 12% 93%;
+    --muted-foreground: 178 18% 42%;
 
-    /* Accent: Lighter green */
-    --accent: 152 60% 92%;
-    --accent-foreground: 152 80% 20%;
+    /* Accent: Lighter turquoise with sky blue tint */
+    --accent: 190 55% 93%;
+    --accent-foreground: 174 72% 22%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 152 20% 88%;
-    --input: 152 20% 88%;
-    --ring: 152 80% 24%;
+    --border: 195 18% 88%;
+    --input: 195 18% 88%;
+    --ring: 174 72% 30%;
 
     --radius: 0.75rem;
 
-    /* Custom CNOM tokens */
-    --cnom-green: 152 80% 24%;
-    --cnom-green-dark: 152 85% 18%;
-    --cnom-green-light: 152 60% 35%;
+    /* Custom CNOM tokens — Turquoise palette */
+    --cnom-green: 174 72% 30%;
+    --cnom-green-dark: 178 78% 20%;
+    --cnom-green-light: 174 55% 42%;
     --cnom-gold: 38 92% 55%;
     --cnom-gold-dark: 38 85% 45%;
     --cnom-gold-light: 38 90% 75%;
+
+    /* Sky Blue accent */
+    --cnom-sky: 200 85% 58%;
+    --cnom-sky-light: 200 80% 90%;
+    --cnom-sky-dark: 200 75% 42%;
+
+    /* Rose accent (subtle) */
+    --cnom-rose: 340 68% 62%;
+    --cnom-rose-light: 340 60% 93%;
+    --cnom-rose-dark: 345 55% 48%;
     
     /* Status colors */
-    --status-active: 142 70% 45%;
+    --status-active: 174 65% 42%;
     --status-suspended: 0 72% 51%;
     --status-pending: 38 92% 55%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(152 80% 24%) 0%, hsl(152 70% 30%) 50%, hsl(152 60% 35%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(178 78% 20%) 0%, hsl(174 72% 30%) 40%, hsl(200 85% 58%) 100%);
     --gradient-gold: linear-gradient(135deg, hsl(38 92% 55%) 0%, hsl(38 85% 45%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(152 15% 97%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(195 18% 97%) 100%);
+    --gradient-sky: linear-gradient(135deg, hsl(200 85% 58%) 0%, hsl(190 75% 48%) 100%);
+    --gradient-rose: linear-gradient(135deg, hsl(340 68% 62%) 0%, hsl(345 55% 48%) 100%);
 
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(152 80% 24% / 0.1);
-    --shadow-elevated: 0 8px 30px -6px hsl(152 80% 24% / 0.15);
+    --shadow-soft: 0 4px 20px -4px hsl(174 72% 30% / 0.1);
+    --shadow-elevated: 0 8px 30px -6px hsl(174 72% 30% / 0.15);
     --shadow-gold: 0 4px 20px -4px hsl(38 92% 55% / 0.3);
+    --shadow-sky: 0 4px 20px -4px hsl(200 85% 58% / 0.2);
+    --shadow-rose: 0 4px 16px -4px hsl(340 68% 62% / 0.15);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary: 178 78% 20%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 195 15% 96%;
+    --sidebar-accent-foreground: 178 60% 15%;
+    --sidebar-border: 195 13% 91%;
+    --sidebar-ring: 200 85% 58%;
   }
 
   .dark {
-    --background: 152 30% 8%;
-    --foreground: 152 10% 95%;
+    --background: 178 28% 7%;
+    --foreground: 178 10% 95%;
 
-    --card: 152 25% 12%;
-    --card-foreground: 152 10% 95%;
+    --card: 178 22% 11%;
+    --card-foreground: 178 10% 95%;
 
-    --popover: 152 25% 12%;
-    --popover-foreground: 152 10% 95%;
+    --popover: 178 22% 11%;
+    --popover-foreground: 178 10% 95%;
 
-    --primary: 152 70% 45%;
-    --primary-foreground: 152 30% 8%;
+    --primary: 174 65% 42%;
+    --primary-foreground: 178 28% 7%;
 
     --secondary: 38 85% 50%;
-    --secondary-foreground: 152 30% 8%;
+    --secondary-foreground: 178 28% 7%;
 
-    --muted: 152 25% 18%;
-    --muted-foreground: 152 15% 60%;
+    --muted: 178 22% 16%;
+    --muted-foreground: 178 12% 58%;
 
-    --accent: 152 40% 20%;
-    --accent-foreground: 152 70% 50%;
+    --accent: 190 35% 18%;
+    --accent-foreground: 174 65% 48%;
 
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 152 20% 20%;
-    --input: 152 20% 20%;
-    --ring: 152 70% 45%;
+    --border: 178 18% 18%;
+    --input: 178 18% 18%;
+    --ring: 174 65% 42%;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    /* Dark mode sky & rose */
+    --cnom-sky: 200 78% 55%;
+    --cnom-sky-light: 200 35% 20%;
+    --cnom-sky-dark: 200 65% 38%;
+    --cnom-rose: 340 60% 58%;
+    --cnom-rose-light: 340 30% 18%;
+    --cnom-rose-dark: 345 50% 42%;
+
+    --sidebar-background: 178 25% 8%;
+    --sidebar-foreground: 178 10% 92%;
+    --sidebar-primary: 174 65% 42%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 178 18% 14%;
+    --sidebar-accent-foreground: 178 10% 92%;
+    --sidebar-border: 178 15% 14%;
+    --sidebar-ring: 200 78% 55%;
   }
 }
 
