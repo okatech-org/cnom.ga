@@ -141,11 +141,8 @@ const ECPSCard = ({
           <div className="relative z-10 h-full p-5 flex flex-col">
             {/* Header title */}
             <div className="text-center mb-4">
-              <h3 className="text-[#009639] font-bold text-base tracking-wide leading-tight">
-                CARTE DE
-              </h3>
-              <h3 className="text-[#009639] font-bold text-base tracking-wide leading-tight">
-                PROFESSIONNEL DE SANTÉ
+              <h3 className="text-[#009639] font-bold text-sm tracking-wide leading-tight">
+                CARTE DE PROFESSIONNEL DE SANTÉ
               </h3>
             </div>
 
