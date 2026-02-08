@@ -22,8 +22,9 @@ interface ECPSCardProps {
 }
 
 // Fixed card dimensions (design reference at 420px width)
+// Standard credit card aspect ratio is 85.6mm × 53.98mm = 1.586:1 (width:height)
 const CARD_BASE_WIDTH = 420;
-const CARD_ASPECT_RATIO = 1.586; // Standard credit card ratio
+const CARD_BASE_HEIGHT = 265; // 420 / 1.586 ≈ 265
 
 const ECPSCard = ({
   doctorName,
@@ -56,19 +57,25 @@ const ECPSCard = ({
     const updateScale = () => {
       if (containerRef.current) {
         const containerWidth = containerRef.current.offsetWidth;
+        // Scale down if container is smaller than card base width
+        // Never scale up beyond 1
         const newScale = Math.min(containerWidth / CARD_BASE_WIDTH, 1);
         setScale(newScale);
       }
     };
 
     updateScale();
-    window.addEventListener("resize", updateScale);
-    return () => window.removeEventListener("resize", updateScale);
+    
+    // Use ResizeObserver for more reliable updates
+    const resizeObserver = new ResizeObserver(updateScale);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+    
+    return () => resizeObserver.disconnect();
   }, []);
 
   const handleFlip = () => setIsFlipped(!isFlipped);
-
-  const cardHeight = CARD_BASE_WIDTH / CARD_ASPECT_RATIO;
 
   return (
     <div className="w-full">
@@ -77,14 +84,14 @@ const ECPSCard = ({
         ref={containerRef}
         className="w-full flex justify-center"
         style={{ 
-          height: cardHeight * scale,
+          height: CARD_BASE_HEIGHT * scale,
         }}
       >
         {/* Scaled card wrapper */}
         <div
           style={{
             width: CARD_BASE_WIDTH,
-            height: cardHeight,
+            height: CARD_BASE_HEIGHT,
             transform: `scale(${scale})`,
             transformOrigin: "top center",
           }}
