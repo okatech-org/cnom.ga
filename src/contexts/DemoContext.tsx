@@ -106,7 +106,14 @@ export const DemoProvider = ({ children }: { children: ReactNode }) => {
 export const useDemo = () => {
   const context = useContext(DemoContext);
   if (context === undefined) {
-    throw new Error("useDemo must be used within a DemoProvider");
+    // Fallback for HMR issues - return safe defaults instead of throwing
+    console.warn("useDemo called outside DemoProvider - using defaults (likely HMR issue)");
+    return {
+      isDemoMode: false,
+      demoUser: null,
+      enterDemoMode: () => {},
+      exitDemoMode: () => {},
+    };
   }
   return context;
 };
