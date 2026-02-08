@@ -16,17 +16,9 @@ export type Database = {
     Tables: {
       applications: {
         Row: {
-          agent_validated_at: string | null
-          agent_validated_by: string | null
-          commission_decision: string | null
-          commission_validated_at: string | null
-          commission_validated_by: string | null
           created_at: string
-          current_step: string | null
           id: string
           numero_dossier: string | null
-          president_validated_at: string | null
-          president_validated_by: string | null
           profile_id: string
           rejection_reason: string | null
           status: Database["public"]["Enums"]["application_status"]
@@ -36,17 +28,9 @@ export type Database = {
           validation_date: string | null
         }
         Insert: {
-          agent_validated_at?: string | null
-          agent_validated_by?: string | null
-          commission_decision?: string | null
-          commission_validated_at?: string | null
-          commission_validated_by?: string | null
           created_at?: string
-          current_step?: string | null
           id?: string
           numero_dossier?: string | null
-          president_validated_at?: string | null
-          president_validated_by?: string | null
           profile_id: string
           rejection_reason?: string | null
           status?: Database["public"]["Enums"]["application_status"]
@@ -56,17 +40,9 @@ export type Database = {
           validation_date?: string | null
         }
         Update: {
-          agent_validated_at?: string | null
-          agent_validated_by?: string | null
-          commission_decision?: string | null
-          commission_validated_at?: string | null
-          commission_validated_by?: string | null
           created_at?: string
-          current_step?: string | null
           id?: string
           numero_dossier?: string | null
-          president_validated_at?: string | null
-          president_validated_by?: string | null
           profile_id?: string
           rejection_reason?: string | null
           status?: Database["public"]["Enums"]["application_status"]
@@ -122,42 +98,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      notifications: {
-        Row: {
-          action_url: string | null
-          created_at: string
-          id: string
-          is_read: boolean
-          message: string
-          role: string | null
-          title: string
-          type: string
-          user_id: string
-        }
-        Insert: {
-          action_url?: string | null
-          created_at?: string
-          id?: string
-          is_read?: boolean
-          message: string
-          role?: string | null
-          title: string
-          type?: string
-          user_id: string
-        }
-        Update: {
-          action_url?: string | null
-          created_at?: string
-          id?: string
-          is_read?: boolean
-          message?: string
-          role?: string | null
-          title?: string
-          type?: string
-          user_id?: string
-        }
-        Relationships: []
       }
       payments: {
         Row: {
@@ -323,57 +263,12 @@ export type Database = {
         }
         Relationships: []
       }
-      workflow_logs: {
-        Row: {
-          action: string
-          application_id: string
-          from_step: string | null
-          id: string
-          metadata: Json | null
-          notes: string | null
-          performed_at: string
-          performed_by: string
-          to_step: string | null
-        }
-        Insert: {
-          action: string
-          application_id: string
-          from_step?: string | null
-          id?: string
-          metadata?: Json | null
-          notes?: string | null
-          performed_at?: string
-          performed_by: string
-          to_step?: string | null
-        }
-        Update: {
-          action?: string
-          application_id?: string
-          from_step?: string | null
-          id?: string
-          metadata?: Json | null
-          notes?: string | null
-          performed_at?: string
-          performed_by?: string
-          to_step?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "workflow_logs_application_id_fkey"
-            columns: ["application_id"]
-            isOneToOne: false
-            referencedRelation: "applications"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
       generate_dossier_number: { Args: never; Returns: string }
-      get_pending_counts: { Args: { user_role: string }; Returns: Json }
       get_profile_id: { Args: { check_user_id: string }; Returns: string }
       is_admin: { Args: { check_user_id: string }; Returns: boolean }
       is_profile_owner: {

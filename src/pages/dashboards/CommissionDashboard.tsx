@@ -1,50 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import DashboardLayout from "@/components/DashboardLayout";
-import { ValidationPanel } from "@/components/dashboard/ValidationPanel";
-import { WorkflowVisualizer } from "@/components/dashboard/WorkflowVisualizer";
-import { FileCheck, CheckCircle2, XCircle, Clock, BarChart3 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useDemo } from "@/contexts/DemoContext";
-
-interface ApplicationForValidation {
-  id: string;
-  numero_dossier: string | null;
-  current_step: string;
-  profile: {
-    nom: string;
-    prenom: string;
-    specialite: string;
-    province: string;
-  } | null;
-  submission_date: string | null;
-}
-
-// Demo data
-const DEMO_APPLICATIONS: ApplicationForValidation[] = [
-  {
-    id: "demo-1",
-    numero_dossier: "INS-2026-00045",
-    current_step: "commission_review",
-    profile: { nom: "MOUELE", prenom: "Jean-Pierre", specialite: "Cardiologie", province: "Estuaire" },
-    submission_date: "2026-02-08T10:00:00Z",
-  },
-  {
-    id: "demo-2",
-    numero_dossier: "INS-2026-00046",
-    current_step: "commission_review",
-    profile: { nom: "ONDO", prenom: "Marie", specialite: "Pédiatrie", province: "Ogooué-Maritime" },
-    submission_date: "2026-02-07T14:30:00Z",
-  },
-  {
-    id: "demo-3",
-    numero_dossier: "INS-2026-00047",
-    current_step: "commission_review",
-    profile: { nom: "NZUE", prenom: "Paul", specialite: "Chirurgie générale", province: "Woleu-Ntem" },
-    submission_date: "2026-02-06T09:15:00Z",
-  },
-];
+import { 
+  FileCheck, CheckCircle2, XCircle, Clock, 
+  ArrowRight, Eye
+} from "lucide-react";
 
 const stats = [
   {
@@ -70,84 +31,34 @@ const stats = [
   },
 ];
 
+const pendingDossiers = [
+  { 
+    id: 1, 
+    name: "Dr. Jean MOUELE", 
+    specialite: "Cardiologie",
+    documents: "8/8",
+    status: "complet",
+    date: "08/02/2026"
+  },
+  { 
+    id: 2, 
+    name: "Dr. Marie ONDO", 
+    specialite: "Pédiatrie",
+    documents: "8/8",
+    status: "complet",
+    date: "07/02/2026"
+  },
+  { 
+    id: 3, 
+    name: "Dr. Paul NZUE", 
+    specialite: "Chirurgie",
+    documents: "7/8",
+    status: "incomplet",
+    date: "06/02/2026"
+  },
+];
+
 const CommissionDashboard = () => {
-  const [applications, setApplications] = useState<ApplicationForValidation[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { isDemoMode } = useDemo();
-
-  const fetchApplications = useCallback(async () => {
-    if (isDemoMode) {
-      setApplications(DEMO_APPLICATIONS);
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const { data: appData, error } = await supabase
-        .from("applications")
-        .select("id, numero_dossier, current_step, submission_date, profile_id")
-        .eq("current_step", "commission_review")
-        .order("submission_date", { ascending: true });
-
-      if (error) {
-        console.error("Error fetching applications:", error);
-        setApplications([]);
-        return;
-      }
-
-      if (appData && appData.length > 0) {
-        const profileIds = appData.map((a) => a.profile_id);
-        const { data: profiles } = await supabase
-          .from("profiles")
-          .select("id, nom, prenom, specialite, province")
-          .in("id", profileIds);
-
-        const appsWithProfiles = appData.map((app) => ({
-          ...app,
-          current_step: app.current_step || "submitted",
-          profile: profiles?.find((p) => p.id === app.profile_id) || null,
-        }));
-
-        setApplications(appsWithProfiles);
-      } else {
-        setApplications([]);
-      }
-    } catch (err) {
-      console.error("Error:", err);
-      setApplications([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [isDemoMode]);
-
-  useEffect(() => {
-    fetchApplications();
-  }, [fetchApplications]);
-
-  // Set up realtime subscription
-  useEffect(() => {
-    if (isDemoMode) return;
-
-    const channel = supabase
-      .channel("commission-applications")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "applications",
-        },
-        () => {
-          fetchApplications();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [isDemoMode, fetchApplications]);
-
   return (
     <DashboardLayout
       role="commission"
@@ -174,9 +85,7 @@ const CommissionDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">{stat.title}</p>
-                    <p className="text-3xl font-bold text-foreground mt-1">
-                      {stat.title === "À valider" ? applications.length : stat.value}
-                    </p>
+                    <p className="text-3xl font-bold text-foreground mt-1">{stat.value}</p>
                   </div>
                   <div className={`w-12 h-12 rounded-xl ${stat.bgColor} flex items-center justify-center`}>
                     <stat.icon className={`w-6 h-6 ${stat.color}`} />
@@ -187,24 +96,59 @@ const CommissionDashboard = () => {
           ))}
         </div>
 
-        {/* Workflow Visualizer */}
-        <WorkflowVisualizer currentStep="commission_review" />
+        {/* Pending Dossiers */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <FileCheck className="w-5 h-5 text-emerald-600" />
+              Dossiers en attente de validation
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {pendingDossiers.map((dossier) => (
+                <div key={dossier.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      dossier.status === "complet" ? "bg-emerald-100" : "bg-amber-100"
+                    }`}>
+                      <FileCheck className={`w-5 h-5 ${
+                        dossier.status === "complet" ? "text-emerald-600" : "text-amber-600"
+                      }`} />
+                    </div>
+                    <div>
+                      <p className="font-medium text-foreground">{dossier.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {dossier.specialite} • Documents : {dossier.documents}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Badge variant={dossier.status === "complet" ? "default" : "secondary"}>
+                      {dossier.status}
+                    </Badge>
+                    <Button size="sm" variant="outline">
+                      <Eye className="w-4 h-4 mr-1" />
+                      Examiner
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Validation Panel */}
-        {loading ? (
-          <Card>
-            <CardContent className="py-12 text-center">
-              <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-muted-foreground">Chargement des dossiers...</p>
-            </CardContent>
-          </Card>
-        ) : (
-          <ValidationPanel
-            applications={applications}
-            role="commission"
-            onActionComplete={fetchApplications}
-          />
-        )}
+        {/* Quick Actions */}
+        <div className="grid gap-4 md:grid-cols-2">
+          <Button className="h-16" variant="default">
+            <CheckCircle2 className="w-5 h-5 mr-2" />
+            Valider et attribuer N° Ordre
+          </Button>
+          <Button className="h-16" variant="outline">
+            <XCircle className="w-5 h-5 mr-2" />
+            Rejeter avec motif
+          </Button>
+        </div>
       </div>
     </DashboardLayout>
   );

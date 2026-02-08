@@ -59,10 +59,6 @@ const App = () => (
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/suivi" element={<MedecinDashboard />} />
             <Route path="/medecin" element={<MedecinDashboard />} />
-            <Route path="/medecin/ecps" element={<MedecinDashboard />} />
-            <Route path="/medecin/dossier" element={<MedecinDashboard />} />
-            <Route path="/medecin/paiements" element={<MedecinDashboard />} />
-            <Route path="/medecin/profil" element={<MedecinDashboard />} />
             
             {/* Role-based dashboards */}
             <Route path="/dashboard/president" element={<PresidentDashboard />} />
