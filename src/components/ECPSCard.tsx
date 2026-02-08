@@ -168,8 +168,7 @@ const ECPSCard = ({
 
                 {/* Order number below photo */}
                 <div className="text-center">
-                  <span className="text-gray-500 font-medium italic text-[10px] block">N° ORDRE</span>
-                  <p className="font-bold text-gray-900 text-sm">{orderNumber}</p>
+                  <p className="font-bold text-gray-900 text-sm">N° {orderNumber}</p>
                 </div>
                 
                 {/* Function below N° ORDRE */}
