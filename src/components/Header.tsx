@@ -48,8 +48,14 @@ const Header = () => {
                 </div>
               </div>
             </div>
-            <a href="#statistiques" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
-              Statistiques
+            <a href="#actualites" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
+              Actualités
+            </a>
+            <a href="#pharmacovigilance" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
+              Pharmacovigilance
+            </a>
+            <a href="#demo" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
+              Démo
             </a>
             <a href="#contact" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
               Contact
@@ -91,8 +97,14 @@ const Header = () => {
               <a href="#cotisations" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Cotisations
               </a>
-              <a href="#statistiques" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
-                Statistiques
+              <a href="#actualites" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+                Actualités
+              </a>
+              <a href="#pharmacovigilance" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+                Pharmacovigilance
+              </a>
+              <a href="#demo" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+                Démo
               </a>
               <a href="#contact" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Contact
