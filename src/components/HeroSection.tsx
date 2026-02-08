@@ -1,12 +1,20 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Search, Shield, CheckCircle, ArrowRight } from "lucide-react";
+import heroDoctor from "@/assets/hero-doctor.jpg";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-hero-gradient" />
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img 
+          src={heroDoctor} 
+          alt="Médecin gabonais professionnel" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-hero-gradient opacity-90" />
+      </div>
       
       {/* Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden">
