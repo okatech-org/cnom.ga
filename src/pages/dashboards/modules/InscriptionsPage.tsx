@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Search, Filter, Eye, Check, X, Clock, FileText, MoreHorizontal } from "lucide-react";
+import { Search, Eye, Check, X, Clock, FileText, MoreHorizontal, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Table,
   TableBody,
@@ -25,20 +26,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-// Mock data
-const MOCK_DOSSIERS = [
-  { id: 1, numeroDossier: "INS-2026-00045", nom: "MOUSSAVOU", prenom: "Patrick", dateDepot: "2026-02-05", statut: "submitted", completude: 100, specialite: "Médecine Générale" },
-  { id: 2, numeroDossier: "INS-2026-00044", nom: "EKANG", prenom: "Sylvie", dateDepot: "2026-02-04", statut: "under_review", completude: 100, specialite: "Pédiatrie" },
-  { id: 3, numeroDossier: "INS-2026-00043", nom: "BITEGHE", prenom: "André", dateDepot: "2026-02-03", statut: "submitted", completude: 85, specialite: "Chirurgie" },
-  { id: 4, numeroDossier: "INS-2026-00042", nom: "ANGUILE", prenom: "Marie-Claire", dateDepot: "2026-02-02", statut: "validated", completude: 100, specialite: "Gynécologie" },
-  { id: 5, numeroDossier: "INS-2026-00041", nom: "OBIANG", prenom: "Simon", dateDepot: "2026-02-01", statut: "rejected", completude: 100, specialite: "Cardiologie", motifRejet: "Documents incomplets" },
-  { id: 6, numeroDossier: "INS-2026-00040", nom: "NTOUTOUME", prenom: "Hélène", dateDepot: "2026-01-30", statut: "draft", completude: 60, specialite: "Dermatologie" },
-  { id: 7, numeroDossier: "INS-2026-00039", nom: "MBOUMBA", prenom: "Léon", dateDepot: "2026-01-28", statut: "under_review", completude: 100, specialite: "Ophtalmologie" },
-  { id: 8, numeroDossier: "INS-2026-00038", nom: "MEZUI", prenom: "Jeanne", dateDepot: "2026-01-25", statut: "validated", completude: 100, specialite: "Neurologie" },
-];
+import { useDashboardData, useApplicationActions, DashboardApplication } from "@/hooks/useDashboardData";
+import { useToast } from "@/hooks/use-toast";
 
 const getStatutConfig = (statut: string) => {
   const configs: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; label: string; icon: React.ReactNode }> = {
@@ -64,17 +63,96 @@ const getStatutBadge = (statut: string) => {
 export const InscriptionsPage = () => {
   const [search, setSearch] = useState("");
   const [statutFilter, setStatutFilter] = useState("all");
+  const [selectedApp, setSelectedApp] = useState<DashboardApplication | null>(null);
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [validateDialogOpen, setValidateDialogOpen] = useState(false);
+  const [rejectReason, setRejectReason] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
+  const [actionLoading, setActionLoading] = useState(false);
 
-  const filteredDossiers = MOCK_DOSSIERS.filter((d) => {
-    const matchSearch = 
-      d.nom.toLowerCase().includes(search.toLowerCase()) ||
-      d.prenom.toLowerCase().includes(search.toLowerCase()) ||
-      d.numeroDossier.toLowerCase().includes(search.toLowerCase());
-    const matchStatut = statutFilter === "all" || d.statut === statutFilter;
+  const { applications, stats, loading, refetch } = useDashboardData();
+  const { validateApplication, rejectApplication, startReview } = useApplicationActions();
+  const { toast } = useToast();
+
+  const filteredDossiers = applications.filter((d) => {
+    const matchSearch =
+      d.profile?.nom?.toLowerCase().includes(search.toLowerCase()) ||
+      d.profile?.prenom?.toLowerCase().includes(search.toLowerCase()) ||
+      d.numero_dossier?.toLowerCase().includes(search.toLowerCase());
+    const matchStatut = statutFilter === "all" || d.status === statutFilter;
     return matchSearch && matchStatut;
   });
 
-  const countByStatut = (statut: string) => MOCK_DOSSIERS.filter(d => d.statut === statut).length;
+  const countByStatut = (statut: string) => applications.filter((d) => d.status === statut).length;
+
+  const handleValidate = async () => {
+    if (!selectedApp || !orderNumber.trim()) return;
+    setActionLoading(true);
+    const result = await validateApplication(selectedApp.id, orderNumber);
+    setActionLoading(false);
+    
+    toast({
+      title: result.success ? "Succès" : "Erreur",
+      description: result.message,
+      variant: result.success ? "default" : "destructive",
+    });
+
+    if (result.success) {
+      setValidateDialogOpen(false);
+      setSelectedApp(null);
+      setOrderNumber("");
+      refetch();
+    }
+  };
+
+  const handleReject = async () => {
+    if (!selectedApp || !rejectReason.trim()) return;
+    setActionLoading(true);
+    const result = await rejectApplication(selectedApp.id, rejectReason);
+    setActionLoading(false);
+    
+    toast({
+      title: result.success ? "Dossier rejeté" : "Erreur",
+      description: result.message,
+      variant: result.success ? "default" : "destructive",
+    });
+
+    if (result.success) {
+      setRejectDialogOpen(false);
+      setSelectedApp(null);
+      setRejectReason("");
+      refetch();
+    }
+  };
+
+  const handleStartReview = async (app: DashboardApplication) => {
+    const result = await startReview(app.id);
+    toast({
+      title: result.success ? "Examen démarré" : "Erreur",
+      description: result.message,
+    });
+    if (result.success) refetch();
+  };
+
+  const openValidateDialog = (app: DashboardApplication) => {
+    setSelectedApp(app);
+    setOrderNumber("");
+    setValidateDialogOpen(true);
+  };
+
+  const openRejectDialog = (app: DashboardApplication) => {
+    setSelectedApp(app);
+    setRejectReason("");
+    setRejectDialogOpen(true);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -172,58 +250,76 @@ export const InscriptionsPage = () => {
                     <TableHead>Candidat</TableHead>
                     <TableHead>Spécialité</TableHead>
                     <TableHead>Date dépôt</TableHead>
-                    <TableHead>Complétude</TableHead>
                     <TableHead>Statut</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredDossiers.map((dossier) => (
-                    <TableRow key={dossier.id}>
-                      <TableCell className="font-mono text-sm">{dossier.numeroDossier}</TableCell>
-                      <TableCell className="font-medium">
-                        Dr {dossier.prenom} {dossier.nom}
-                      </TableCell>
-                      <TableCell>{dossier.specialite}</TableCell>
-                      <TableCell>{new Date(dossier.dateDepot).toLocaleDateString("fr-FR")}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
-                            <div 
-                              className={`h-full rounded-full ${dossier.completude === 100 ? 'bg-green-500' : 'bg-amber-500'}`}
-                              style={{ width: `${dossier.completude}%` }}
-                            />
-                          </div>
-                          <span className="text-sm text-muted-foreground">{dossier.completude}%</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>{getStatutBadge(dossier.statut)}</TableCell>
-                      <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <MoreHorizontal className="w-4 h-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
-                              <Eye className="w-4 h-4 mr-2" />
-                              Examiner le dossier
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-green-600">
-                              <Check className="w-4 h-4 mr-2" />
-                              Valider
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">
-                              <X className="w-4 h-4 mr-2" />
-                              Rejeter
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                  {filteredDossiers.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                        Aucun dossier trouvé
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ) : (
+                    filteredDossiers.map((dossier) => (
+                      <TableRow key={dossier.id}>
+                        <TableCell className="font-mono text-sm">
+                          {dossier.numero_dossier || "—"}
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          Dr {dossier.profile?.prenom} {dossier.profile?.nom}
+                        </TableCell>
+                        <TableCell>{dossier.profile?.specialite || "—"}</TableCell>
+                        <TableCell>
+                          {dossier.submission_date
+                            ? new Date(dossier.submission_date).toLocaleDateString("fr-FR")
+                            : "—"}
+                        </TableCell>
+                        <TableCell>{getStatutBadge(dossier.status)}</TableCell>
+                        <TableCell className="text-right">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <MoreHorizontal className="w-4 h-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem>
+                                <Eye className="w-4 h-4 mr-2" />
+                                Examiner le dossier
+                              </DropdownMenuItem>
+                              {dossier.status === "submitted" && (
+                                <DropdownMenuItem onClick={() => handleStartReview(dossier)}>
+                                  <Clock className="w-4 h-4 mr-2" />
+                                  Démarrer l'examen
+                                </DropdownMenuItem>
+                              )}
+                              {["submitted", "under_review"].includes(dossier.status) && (
+                                <>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem
+                                    className="text-green-600"
+                                    onClick={() => openValidateDialog(dossier)}
+                                  >
+                                    <Check className="w-4 h-4 mr-2" />
+                                    Valider
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    className="text-red-600"
+                                    onClick={() => openRejectDialog(dossier)}
+                                  >
+                                    <X className="w-4 h-4 mr-2" />
+                                    Rejeter
+                                  </DropdownMenuItem>
+                                </>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
                 </TableBody>
               </Table>
             </CardContent>
@@ -234,11 +330,13 @@ export const InscriptionsPage = () => {
           <Card>
             <CardHeader>
               <CardTitle>Dossiers à traiter</CardTitle>
-              <CardDescription>Dossiers soumis ou en cours d'examen nécessitant une action</CardDescription>
+              <CardDescription>
+                Dossiers soumis ou en cours d'examen nécessitant une action
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                {MOCK_DOSSIERS.filter(d => ["submitted", "under_review"].includes(d.statut)).length} dossier(s) en attente
+                {stats.pendingApplications} dossier(s) en attente
               </p>
             </CardContent>
           </Card>
@@ -252,12 +350,84 @@ export const InscriptionsPage = () => {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                {MOCK_DOSSIERS.filter(d => ["validated", "rejected"].includes(d.statut)).length} dossier(s) traités
+                {stats.validatedApplications + stats.rejectedApplications} dossier(s) traités
               </p>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Validate Dialog */}
+      <Dialog open={validateDialogOpen} onOpenChange={setValidateDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Valider le dossier</DialogTitle>
+            <DialogDescription>
+              Attribuer un numéro d'Ordre et valider l'inscription de{" "}
+              {selectedApp?.profile?.prenom} {selectedApp?.profile?.nom}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Numéro d'Ordre</label>
+              <Input
+                placeholder="Ex: 1842"
+                value={orderNumber}
+                onChange={(e) => setOrderNumber(e.target.value)}
+              />
+              <p className="text-xs text-muted-foreground">
+                Ce numéro sera définitif et apparaîtra sur la carte e-CPS
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setValidateDialogOpen(false)}>
+              Annuler
+            </Button>
+            <Button onClick={handleValidate} disabled={actionLoading || !orderNumber.trim()}>
+              {actionLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+              Valider l'inscription
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Reject Dialog */}
+      <Dialog open={rejectDialogOpen} onOpenChange={setRejectDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Rejeter le dossier</DialogTitle>
+            <DialogDescription>
+              Indiquer le motif de rejet pour le dossier de{" "}
+              {selectedApp?.profile?.prenom} {selectedApp?.profile?.nom}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Motif du rejet</label>
+              <Textarea
+                placeholder="Décrivez les raisons du rejet..."
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+                rows={4}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRejectDialogOpen(false)}>
+              Annuler
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleReject}
+              disabled={actionLoading || !rejectReason.trim()}
+            >
+              {actionLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+              Rejeter le dossier
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
