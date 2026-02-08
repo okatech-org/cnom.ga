@@ -66,7 +66,7 @@ const Header = () => {
             </div>
             <div className="flex flex-col ml-28 lg:ml-36">
               <span className="font-display font-bold text-primary text-lg lg:text-xl leading-tight">
-                CNOM
+                CNOM Gabon
               </span>
               <span className="text-xs text-muted-foreground leading-tight hidden sm:block">
                 Ordre des Médecins du Gabon
