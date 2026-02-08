@@ -15,6 +15,7 @@ import DemoSection from "@/components/DemoSection";
 import PartnersSection from "@/components/PartnersSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import InscriptionModalites from "@/components/InscriptionModalites";
 
 const Index = () => {
   return (
@@ -26,6 +27,7 @@ const Index = () => {
         <AboutSection />
         <ChallengesSection />
         <FeaturesSection />
+        <InscriptionModalites />
         <DirectoryPreview />
         <EcpsSection />
         <DashboardSection />

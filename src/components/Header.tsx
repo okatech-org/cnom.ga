@@ -1,16 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          // Check if user is admin
+          const { data } = await supabase
+            .from("user_roles")
+            .select("role")
+            .eq("user_id", session.user.id)
+            .single();
+          setIsAdmin(!!data);
+        } else {
+          setIsAdmin(false);
+        }
+      }
+    );
+
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        const { data } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", session.user.id)
+          .single();
+        setIsAdmin(!!data);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setIsAdmin(false);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 lg:w-12 lg:h-12 bg-hero-gradient rounded-xl flex items-center justify-center shadow-cnom group-hover:shadow-cnom-elevated transition-shadow">
               <span className="text-white font-bold text-lg lg:text-xl">⚕</span>
             </div>
@@ -22,7 +67,7 @@ const Header = () => {
                 Ordre des Médecins du Gabon
               </span>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
@@ -36,40 +81,66 @@ const Header = () => {
               </button>
               <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                 <div className="bg-white rounded-xl shadow-cnom-elevated border border-border p-2 min-w-[200px]">
-                  <a href="#inscription" className="block px-4 py-2 text-sm hover:bg-accent rounded-lg transition-colors">
+                  <Link to="/inscription" className="block px-4 py-2 text-sm hover:bg-accent rounded-lg transition-colors">
                     Inscription en ligne
-                  </a>
+                  </Link>
                   <a href="#ecps" className="block px-4 py-2 text-sm hover:bg-accent rounded-lg transition-colors">
                     Carte e-CPS
                   </a>
                   <a href="#cotisations" className="block px-4 py-2 text-sm hover:bg-accent rounded-lg transition-colors">
                     Cotisations
                   </a>
+                  {user && (
+                    <Link to="/suivi" className="block px-4 py-2 text-sm hover:bg-accent rounded-lg transition-colors">
+                      Suivi de dossier
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
             <a href="#actualites" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
               Actualités
             </a>
-            <a href="#pharmacovigilance" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
+            <Link to="/pharmacovigilance" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
               Pharmacovigilance
-            </a>
+            </Link>
             <a href="#demo" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
               Démo
             </a>
             <a href="#contact" className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-accent">
               Contact
             </a>
+            {isAdmin && (
+              <Link to="/admin" className="px-4 py-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors rounded-lg hover:bg-accent">
+                Administration
+              </Link>
+            )}
           </nav>
 
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center gap-3">
-            <Button variant="outline" size="sm">
-              Espace Médecin
-            </Button>
-            <Button size="sm">
-              Vérifier un médecin
-            </Button>
+            {user ? (
+              <>
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/suivi">
+                    <User className="w-4 h-4 mr-2" />
+                    Mon espace
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" onClick={handleSignOut}>
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/auth">Espace Médecin</Link>
+                </Button>
+                <Button size="sm">
+                  Vérifier un médecin
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -88,9 +159,9 @@ const Header = () => {
               <a href="#annuaire" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Annuaire Public
               </a>
-              <a href="#inscription" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+              <Link to="/inscription" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Inscription en ligne
-              </a>
+              </Link>
               <a href="#ecps" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Carte e-CPS
               </a>
@@ -100,23 +171,47 @@ const Header = () => {
               <a href="#actualites" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Actualités
               </a>
-              <a href="#pharmacovigilance" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+              <Link to="/pharmacovigilance" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Pharmacovigilance
-              </a>
+              </Link>
               <a href="#demo" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Démo
               </a>
               <a href="#contact" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
                 Contact
               </a>
+              {user && (
+                <Link to="/suivi" className="px-4 py-3 text-sm font-medium hover:bg-accent rounded-lg transition-colors">
+                  Suivi de dossier
+                </Link>
+              )}
+              {isAdmin && (
+                <Link to="/admin" className="px-4 py-3 text-sm font-medium text-primary hover:bg-accent rounded-lg transition-colors">
+                  Administration
+                </Link>
+              )}
             </nav>
             <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border">
-              <Button variant="outline" className="w-full">
-                Espace Médecin
-              </Button>
-              <Button className="w-full">
-                Vérifier un médecin
-              </Button>
+              {user ? (
+                <>
+                  <Button variant="outline" className="w-full" asChild>
+                    <Link to="/suivi">Mon espace</Link>
+                  </Button>
+                  <Button variant="ghost" className="w-full" onClick={handleSignOut}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Déconnexion
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" className="w-full" asChild>
+                    <Link to="/auth">Espace Médecin</Link>
+                  </Button>
+                  <Button className="w-full">
+                    Vérifier un médecin
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         )}

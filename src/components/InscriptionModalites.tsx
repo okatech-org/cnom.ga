@@ -1,6 +1,8 @@
-import { Info, CheckCircle } from "lucide-react";
+import { Info, CheckCircle, X as XIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 interface InscriptionModalitesProps {
   variant?: "full" | "compact";
@@ -100,21 +102,21 @@ export const InscriptionModalites = ({ variant = "full" }: InscriptionModalitesP
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Étape 1: Documents */}
-          <Card className="relative overflow-hidden">
-            <div className="absolute -top-4 -left-4 w-20 h-20 bg-primary/10 rounded-full flex items-end justify-end pr-4 pb-4">
-              <span className="text-primary font-bold text-sm transform -rotate-45">ÉTAPE</span>
+          <Card className="relative overflow-hidden border-2 border-primary/20">
+            <div className="absolute -top-2 -left-2 w-16 h-16 bg-primary rounded-full flex items-center justify-center transform -rotate-12">
+              <span className="text-white font-bold text-xs transform rotate-12">ÉTAPE</span>
             </div>
-            <CardHeader className="pt-8">
-              <div className="text-center mb-4">
+            <CardHeader className="pt-10">
+              <div className="text-center mb-2">
                 <span className="text-4xl font-bold text-primary">1.</span>
               </div>
-              <CardTitle className="text-center text-lg uppercase tracking-wide">
+              <CardTitle className="text-center text-base uppercase tracking-wide font-bold text-foreground">
                 Dossier à constituer
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {documents.map((doc, index) => (
-                <div key={index} className="flex items-start gap-3">
+                <div key={index} className="flex items-start gap-3 py-2 border-b border-border/50 last:border-0">
                   <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-muted-foreground">{doc}</span>
                 </div>
@@ -123,34 +125,32 @@ export const InscriptionModalites = ({ variant = "full" }: InscriptionModalitesP
           </Card>
 
           {/* Étape 2: Frais */}
-          <Card className="relative overflow-hidden border-secondary/50">
-            <div className="absolute -top-4 -left-4 w-20 h-20 bg-secondary/20 rounded-full flex items-end justify-end pr-4 pb-4">
-              <span className="text-secondary-foreground font-bold text-sm transform -rotate-45">ÉTAPE</span>
+          <Card className="relative overflow-hidden border-2 border-cnom-gold/50">
+            <div className="absolute -top-2 -left-2 w-16 h-16 bg-cnom-gold rounded-full flex items-center justify-center transform -rotate-12">
+              <span className="text-white font-bold text-xs transform rotate-12">ÉTAPE</span>
             </div>
-            <CardHeader className="pt-8">
-              <div className="text-center mb-4">
-                <span className="text-4xl font-bold text-secondary-foreground">2.</span>
+            <CardHeader className="pt-10">
+              <div className="text-center mb-2">
+                <span className="text-4xl font-bold text-cnom-gold">2.</span>
               </div>
-              <CardTitle className="text-center text-lg uppercase tracking-wide">
+              <CardTitle className="text-center text-base uppercase tracking-wide font-bold text-foreground">
                 Les frais d'inscription
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 py-2 border-b border-border/50">
                 <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                 <span className="text-sm text-muted-foreground">
                   Ils s'élèvent à <strong className="text-foreground">50 000 FCFA</strong> en numéraire
                 </span>
               </div>
-              <Separator />
-              <div className="flex items-start gap-3">
-                <span className="w-5 h-5 text-red-500 flex-shrink-0">✗</span>
+              <div className="flex items-start gap-3 py-2 border-b border-border/50">
+                <XIcon className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
                 <span className="text-sm text-muted-foreground">
                   Les titulaires de l'ancienne carte sont exonérés
                 </span>
               </div>
-              <Separator />
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 py-2">
                 <Info className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
                 <span className="text-sm text-muted-foreground">
                   Prière de présenter l'ancienne carte lors de l'inscription
@@ -160,27 +160,36 @@ export const InscriptionModalites = ({ variant = "full" }: InscriptionModalitesP
           </Card>
 
           {/* Étape 3: Cotisations */}
-          <Card className="relative overflow-hidden">
-            <div className="absolute -top-4 -left-4 w-20 h-20 bg-primary/10 rounded-full flex items-end justify-end pr-4 pb-4">
-              <span className="text-primary font-bold text-sm transform -rotate-45">ÉTAPE</span>
+          <Card className="relative overflow-hidden border-2 border-primary/20">
+            <div className="absolute -top-2 -left-2 w-16 h-16 bg-primary rounded-full flex items-center justify-center transform -rotate-12">
+              <span className="text-white font-bold text-xs transform rotate-12">ÉTAPE</span>
             </div>
-            <CardHeader className="pt-8">
-              <div className="text-center mb-4">
+            <CardHeader className="pt-10">
+              <div className="text-center mb-2">
                 <span className="text-4xl font-bold text-primary">3.</span>
               </div>
-              <CardTitle className="text-center text-lg uppercase tracking-wide">
+              <CardTitle className="text-center text-base uppercase tracking-wide font-bold text-foreground">
                 Les cotisations
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {cotisationsInfo.map((info, index) => (
-                <div key={index} className="flex items-start gap-3">
+                <div key={index} className="flex items-start gap-3 py-2 border-b border-border/50 last:border-0">
                   <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-sm text-muted-foreground">{info}</span>
                 </div>
               ))}
             </CardContent>
           </Card>
+        </div>
+
+        {/* CTA Button */}
+        <div className="text-center mt-10">
+          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white px-8">
+            <Link to="/auth">
+              S'inscrire maintenant
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
