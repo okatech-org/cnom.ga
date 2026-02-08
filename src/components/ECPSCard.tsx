@@ -80,11 +80,11 @@ const ECPSCard = ({
             {/* Emblem area */}
             <div className="flex-1 flex flex-col items-center justify-center min-h-0">
               {/* Logo */}
-              <div className="w-20 h-20 flex items-center justify-center flex-shrink-0">
+              <div className="w-28 h-28 flex items-center justify-center flex-shrink-0">
                 <img 
                   src={logoCnom} 
                   alt="Logo CNOM" 
-                  className="w-16 h-16 object-contain drop-shadow-lg"
+                  className="w-24 h-24 object-contain drop-shadow-lg"
                 />
               </div>
 
