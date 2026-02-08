@@ -47,7 +47,7 @@ const ECPSCard = ({
   const handleFlip = () => setIsFlipped(!isFlipped);
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-[115%] max-w-md mx-auto sm:w-full -ml-[7.5%] sm:ml-0">
       {/* Card container with fixed aspect ratio */}
       <div 
         className="relative w-full cursor-pointer"
