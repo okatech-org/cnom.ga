@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useDemo, DemoRole } from "@/contexts/DemoContext";
 
 const loginSchema = z.object({
   email: z.string().trim().email("Adresse email invalide").max(255),
@@ -38,62 +39,59 @@ const Auth = () => {
   const mode = searchParams.get("mode");
   const demoEmail = searchParams.get("email");
   const demoPassword = searchParams.get("password");
-  const demoRole = searchParams.get("role");
-  const isDemo = !!demoEmail && !!demoPassword;
+  const demoRole = searchParams.get("role") as DemoRole | null;
+  const isDemo = !!demoEmail && !!demoPassword && !!demoRole;
   
   const [isLogin, setIsLogin] = useState(mode !== "signup");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { enterDemoMode, isDemoMode } = useDemo();
 
-  // Check if user is already logged in
+  const roleRoutes: Record<string, string> = {
+    admin: "/admin",
+    president: "/dashboard/president",
+    sg: "/dashboard/sg",
+    tresorier: "/dashboard/tresorier",
+    agent: "/dashboard/agent",
+    commission: "/dashboard/commission",
+    regional: "/dashboard/regional",
+    medecin: "/suivi",
+  };
+
+  // Handle demo mode auto-login: if coming from demo page with role param, use demo mode
   useEffect(() => {
+    if (isDemo && demoRole && !isDemoMode) {
+      enterDemoMode(demoRole);
+      toast({
+        title: "Mode démo activé",
+        description: `Bienvenue dans l'espace ${demoRole}`,
+      });
+      navigate(roleRoutes[demoRole] || "/demo");
+    }
+  }, [isDemo, demoRole, isDemoMode, enterDemoMode, navigate, toast]);
+
+  // Check if user is already logged in (real auth)
+  useEffect(() => {
+    if (isDemo) return; // Skip real auth check if in demo mode
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (session?.user) {
-          // Redirect based on role if in demo mode
-          if (demoRole) {
-            const roleRoutes: Record<string, string> = {
-              admin: "/admin",
-              president: "/dashboard/president",
-              sg: "/dashboard/sg",
-              tresorier: "/dashboard/tresorier",
-              agent: "/dashboard/agent",
-              commission: "/dashboard/commission",
-              regional: "/dashboard/regional",
-              medecin: "/suivi",
-            };
-            navigate(roleRoutes[demoRole] || "/inscription");
-          } else {
-            navigate("/inscription");
-          }
+          navigate("/inscription");
         }
       }
     );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        if (demoRole) {
-          const roleRoutes: Record<string, string> = {
-            admin: "/admin",
-            president: "/dashboard/president",
-            sg: "/dashboard/sg",
-            tresorier: "/dashboard/tresorier",
-            agent: "/dashboard/agent",
-            commission: "/dashboard/commission",
-            regional: "/dashboard/regional",
-            medecin: "/suivi",
-          };
-          navigate(roleRoutes[demoRole] || "/inscription");
-        } else {
-          navigate("/inscription");
-        }
+        navigate("/inscription");
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate, demoRole]);
+  }, [navigate, isDemo]);
 
   const loginForm = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
