@@ -17,6 +17,7 @@ import { MedecinSidebar } from "@/components/dashboard/MedecinSidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import ECPSCard from "@/components/ECPSCard";
 import type { Database } from "@/integrations/supabase/types";
+import drDansouPhoto from "@/assets/dr-dansou-photo.jpeg";
 
 type ApplicationStatus = Database["public"]["Enums"]["application_status"];
 type PaymentStatus = Database["public"]["Enums"]["payment_status"];
@@ -402,6 +403,7 @@ const ECPSTabContent = ({ profile, isValidated, statusInfo }: ECPSTabContentProp
             status="active"
             validUntil="31 décembre 2025"
             fonction="MEMBRE"
+            photoUrl={drDansouPhoto}
           />
         </CardContent>
       </Card>
@@ -630,50 +632,65 @@ const ProfilTabContent = ({ profile }: ProfilTabContentProps) => {
           <CardTitle>Informations personnelles</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <User className="w-5 h-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Nom complet</p>
-                  <p className="font-medium">Dr. {profile.prenom} {profile.nom}</p>
-                </div>
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Photo de profil */}
+            <div className="flex-shrink-0 flex flex-col items-center">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg">
+                <img 
+                  src={drDansouPhoto} 
+                  alt={`Dr. ${profile.prenom} ${profile.nom}`}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Email</p>
-                  <p className="font-medium">{profile.email}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Téléphone</p>
-                  <p className="font-medium">{profile.telephone}</p>
-                </div>
-              </div>
+              <p className="mt-2 font-semibold text-primary">N° {profile.numero_ordre || "—"}</p>
             </div>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Localisation</p>
-                  <p className="font-medium">{profile.ville}, {profile.province}</p>
+            
+            {/* Informations */}
+            <div className="flex-1 grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <User className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Nom complet</p>
+                    <p className="font-medium">Dr. {profile.prenom} {profile.nom}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Email</p>
+                    <p className="font-medium">{profile.email}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Téléphone</p>
+                    <p className="font-medium">{profile.telephone}</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <Award className="w-5 h-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Spécialité</p>
-                  <p className="font-medium">{profile.specialite}</p>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <MapPin className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Localisation</p>
+                    <p className="font-medium">{profile.ville}, {profile.province}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Calendar className="w-5 h-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Diplôme obtenu</p>
-                  <p className="font-medium">{profile.universite} ({profile.annee_obtention})</p>
+                <div className="flex items-center gap-3">
+                  <Award className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Spécialité</p>
+                    <p className="font-medium">{profile.specialite}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Calendar className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Diplôme obtenu</p>
+                    <p className="font-medium">{profile.universite} ({profile.annee_obtention})</p>
+                  </div>
                 </div>
               </div>
             </div>
