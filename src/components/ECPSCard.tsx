@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { CheckCircle, RotateCcw, Download, Share2, Shield } from "lucide-react";
+import { CheckCircle, RotateCcw, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import carteRectoBackground from "@/assets/cnom-carte-recto.png";
+import carteVersoBackground from "@/assets/cnom-carte-verso.png";
 
 interface ECPSCardProps {
   doctorName: string;
@@ -61,34 +63,12 @@ const ECPSCard = ({
           className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-2xl"
           style={{ backfaceVisibility: "hidden" }}
         >
-          {/* Gradient background with Gabonese colors */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#009639] via-[#009639] to-[#0055A4]">
-            {/* Decorative waves with national colors */}
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 420 265"
-              preserveAspectRatio="none"
-            >
-              {/* Yellow wave */}
-              <path
-                d="M0 120 Q80 80 160 100 Q240 120 320 90 Q400 60 420 80 L420 180 Q340 150 260 170 Q180 190 100 160 Q20 130 0 160 Z"
-                fill="#FCD116"
-                opacity="0.95"
-              />
-              {/* Blue wave */}
-              <path
-                d="M0 180 Q100 150 200 170 Q300 190 420 160 L420 265 L0 265 Z"
-                fill="#0055A4"
-                opacity="0.9"
-              />
-              {/* Accent curve top right */}
-              <path
-                d="M350 0 Q380 20 400 0 L420 0 L420 50 Q390 40 360 50 Q330 60 320 40 Z"
-                fill="#FCD116"
-                opacity="0.6"
-              />
-            </svg>
-          </div>
+          {/* Background image */}
+          <img
+            src={carteRectoBackground}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
 
           {/* Card content */}
           <div className="relative z-10 h-full p-5 flex flex-col">
@@ -157,28 +137,12 @@ const ECPSCard = ({
             transform: "rotateY(180deg)",
           }}
         >
-          {/* Background with decorative elements */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white">
-            {/* Decorative waves on right side */}
-            <svg
-              className="absolute right-0 top-0 h-full w-1/3"
-              viewBox="0 0 140 265"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <linearGradient id="cardWaveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#009639" />
-                  <stop offset="50%" stopColor="#FCD116" />
-                  <stop offset="100%" stopColor="#0055A4" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M60 0 Q100 40 80 80 Q60 120 100 160 Q140 200 100 240 Q80 260 140 265 L140 0 Z"
-                fill="url(#cardWaveGrad)"
-                opacity="0.9"
-              />
-            </svg>
-          </div>
+          {/* Background image */}
+          <img
+            src={carteVersoBackground}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
 
           {/* Header bar */}
           <div className="absolute top-0 left-0 right-0 bg-[#009639] py-2 px-4">
