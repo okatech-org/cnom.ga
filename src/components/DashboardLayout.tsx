@@ -1,11 +1,12 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { 
   LayoutDashboard, Users, FileCheck, CreditCard, BarChart3, 
-  Settings, LogOut, Menu, X, ChevronDown, Bell, User
+  Settings, LogOut, Menu, X, ChevronDown, Bell, User, AlertTriangle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useDemo } from "@/contexts/DemoContext";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 
@@ -82,15 +84,24 @@ const roleNavItems: Record<string, NavItem[]> = {
 export const DashboardLayout = ({ children, role, roleTitle, roleIcon, roleColor }: DashboardLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const { isDemoMode, demoUser, exitDemoMode } = useDemo();
   const navigate = useNavigate();
   const location = useLocation();
 
   const navItems = roleNavItems[role] || [];
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate("/demo");
+    if (isDemoMode) {
+      exitDemoMode();
+      navigate("/demo");
+    } else {
+      await signOut();
+      navigate("/demo");
+    }
   };
+
+  const displayEmail = isDemoMode ? demoUser?.email : user?.email;
+  const displayName = isDemoMode ? demoUser?.name : user?.email?.split("@")[0];
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -111,11 +122,14 @@ export const DashboardLayout = ({ children, role, roleTitle, roleIcon, roleColor
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{user?.email || "Utilisateur"}</DropdownMenuLabel>
+              <DropdownMenuLabel>{displayEmail || "Utilisateur"}</DropdownMenuLabel>
+              {isDemoMode && (
+                <DropdownMenuLabel className="font-normal text-xs text-amber-600">Mode démo</DropdownMenuLabel>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleSignOut}>
                 <LogOut className="w-4 h-4 mr-2" />
-                Déconnexion
+                {isDemoMode ? "Quitter la démo" : "Déconnexion"}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -191,9 +205,11 @@ export const DashboardLayout = ({ children, role, roleTitle, roleIcon, roleColor
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground truncate">
-                {user?.email || "demo@cnom-gabon.ga"}
+                {displayName || "demo@cnom-gabon.ga"}
               </p>
-              <p className="text-xs text-muted-foreground">Mode démo</p>
+              <p className="text-xs text-muted-foreground">
+                {isDemoMode ? "Mode démo" : "Utilisateur"}
+              </p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -218,6 +234,18 @@ export const DashboardLayout = ({ children, role, roleTitle, roleIcon, roleColor
 
       {/* Main Content */}
       <main className="lg:ml-64 min-h-screen pt-16 lg:pt-0">
+        {/* Demo Mode Banner */}
+        {isDemoMode && (
+          <div className="bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-800 px-4 py-2">
+            <div className="flex items-center gap-2 text-sm text-amber-800 dark:text-amber-200">
+              <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+              <span>
+                <strong>Mode démonstration</strong> — Vous êtes connecté en tant que <strong>{demoUser?.title}</strong>. Les données sont fictives.
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Desktop Header */}
         <header className="hidden lg:flex items-center justify-between h-16 px-6 bg-background border-b border-border">
           <div className="flex items-center gap-4">
@@ -238,19 +266,22 @@ export const DashboardLayout = ({ children, role, roleTitle, roleIcon, roleColor
                   <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                     <User className="w-4 h-4 text-primary" />
                   </div>
-                  <span className="text-sm">{user?.email?.split("@")[0] || "Demo"}</span>
+                  <span className="text-sm">{displayName || "Demo"}</span>
                   <ChevronDown className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+                {isDemoMode && (
+                  <DropdownMenuLabel className="font-normal text-xs text-amber-600">Mode démo actif</DropdownMenuLabel>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/demo")}>
                   Retour à la démo
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleSignOut}>
                   <LogOut className="w-4 h-4 mr-2" />
-                  Déconnexion
+                  {isDemoMode ? "Quitter la démo" : "Déconnexion"}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
