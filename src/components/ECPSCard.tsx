@@ -79,23 +79,28 @@ const ECPSCard = ({
 
   return (
     <div className="w-full">
-      {/* Container that scales the card */}
+      {/* Container that scales the card - maintains aspect ratio */}
       <div 
         ref={containerRef}
         className="w-full flex justify-center"
-        style={{ 
-          height: CARD_BASE_HEIGHT * scale,
-        }}
       >
-        {/* Scaled card wrapper */}
-        <div
-          style={{
-            width: CARD_BASE_WIDTH,
-            height: CARD_BASE_HEIGHT,
-            transform: `scale(${scale})`,
-            transformOrigin: "top center",
+        {/* Aspect ratio container */}
+        <div 
+          className="w-full"
+          style={{ 
+            maxWidth: CARD_BASE_WIDTH,
+            aspectRatio: `${CARD_BASE_WIDTH} / ${CARD_BASE_HEIGHT}`,
           }}
         >
+          {/* Scaled card wrapper */}
+          <div
+            className="w-full h-full origin-top-left"
+            style={{
+              width: CARD_BASE_WIDTH,
+              height: CARD_BASE_HEIGHT,
+              transform: `scale(${scale})`,
+            }}
+          >
           {/* Flip container */}
           <div
             className="relative w-full h-full cursor-pointer transition-transform duration-700"
@@ -267,6 +272,7 @@ const ECPSCard = ({
                 Retourner
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
