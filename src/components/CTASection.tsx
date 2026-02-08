@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, UserPlus, Search } from "lucide-react";
 
@@ -28,12 +29,16 @@ const CTASection = () => {
               pour gérer votre dossier, vos cotisations et votre carte e-CPS.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Button variant="hero" size="lg" className="flex-1">
-                S'inscrire maintenant
-                <ArrowRight className="w-4 h-4 ml-2" />
+              <Button variant="hero" size="lg" className="flex-1" asChild>
+                <Link to="/auth?mode=signup">
+                  S'inscrire maintenant
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
               </Button>
-              <Button variant="heroOutline" size="lg" className="flex-1">
-                Connexion
+              <Button variant="heroOutline" size="lg" className="flex-1" asChild>
+                <Link to="/auth">
+                  Connexion
+                </Link>
               </Button>
             </div>
           </div>
@@ -50,9 +55,11 @@ const CTASection = () => {
               Vérifiez que votre médecin est bien inscrit au Tableau de l'Ordre. 
               Protégez-vous contre l'exercice illégal de la médecine.
             </p>
-            <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-              Vérifier un médecin
-              <ArrowRight className="w-4 h-4 ml-2" />
+            <Button variant="secondary" size="lg" className="w-full sm:w-auto" asChild>
+              <Link to="/annuaire">
+                Vérifier un médecin
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
             </Button>
           </div>
         </div>
