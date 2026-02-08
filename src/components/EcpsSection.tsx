@@ -1,5 +1,6 @@
 import { QrCode, Smartphone, Shield, Clock, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ecpsVerification from "@/assets/ecps-verification.jpg";
 
 const EcpsSection = () => {
   return (
@@ -52,85 +53,20 @@ const EcpsSection = () => {
             </div>
           </div>
 
-          {/* Phone Mockup */}
+          {/* Phone Mockup with Real Image */}
           <div className="relative flex justify-center lg:justify-end">
             {/* Decorative Elements */}
             <div className="absolute -z-10 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
             <div className="absolute -z-10 w-60 h-60 bg-secondary/20 rounded-full blur-2xl translate-x-20 translate-y-20" />
 
-            {/* Phone */}
-            <div className="relative w-72 md:w-80">
-              <div className="bg-foreground rounded-[3rem] p-3 shadow-2xl">
-                <div className="bg-card rounded-[2.5rem] overflow-hidden">
-                  {/* Status Bar */}
-                  <div className="bg-primary h-8 flex items-center justify-center">
-                    <div className="w-20 h-5 bg-foreground/20 rounded-full" />
-                  </div>
-
-                  {/* Card Content */}
-                  <div className="p-6 bg-gradient-to-b from-primary via-primary to-cnom-green-dark min-h-[450px]">
-                    {/* Header */}
-                    <div className="text-center mb-6">
-                      <div className="text-white/60 text-xs uppercase tracking-wider mb-1">
-                        République Gabonaise
-                      </div>
-                      <div className="text-white font-bold text-lg">
-                        ORDRE DES MÉDECINS
-                      </div>
-                    </div>
-
-                    {/* Photo */}
-                    <div className="w-24 h-28 bg-white/10 rounded-lg mx-auto mb-4 flex items-center justify-center border-2 border-white/20">
-                      <span className="text-white/60 text-4xl">👤</span>
-                    </div>
-
-                    {/* Name */}
-                    <div className="text-center mb-6">
-                      <div className="text-white font-bold text-xl mb-1">
-                        Dr. Marie-Claire MBOUROU
-                      </div>
-                      <div className="text-cnom-gold font-medium">
-                        Cardiologie
-                      </div>
-                    </div>
-
-                    {/* Details */}
-                    <div className="space-y-2 text-center mb-6">
-                      <div className="text-white/80 text-sm">
-                        N° Ordre: <span className="font-bold text-white">1842</span>
-                      </div>
-                      <div className="text-white/80 text-sm">
-                        Libreville, Estuaire
-                      </div>
-                    </div>
-
-                    {/* Status Badge */}
-                    <div className="flex justify-center mb-6">
-                      <div className="flex items-center gap-2 bg-status-active/20 text-white px-4 py-2 rounded-full">
-                        <CheckCircle className="w-4 h-4 text-status-active" />
-                        <span className="font-semibold text-sm">INSCRIT ET EN RÈGLE</span>
-                      </div>
-                    </div>
-
-                    {/* QR Code Placeholder */}
-                    <div className="bg-white rounded-xl p-4 mx-auto w-32 h-32 flex items-center justify-center">
-                      <div className="grid grid-cols-5 gap-1">
-                        {Array.from({ length: 25 }).map((_, i) => (
-                          <div
-                            key={i}
-                            className={`w-4 h-4 rounded-sm ${
-                              Math.random() > 0.5 ? "bg-foreground" : "bg-transparent"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="text-center mt-4 text-white/60 text-xs">
-                      Scannez pour vérifier
-                    </div>
-                  </div>
-                </div>
+            {/* Featured Image */}
+            <div className="relative">
+              <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20">
+                <img 
+                  src={ecpsVerification} 
+                  alt="Médecin gabonaise vérifiant sa carte e-CPS sur smartphone" 
+                  className="w-80 h-auto object-cover"
+                />
               </div>
 
               {/* Floating Badge */}
@@ -140,6 +76,17 @@ const EcpsSection = () => {
                   <div>
                     <div className="font-bold text-sm">Vérifié</div>
                     <div className="text-xs text-muted-foreground">En temps réel</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* QR Code Badge */}
+              <div className="absolute -left-4 bottom-1/4 bg-white rounded-2xl shadow-cnom-elevated p-3">
+                <div className="flex items-center gap-2">
+                  <QrCode className="w-8 h-8 text-primary" />
+                  <div>
+                    <div className="font-bold text-sm text-foreground">e-CPS</div>
+                    <div className="text-xs text-muted-foreground">Carte numérique</div>
                   </div>
                 </div>
               </div>

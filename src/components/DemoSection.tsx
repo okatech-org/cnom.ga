@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import { Play, Monitor, Smartphone, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import digitalAdmin from "@/assets/digital-admin.jpg";
 
 const features = [
   "Inscription 100% en ligne",
@@ -32,9 +34,15 @@ const DemoSection = () => {
                 </div>
               </div>
               
-              {/* Screen content */}
-              <div className="aspect-video bg-gradient-to-br from-primary/20 to-cnom-gold/20 relative flex items-center justify-center">
-                <button className="w-20 h-20 bg-primary rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform group">
+              {/* Screen content with real image */}
+              <div className="aspect-video relative">
+                <img 
+                  src={digitalAdmin} 
+                  alt="Médecin utilisant la plateforme numérique" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-primary rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform group">
                   <Play className="w-8 h-8 text-white ml-1 group-hover:scale-110 transition-transform" />
                 </button>
                 <div className="absolute bottom-4 left-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg p-3 flex items-center justify-between">
@@ -84,13 +92,17 @@ const DemoSection = () => {
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="gap-2">
-                <Play className="w-4 h-4" />
-                Voir la démo
+              <Button size="lg" className="gap-2" asChild>
+                <Link to="/demo">
+                  <Play className="w-4 h-4" />
+                  Voir la démo
+                </Link>
               </Button>
-              <Button variant="outline" size="lg" className="gap-2">
-                <Monitor className="w-4 h-4" />
-                Essayer le bac à sable
+              <Button variant="outline" size="lg" className="gap-2" asChild>
+                <Link to="/demo">
+                  <Monitor className="w-4 h-4" />
+                  Essayer le bac à sable
+                </Link>
               </Button>
             </div>
           </div>

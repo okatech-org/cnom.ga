@@ -1,4 +1,5 @@
 import { Scale, BookOpen, ShieldCheck, Users } from "lucide-react";
+import councilMeeting from "@/assets/council-meeting.jpg";
 
 const missions = [
   {
@@ -68,20 +69,36 @@ const AboutSection = () => {
             </div>
           </div>
 
-          {/* Missions Grid */}
-          <div className="grid sm:grid-cols-2 gap-5">
-            {missions.map((mission) => (
-              <div
-                key={mission.title}
-                className="bg-card rounded-xl p-5 border border-border/50 hover:border-primary/20 hover:shadow-cnom transition-all group"
-              >
-                <div className="w-11 h-11 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <mission.icon className="w-5 h-5 text-primary" />
-                </div>
-                <h4 className="font-semibold text-foreground mb-2">{mission.title}</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">{mission.description}</p>
+          {/* Image + Missions Grid */}
+          <div className="space-y-6">
+            {/* Featured Image */}
+            <div className="relative rounded-2xl overflow-hidden shadow-cnom-elevated">
+              <img 
+                src={councilMeeting} 
+                alt="Réunion du Conseil de l'Ordre des Médecins du Gabon" 
+                className="w-full h-64 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4">
+                <p className="text-white text-sm font-medium">Session du Bureau National de l'Ordre</p>
               </div>
-            ))}
+            </div>
+
+            {/* Missions Grid */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              {missions.map((mission) => (
+                <div
+                  key={mission.title}
+                  className="bg-card rounded-xl p-4 border border-border/50 hover:border-primary/20 hover:shadow-cnom transition-all group"
+                >
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
+                    <mission.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h4 className="font-semibold text-foreground mb-1 text-sm">{mission.title}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{mission.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

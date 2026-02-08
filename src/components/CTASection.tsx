@@ -1,12 +1,20 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, UserPlus, Search } from "lucide-react";
+import doctorPatient from "@/assets/doctor-patient.jpg";
 
 const CTASection = () => {
   return (
     <section className="py-20 md:py-28 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-hero-gradient" />
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img 
+          src={doctorPatient} 
+          alt="Médecin gabonais avec son patient" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-hero-gradient opacity-95" />
+      </div>
       
       {/* Decorative */}
       <div className="absolute inset-0">
