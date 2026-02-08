@@ -95,10 +95,10 @@ const ECPSCard = ({
 
               {/* Title */}
               <div className="text-center mt-1">
-                <h2 className="text-white font-bold text-sm tracking-wide leading-tight">
+                <h2 className="text-white font-bold text-lg tracking-wide leading-tight">
                   CONSEIL NATIONAL DE L'ORDRE DES MÉDECINS
                 </h2>
-                <p className="text-white text-[10px] mt-1">
+                <p className="text-white text-[13px] mt-1">
                   CARTE DE PROFESSIONNEL DE SANTÉ
                 </p>
               </div>
