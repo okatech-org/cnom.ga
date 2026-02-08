@@ -72,51 +72,46 @@ const ECPSCard = ({
           />
 
           {/* Card content */}
-          <div className="relative z-10 h-full p-3 flex flex-col overflow-hidden">
-            <div className="text-center mb-1">
-              <h3 className="text-white font-bold text-[11px] tracking-wide">
-                RÉPUBLIQUE GABONAISE
-              </h3>
-              <p className="text-white text-[9px] italic">
-                Union - Travail - Justice
-              </p>
-            </div>
+          <div className="relative z-10 h-full p-5 flex flex-col">
+            <h3 className="text-white font-bold text-sm tracking-wide text-center mb-3">
+              RÉPUBLIQUE GABONAISE
+            </h3>
 
             {/* Emblem area */}
-            <div className="flex-1 flex flex-col items-center justify-center min-h-0">
-              {/* Logo */}
-              <div className="w-32 h-32 flex items-center justify-center flex-shrink-0">
+            <div className="flex-1 flex flex-col items-center justify-center">
+              {/* Simplified emblem representation */}
+              <div className="w-20 h-20 mb-3 flex items-center justify-center">
                 <img 
                   src={logoCnom} 
                   alt="Logo CNOM" 
-                  className="w-[115px] h-[115px] object-contain drop-shadow-lg"
+                  className="w-16 h-16 object-contain drop-shadow-lg"
                 />
               </div>
 
               {/* Title */}
-              <div className="text-center mt-1">
-                <h2 className="text-white font-bold text-sm tracking-wide leading-tight">
-                  CONSEIL NATIONAL DE L'ORDRE DES MÉDECINS
+              <div className="text-center">
+                <h2 className="text-white font-bold text-lg tracking-wide leading-tight">
+                  CONSEIL NATIONAL
                 </h2>
-                <p className="text-white text-[10px] mt-1">
-                  CARTE DE PROFESSIONNEL DE SANTÉ
-                </p>
+                <h2 className="text-white font-bold text-lg tracking-wide leading-tight">
+                  DE L'ORDRE DES MÉDECINS
+                </h2>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="text-center mt-1 flex-shrink-0">
-              <p className="text-white text-[8px]">
+            <div className="text-center mt-auto">
+              <p className="text-white/80 text-[10px]">
                 B.P : 12 075 Libreville
               </p>
-              <p className="text-white text-[10px] font-medium">
+              <p className="text-white/90 text-xs font-medium">
                 www.cnom.ga
               </p>
             </div>
 
             {/* Flip hint */}
-            <div className="absolute bottom-1 right-1 text-white text-[8px] flex items-center gap-1">
-              <RotateCcw className="w-2.5 h-2.5" />
+            <div className="absolute bottom-2 right-2 text-white/50 text-[9px] flex items-center gap-1">
+              <RotateCcw className="w-3 h-3" />
               Retourner
             </div>
           </div>
@@ -140,18 +135,20 @@ const ECPSCard = ({
           {/* Card content */}
           <div className="relative z-10 h-full p-5 flex flex-col">
             {/* Header title */}
-            <div className="mb-4 pr-20">
-              <h3 className="text-[#009639] font-bold text-sm tracking-wide leading-tight text-center">
-                CARTE DE PROFESSIONNEL DE SANTÉ
+            <div className="text-center mb-4">
+              <h3 className="text-[#009639] font-bold text-base tracking-wide leading-tight">
+                CARTE DE
+              </h3>
+              <h3 className="text-[#009639] font-bold text-base tracking-wide leading-tight">
+                PROFESSIONNEL DE SANTÉ
               </h3>
             </div>
 
             {/* Main content - Photo left, Info right */}
             <div className="flex-1 flex gap-4">
-              {/* Left column: Photo, N° ORDRE, FONCTION */}
-              <div className="w-24 flex-shrink-0 flex flex-col items-center ml-2">
-                {/* Photo circle */}
-                <div className="w-[125px] h-[125px] bg-gray-200 rounded-full flex items-center justify-center overflow-hidden mb-1">
+              {/* Photo circle */}
+              <div className="w-24 h-28 flex-shrink-0 flex items-start">
+                <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
                   {photoUrl ? (
                     <img
                       src={photoUrl}
@@ -159,28 +156,16 @@ const ECPSCard = ({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <svg viewBox="0 0 24 24" className="w-12 h-12 text-gray-400">
+                    <svg viewBox="0 0 24 24" className="w-14 h-14 text-gray-400">
                       <circle cx="12" cy="8" r="4" fill="currentColor" opacity="0.5"/>
                       <path d="M4 22c0-5 4-8 8-8s8 3 8 8" fill="currentColor" opacity="0.4"/>
                     </svg>
                   )}
                 </div>
-
-                {/* Order number below photo */}
-                <div className="text-center">
-                  <span className="text-gray-500 font-medium italic text-[10px] block">N° ORDRE</span>
-                  <p className="font-bold text-gray-900 text-sm">{orderNumber}</p>
-                </div>
-                
-                {/* Function below N° ORDRE */}
-                <div className="text-center">
-                  <span className="text-gray-500 font-medium italic text-[10px] block">FONCTION</span>
-                  <p className="font-bold text-[#009639] text-[11px] uppercase">{fonction}</p>
-                </div>
               </div>
 
               {/* Info labels */}
-              <div className="flex-1 space-y-1 text-[11px] ml-8">
+              <div className="flex-1 space-y-1 text-[11px]">
                 <div>
                   <span className="text-gray-500 font-medium italic text-[10px]">NOM</span>
                   <p className="font-bold text-gray-900 text-sm uppercase">{doctorName}</p>
@@ -200,8 +185,20 @@ const ECPSCard = ({
               </div>
             </div>
 
-            {/* Bottom row - QR Code only */}
-            <div className="flex items-end justify-end mt-2">
+            {/* Bottom row - N° ORDRE, FONCTION, QR Code */}
+            <div className="flex items-end justify-between mt-2">
+              {/* Order number */}
+              <div className="text-center">
+                <span className="text-gray-500 font-medium italic text-[10px] block">N° ORDRE</span>
+                <p className="font-bold text-gray-900 text-lg">{orderNumber}</p>
+              </div>
+
+              {/* Function */}
+              <div className="text-center">
+                <span className="text-gray-500 font-medium italic text-[10px] block">FONCTION</span>
+                <p className="font-bold text-[#009639] text-sm uppercase">{fonction}</p>
+              </div>
+
               {/* QR Code */}
               <div className="bg-white p-1 rounded shadow-sm">
                 <QRCodeSVG
