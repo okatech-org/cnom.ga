@@ -84,6 +84,11 @@ const ECPSCard = ({
 
             {/* Emblem area */}
             <div className="flex-1 flex flex-col items-center justify-center min-h-0">
+              {/* Website above logo */}
+              <p className="text-white text-[10px] font-medium mb-2">
+                www.cnom.ga
+              </p>
+              
               {/* Logo */}
               <div className="w-32 h-32 flex items-center justify-center flex-shrink-0">
                 <img 
@@ -108,9 +113,6 @@ const ECPSCard = ({
             <div className="text-center mt-1 flex-shrink-0">
               <p className="text-white text-[8px]">
                 B.P : 12 075 Libreville
-              </p>
-              <p className="text-white text-[10px] font-medium">
-                www.cnom.ga
               </p>
             </div>
 
