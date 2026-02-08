@@ -200,7 +200,7 @@ const ECPSCard = ({
             </div>
 
             {/* Bottom row - QR Code only */}
-            <div className="flex items-end justify-end mt-2">
+            <div className="flex items-end justify-end -mt-[190px]">
               {/* QR Code */}
               <div className="bg-white p-1 rounded shadow-sm">
                 <QRCodeSVG
