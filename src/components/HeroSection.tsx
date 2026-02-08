@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Search, Shield, CheckCircle, ArrowRight } from "lucide-react";
 
@@ -86,12 +87,16 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 animate-fade-up opacity-0 stagger-5">
-            <Button variant="hero" size="xl">
-              Vérifier un médecin
-              <ArrowRight className="w-5 h-5 ml-2" />
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/annuaire">
+                Vérifier un médecin
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Link>
             </Button>
-            <Button variant="heroOutline" size="xl">
-              Je suis médecin
+            <Button variant="heroOutline" size="xl" asChild>
+              <Link to="/auth?mode=signup">
+                S'inscrire maintenant
+              </Link>
             </Button>
           </div>
         </div>
