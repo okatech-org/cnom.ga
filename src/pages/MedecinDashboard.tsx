@@ -102,14 +102,14 @@ const statusConfig: Record<ApplicationStatus, {
 // Demo data
 const DEMO_PROFILE: ProfileData = {
   id: "demo-1",
-  nom: "NZOGHE",
-  prenom: "Jean",
-  email: "medecin@cnom-gabon.ga",
+  nom: "DANSOU OGANDAGA",
+  prenom: "Jean Davy",
+  email: "jd.dansou@cnom-gabon.ga",
   telephone: "+241 77 00 00 00",
   specialite: "Médecine Générale",
   province: "Estuaire",
   ville: "Libreville",
-  numero_ordre: "1842",
+  numero_ordre: "0815",
   secteur: "prive",
   universite: "Université des Sciences de la Santé",
   annee_obtention: 2015,
