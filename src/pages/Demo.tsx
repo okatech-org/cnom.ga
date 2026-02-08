@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Check, Copy, ChevronDown, Shield, Users, AlertTriangle } from "lucide-react";
+import { Check, Copy, ChevronDown, Shield, Users, AlertTriangle, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const ROLES = [
@@ -17,7 +18,7 @@ const ROLES = [
     email: "admin@cnom-gabon.ga",
     password: "Demo@Admin2026!",
     colorClass: "bg-red-600",
-    accentClass: "bg-red-50 border-red-200",
+    accentClass: "bg-red-50 border-red-200 dark:bg-red-950/30 dark:border-red-800",
     textClass: "text-red-600",
     modules: ["M1 Répertoire", "M2 Inscription", "M3 e-CPS", "M4 Paiement", "M5 BI"],
     permissions: "Accès total : Lecture / Écriture / Suppression sur tous les modules",
@@ -45,7 +46,7 @@ const ROLES = [
     email: "sg@cnom-gabon.ga",
     password: "Demo@SG2026!",
     colorClass: "bg-violet-600",
-    accentClass: "bg-violet-50 border-violet-200",
+    accentClass: "bg-violet-50 border-violet-200 dark:bg-violet-950/30 dark:border-violet-800",
     textClass: "text-violet-600",
     modules: ["M1 Répertoire", "M2 Inscription", "M4 Paiement", "M5 BI"],
     permissions: "Lecture / Écriture sur fiches + Validation intermédiaire + Lecture financière",
@@ -59,7 +60,7 @@ const ROLES = [
     email: "tresorier@cnom-gabon.ga",
     password: "Demo@Tres2026!",
     colorClass: "bg-amber-600",
-    accentClass: "bg-amber-50 border-amber-200",
+    accentClass: "bg-amber-50 border-amber-200 dark:bg-amber-950/30 dark:border-amber-800",
     textClass: "text-amber-600",
     modules: ["M1 Répertoire (finances)", "M4 Paiement", "M5 BI (finances)"],
     permissions: "Lecture / Écriture sur paiements + Tableau de bord financier + Reporting",
@@ -73,7 +74,7 @@ const ROLES = [
     email: "agent@cnom-gabon.ga",
     password: "Demo@Agent2026!",
     colorClass: "bg-sky-600",
-    accentClass: "bg-sky-50 border-sky-200",
+    accentClass: "bg-sky-50 border-sky-200 dark:bg-sky-950/30 dark:border-sky-800",
     textClass: "text-sky-600",
     modules: ["M1 Répertoire", "M2 Inscription", "M4 Paiement"],
     permissions: "Lecture / Écriture fiches + Saisie / Vérification dossiers + Lecture limitée BI",
@@ -87,7 +88,7 @@ const ROLES = [
     email: "commission@cnom-gabon.ga",
     password: "Demo@Comm2026!",
     colorClass: "bg-emerald-600",
-    accentClass: "bg-emerald-50 border-emerald-200",
+    accentClass: "bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800",
     textClass: "text-emerald-600",
     modules: ["M1 Répertoire (lecture)", "M2 Inscription (validation)"],
     permissions: "Lecture des fiches + Validation des dossiers d'inscription + Attribution N° Ordre",
@@ -101,7 +102,7 @@ const ROLES = [
     email: "regional@cnom-gabon.ga",
     password: "Demo@Reg2026!",
     colorClass: "bg-pink-600",
-    accentClass: "bg-pink-50 border-pink-200",
+    accentClass: "bg-pink-50 border-pink-200 dark:bg-pink-950/30 dark:border-pink-800",
     textClass: "text-pink-600",
     modules: ["M1 (sa région)", "M4 (sa région)", "M5 (sa région)"],
     permissions: "Lecture restreinte à sa province : fiches, paiements et indicateurs régionaux",
@@ -129,7 +130,7 @@ const ROLES = [
     email: null,
     password: null,
     colorClass: "bg-slate-500",
-    accentClass: "bg-slate-50 border-slate-200",
+    accentClass: "bg-slate-50 border-slate-200 dark:bg-slate-950/30 dark:border-slate-800",
     textClass: "text-slate-600",
     modules: ["Annuaire public", "Vérification QR"],
     permissions: "Recherche annuaire (données publiques) + Scan QR code de vérification",
@@ -148,7 +149,8 @@ function CopyButton({ text }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
-  const handleCopy = () => {
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       toast({ title: "Copié !", description: "Le texte a été copié dans le presse-papiers." });
@@ -177,6 +179,23 @@ interface RoleCardProps {
 
 function RoleCard({ role, expanded, onToggle }: RoleCardProps) {
   const isOpen = expanded === role.id;
+  const navigate = useNavigate();
+
+  const handleAccessClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (role.email && role.password) {
+      // Navigate to auth with pre-filled credentials
+      const params = new URLSearchParams({
+        email: role.email,
+        password: role.password,
+        role: role.id
+      });
+      navigate(`/auth?${params.toString()}`);
+    } else {
+      // Public access - go to annuaire
+      navigate("/annuaire");
+    }
+  };
 
   return (
     <Card 
@@ -190,16 +209,16 @@ function RoleCard({ role, expanded, onToggle }: RoleCardProps) {
           <div className={`w-12 h-12 rounded-xl ${role.colorClass} flex items-center justify-center text-2xl shadow-md`}>
             {role.icon}
           </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-foreground">{role.title}</h3>
-            <p className="text-sm text-muted-foreground">{role.subtitle}</p>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-foreground truncate">{role.title}</h3>
+            <p className="text-sm text-muted-foreground truncate">{role.subtitle}</p>
           </div>
-          <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
         </div>
       </CardHeader>
 
       {isOpen && (
-        <CardContent className="px-4 pb-4 pt-0 animate-in slide-in-from-top-2 duration-200" onClick={(e) => e.stopPropagation()}>
+        <CardContent className="px-4 pb-4 pt-0 animate-in slide-in-from-top-2 duration-200">
           <div className="space-y-4">
             <p className="text-sm text-muted-foreground leading-relaxed">
               {role.description}
@@ -215,8 +234,8 @@ function RoleCard({ role, expanded, onToggle }: RoleCardProps) {
 
             <div className={`p-3 rounded-lg ${role.accentClass} border`}>
               <p className="text-xs font-medium flex items-center gap-2">
-                <Shield className="w-3 h-3" />
-                {role.permissions}
+                <Shield className="w-3 h-3 flex-shrink-0" />
+                <span>{role.permissions}</span>
               </p>
             </div>
 
@@ -226,23 +245,27 @@ function RoleCard({ role, expanded, onToggle }: RoleCardProps) {
                   Identifiants de démonstration
                 </p>
                 <div className="bg-muted/50 rounded-lg p-3 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">Email :</span>
-                      <code className="text-xs font-mono bg-background px-2 py-1 rounded">{role.email}</code>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <span className="text-xs text-muted-foreground flex-shrink-0">Email :</span>
+                      <code className="text-xs font-mono bg-background px-2 py-1 rounded truncate">{role.email}</code>
                     </div>
                     <CopyButton text={role.email} />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">Mot de passe :</span>
-                      <code className="text-xs font-mono bg-background px-2 py-1 rounded">{role.password}</code>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <span className="text-xs text-muted-foreground flex-shrink-0">Mot de passe :</span>
+                      <code className="text-xs font-mono bg-background px-2 py-1 rounded truncate">{role.password}</code>
                     </div>
                     <CopyButton text={role.password!} />
                   </div>
                 </div>
-                <Button className={`w-full ${role.colorClass} hover:opacity-90`}>
-                  Accéder à l'espace {role.title} →
+                <Button 
+                  className={`w-full ${role.colorClass} hover:opacity-90`}
+                  onClick={handleAccessClick}
+                >
+                  Accéder à l'espace {role.title}
+                  <ExternalLink className="w-4 h-4 ml-2" />
                 </Button>
               </div>
             ) : (
@@ -250,8 +273,13 @@ function RoleCard({ role, expanded, onToggle }: RoleCardProps) {
                 <p className="text-sm text-muted-foreground">
                   🌐 Accès libre — Aucun compte requis
                 </p>
-                <Button variant="outline" className="w-full">
-                  Accéder au Portail Public →
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={handleAccessClick}
+                >
+                  Accéder au Portail Public
+                  <ExternalLink className="w-4 h-4 ml-2" />
                 </Button>
               </div>
             )}
@@ -308,14 +336,14 @@ const Demo = () => {
         </section>
 
         {/* Warning Banner */}
-        <div className="bg-amber-50 border-b border-amber-200">
+        <div className="bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-800">
           <div className="container mx-auto px-4 py-3">
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-amber-800">
+              <p className="text-sm text-amber-800 dark:text-amber-200">
                 <strong>Environnement de démonstration</strong> — Les données affichées sont fictives. 
                 Les paiements ne sont pas débités. Les actions sont simulées et réinitialisées quotidiennement. 
-                <span className="text-amber-600 ml-1">Référence projet : PRJ-ECNOM-2026-001</span>
+                <span className="text-amber-600 dark:text-amber-400 ml-1">Référence projet : PRJ-ECNOM-2026-001</span>
               </p>
             </div>
           </div>
