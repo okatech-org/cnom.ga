@@ -138,63 +138,78 @@ const ECPSCard = ({
             className="absolute inset-0 w-full h-full object-cover"
           />
 
-          {/* Header bar */}
-          <div className="absolute top-0 left-0 right-0 bg-[#009639] py-2 px-4">
-            <h3 className="text-white font-bold text-xs text-center tracking-wider">
-              CARTE DE PROFESSIONNEL DE SANTÉ
-            </h3>
-          </div>
-
           {/* Card content */}
-          <div className="relative z-10 h-full pt-10 pb-4 px-4 flex">
-            {/* Left section - Photo and info */}
-            <div className="flex-1 flex gap-3">
-              {/* Photo */}
-              <div className="w-20 h-24 bg-gray-200 rounded-lg flex items-center justify-center border-2 border-gray-300 overflow-hidden flex-shrink-0 shadow-sm">
-                {photoUrl ? (
-                  <img
-                    src={photoUrl}
-                    alt="Photo"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <svg viewBox="0 0 24 24" className="w-12 h-12 text-gray-400">
-                    <circle cx="12" cy="8" r="4" fill="currentColor" opacity="0.6"/>
-                    <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor" opacity="0.4"/>
-                  </svg>
-                )}
+          <div className="relative z-10 h-full p-5 flex flex-col">
+            {/* Header title */}
+            <div className="text-center mb-4">
+              <h3 className="text-[#009639] font-bold text-base tracking-wide leading-tight">
+                CARTE DE
+              </h3>
+              <h3 className="text-[#009639] font-bold text-base tracking-wide leading-tight">
+                PROFESSIONNEL DE SANTÉ
+              </h3>
+            </div>
+
+            {/* Main content - Photo left, Info right */}
+            <div className="flex-1 flex gap-4">
+              {/* Photo circle */}
+              <div className="w-24 h-28 flex-shrink-0 flex items-start">
+                <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                  {photoUrl ? (
+                    <img
+                      src={photoUrl}
+                      alt="Photo"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <svg viewBox="0 0 24 24" className="w-14 h-14 text-gray-400">
+                      <circle cx="12" cy="8" r="4" fill="currentColor" opacity="0.5"/>
+                      <path d="M4 22c0-5 4-8 8-8s8 3 8 8" fill="currentColor" opacity="0.4"/>
+                    </svg>
+                  )}
+                </div>
               </div>
 
               {/* Info labels */}
-              <div className="flex-1 space-y-1.5 text-[11px]">
+              <div className="flex-1 space-y-1 text-[11px]">
                 <div>
-                  <span className="text-[#009639] font-semibold">NOM</span>
+                  <span className="text-gray-500 font-medium italic text-[10px]">NOM</span>
                   <p className="font-bold text-gray-900 text-sm uppercase">{doctorName}</p>
                 </div>
                 <div>
-                  <span className="text-[#009639] font-semibold">PRÉNOMS</span>
-                  <p className="font-medium text-gray-800">{firstName || "—"}</p>
+                  <span className="text-gray-500 font-medium italic text-[10px]">PRÉNOMS</span>
+                  <p className="font-bold text-gray-900 text-sm">{firstName || "—"}</p>
                 </div>
                 <div>
-                  <span className="text-[#009639] font-semibold">SPÉCIALITÉ</span>
-                  <p className="font-bold text-gray-900 uppercase">{specialty}</p>
+                  <span className="text-gray-500 font-medium italic text-[10px]">SPÉCIALITÉ</span>
+                  <p className="font-bold text-[#009639] text-sm uppercase">{specialty}</p>
+                </div>
+                <div className="pt-1">
+                  <span className="text-gray-500 font-medium italic text-[10px]">NIP</span>
+                  <p className="font-bold text-gray-900 text-sm">{nip || "—"}</p>
                 </div>
               </div>
             </div>
 
-            {/* Right section - QR and numbers */}
-            <div className="w-28 flex flex-col items-end justify-between">
-              {/* NIP */}
-              <div className="text-right mb-1">
-                <span className="text-[#009639] font-semibold text-[10px]">NIP</span>
-                <p className="font-bold text-[#0055A4] text-sm">{nip || "—"}</p>
+            {/* Bottom row - N° ORDRE, FONCTION, QR Code */}
+            <div className="flex items-end justify-between mt-2">
+              {/* Order number */}
+              <div className="text-center">
+                <span className="text-gray-500 font-medium italic text-[10px] block">N° ORDRE</span>
+                <p className="font-bold text-gray-900 text-lg">{orderNumber}</p>
+              </div>
+
+              {/* Function */}
+              <div className="text-center">
+                <span className="text-gray-500 font-medium italic text-[10px] block">FONCTION</span>
+                <p className="font-bold text-[#009639] text-sm uppercase">{fonction}</p>
               </div>
 
               {/* QR Code */}
-              <div className="bg-white p-1.5 rounded shadow-sm border">
+              <div className="bg-white p-1 rounded shadow-sm">
                 <QRCodeSVG
                   value={qrData}
-                  size={60}
+                  size={56}
                   level="H"
                   includeMargin={false}
                   bgColor="white"
@@ -204,40 +219,8 @@ const ECPSCard = ({
             </div>
           </div>
 
-          {/* Bottom info bar */}
-          <div className="absolute bottom-0 left-0 right-0 px-4 pb-3">
-            <div className="flex items-end justify-between">
-              {/* Order number */}
-              <div className="text-center">
-                <span className="text-[#009639] font-semibold text-[9px] block">N° ORDRE</span>
-                <p className="font-bold text-[#0055A4] text-lg">{orderNumber}</p>
-              </div>
-
-              {/* Status badge */}
-              {status === "active" && (
-                <div className="flex items-center gap-1 text-[#009639]">
-                  <CheckCircle className="w-3.5 h-3.5" />
-                  <span className="text-[9px] font-semibold">EN RÈGLE</span>
-                </div>
-              )}
-
-              {/* Function */}
-              <div className="text-center">
-                <span className="text-[#009639] font-semibold text-[9px] block">FONCTION</span>
-                <p className="font-bold text-[#009639] text-sm">{fonction}</p>
-              </div>
-            </div>
-
-            {/* Validity */}
-            {validUntil && (
-              <p className="text-gray-400 text-[8px] text-center mt-1">
-                Valide jusqu'au {validUntil}
-              </p>
-            )}
-          </div>
-
           {/* Flip hint */}
-          <div className="absolute bottom-2 right-2 text-gray-400 text-[9px] flex items-center gap-1">
+          <div className="absolute bottom-2 left-2 text-gray-400 text-[9px] flex items-center gap-1">
             <RotateCcw className="w-3 h-3" />
             Retourner
           </div>
