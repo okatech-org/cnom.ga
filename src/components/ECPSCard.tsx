@@ -77,7 +77,7 @@ const ECPSCard = ({
               <h3 className="text-white font-bold text-[11px] tracking-wide">
                 RÉPUBLIQUE GABONAISE
               </h3>
-              <p className="text-white/80 text-[9px] italic">
+              <p className="text-white text-[9px] italic">
                 Union - Travail - Justice
               </p>
             </div>
@@ -106,16 +106,16 @@ const ECPSCard = ({
 
             {/* Footer */}
             <div className="text-center mt-1 flex-shrink-0">
-              <p className="text-white/80 text-[8px]">
+              <p className="text-white text-[8px]">
                 B.P : 12 075 Libreville
               </p>
-              <p className="text-white/90 text-[10px] font-medium">
+              <p className="text-white text-[10px] font-medium">
                 www.cnom.ga
               </p>
             </div>
 
             {/* Flip hint */}
-            <div className="absolute bottom-1 right-1 text-white/50 text-[8px] flex items-center gap-1">
+            <div className="absolute bottom-1 right-1 text-white text-[8px] flex items-center gap-1">
               <RotateCcw className="w-2.5 h-2.5" />
               Retourner
             </div>
