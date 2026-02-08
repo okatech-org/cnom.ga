@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin, Facebook, Twitter, Linkedin } from "lucide-react";
+import logoCnom from "@/assets/logo-cnom.png";
 
 const Footer = () => {
   return (
@@ -9,9 +10,11 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">⚕</span>
-              </div>
+              <img 
+                src={logoCnom} 
+                alt="Logo CNOM Gabon" 
+                className="w-12 h-12 object-contain"
+              />
               <div>
                 <span className="font-display font-bold text-xl text-white">
                   CNOM
