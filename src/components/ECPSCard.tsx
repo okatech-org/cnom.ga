@@ -245,7 +245,7 @@ const ECPSCard = ({
                         <p className="font-bold text-gray-900 text-[12px]">{nip || "—"}</p>
                       </div>
                       {/* QR Code below NIP */}
-                      <div className="pt-0.5">
+                      <div className="pt-0.5 flex justify-end">
                         <div className="bg-white p-0.5 rounded shadow-sm inline-block">
                           <QRCodeSVG
                             value={qrData}
