@@ -43,13 +43,7 @@ const ECPSCard = ({
   const wrapRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
-  const qrData = JSON.stringify({
-    n: orderNumber,
-    name: doctorName,
-    spec: specialty,
-    status,
-    ts: Date.now(),
-  });
+  const qrData = `CNOM-${orderNumber}`;
 
   // Measure the wrapper and compute scale so the 420px card fits inside it
   const measure = useCallback(() => {
@@ -258,7 +252,7 @@ const ECPSCard = ({
                   <div className="bg-white p-0.5 rounded shadow-sm">
                     <QRCodeSVG
                       value={qrData}
-                      size={60}
+                      size={69}
                       level="L"
                       includeMargin={false}
                       bgColor="white"
