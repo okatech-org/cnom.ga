@@ -1,6 +1,4 @@
 import { useState, useMemo } from "react";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import PresidentSidebar from "@/components/dashboard/PresidentSidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import DashboardExecutif from "@/components/dashboard/president/DashboardExecutif";
@@ -78,13 +76,9 @@ const PresidentDashboard = () => {
         {/* Header */}
         <DashboardHeader
           title={TAB_TITLES[activeTab]}
-          subtitle="Espace Présidentiel — Back-Office Exécutif"
-          isDemoMode={true}
-          leftSlot={
-            <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
-              <Menu className="w-5 h-5" />
-            </Button>
-          }
+          roleTitle="Espace Présidentiel"
+          roleIcon="🏛️"
+          onMenuClick={() => setSidebarOpen(true)}
         />
 
         {/* Content */}
