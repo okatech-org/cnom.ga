@@ -168,7 +168,7 @@ const ECPSCard = ({
               <div
                 className="absolute inset-0 rounded-2xl pointer-events-none"
                 style={{
-                  background: "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 40%, transparent 60%, rgba(255,255,255,0.1) 100%)",
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.12) 25%, transparent 50%, rgba(180,255,220,0.12) 75%, rgba(150,255,200,0.18) 100%)",
                   zIndex: 20,
                 }}
               />
@@ -287,7 +287,7 @@ const ECPSCard = ({
               <div
                 className="absolute inset-0 rounded-2xl pointer-events-none"
                 style={{
-                  background: "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 40%, transparent 60%, rgba(255,255,255,0.1) 100%)",
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.12) 25%, transparent 50%, rgba(180,255,220,0.12) 75%, rgba(150,255,200,0.18) 100%)",
                   zIndex: 20,
                 }}
               />
