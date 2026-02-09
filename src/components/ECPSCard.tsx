@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { CheckCircle, RotateCcw, Download, Share2 } from "lucide-react";
+import { RotateCcw, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import carteRectoBackground from "@/assets/cnom-carte-recto.png";
 import carteVersoBackground from "@/assets/cnom-carte-verso.png";
 import logoCnom from "@/assets/logo-cnom.png";
@@ -21,11 +20,6 @@ interface ECPSCardProps {
   fonction?: string;
 }
 
-// Fixed card dimensions (design reference at 420px width)
-// Standard credit card aspect ratio is 85.6mm × 53.98mm = 1.586:1 (width:height)
-const CARD_BASE_WIDTH = 420;
-const CARD_BASE_HEIGHT = 265; // 420 / 1.586 ≈ 265
-
 const ECPSCard = ({
   doctorName,
   firstName,
@@ -40,8 +34,6 @@ const ECPSCard = ({
   fonction = "MEMBRE",
 }: ECPSCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
 
   // Generate QR data
   const qrData = JSON.stringify({
@@ -52,224 +44,212 @@ const ECPSCard = ({
     ts: Date.now(),
   });
 
-  // Calculate scale based on container width
-  useEffect(() => {
-    const updateScale = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth;
-        // Scale down if container is smaller than card base width
-        // Never scale up beyond 1
-        const newScale = Math.min(containerWidth / CARD_BASE_WIDTH, 1);
-        setScale(newScale);
-      }
-    };
-
-    updateScale();
-
-    // Use ResizeObserver for more reliable updates
-    const resizeObserver = new ResizeObserver(updateScale);
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-    }
-
-    return () => resizeObserver.disconnect();
-  }, []);
-
   const handleFlip = () => setIsFlipped(!isFlipped);
 
   return (
     <div className="w-full">
-      {/* Container that scales the card - maintains aspect ratio */}
-      <div
-        ref={containerRef}
-        className="w-full flex justify-center"
-      >
-        {/* Aspect ratio container */}
+      {/* Card container — uses aspect-ratio for proper scaling on all devices */}
+      <div className="w-full max-w-[420px] mx-auto">
         <div
-          className="w-full"
-          style={{
-            maxWidth: CARD_BASE_WIDTH,
-            aspectRatio: `${CARD_BASE_WIDTH} / ${CARD_BASE_HEIGHT}`,
-          }}
+          className="relative w-full cursor-pointer"
+          style={{ aspectRatio: "420 / 265" }}
+          onClick={handleFlip}
         >
-          {/* Scaled card wrapper */}
+          {/* 3D flip wrapper */}
           <div
-            className="w-full h-full origin-top-left"
+            className="absolute inset-0 transition-transform duration-700"
             style={{
-              width: CARD_BASE_WIDTH,
-              height: CARD_BASE_HEIGHT,
-              transform: `scale(${scale})`,
+              transformStyle: "preserve-3d",
+              transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
             }}
           >
-            {/* Flip container */}
+            {/* ============ RECTO (Front — Institutional) ============ */}
             <div
-              className="relative w-full h-full cursor-pointer transition-transform duration-700"
-              onClick={handleFlip}
+              className="absolute inset-0 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl"
+              style={{ backfaceVisibility: "hidden" }}
+            >
+              {/* Background image */}
+              <img
+                src={carteRectoBackground}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+                draggable={false}
+              />
+
+              {/* Overlay content — fully percentage-based */}
+              <div className="relative z-10 h-full flex flex-col items-center justify-between p-[6%]">
+                {/* Top header */}
+                <div className="text-center w-full">
+                  <h3 className="text-white font-bold text-[clamp(8px,2.8vw,11px)] tracking-wide leading-tight">
+                    RÉPUBLIQUE GABONAISE
+                  </h3>
+                  <p className="text-white text-[clamp(6px,2.2vw,9px)] italic">
+                    Union - Travail - Justice
+                  </p>
+                </div>
+
+                {/* Emblem */}
+                <div className="flex-1 flex items-center justify-center min-h-0 py-[2%]">
+                  <img
+                    src={logoCnom}
+                    alt="Logo CNOM"
+                    className="w-[28%] aspect-square object-contain drop-shadow-lg"
+                    draggable={false}
+                  />
+                </div>
+
+                {/* Title */}
+                <div className="text-center w-full">
+                  <h2 className="text-white font-bold text-[clamp(9px,3vw,14px)] tracking-wide leading-tight">
+                    CONSEIL NATIONAL DE L'ORDRE DES MÉDECINS
+                  </h2>
+                  <p className="text-white text-[clamp(7px,2.4vw,10px)] mt-[2%]">
+                    CARTE DE PROFESSIONNEL DE SANTÉ
+                  </p>
+                </div>
+
+                {/* Footer */}
+                <div className="text-center w-full mt-[2%]">
+                  <p className="text-white text-[clamp(5px,1.8vw,8px)]">
+                    B.P : 12 075 Libreville
+                  </p>
+                  <p className="text-white text-[clamp(7px,2.4vw,10px)] font-medium">
+                    www.cnom.ga
+                  </p>
+                </div>
+
+                {/* Flip hint */}
+                <div className="absolute bottom-[3%] right-[3%] text-white text-[clamp(5px,1.8vw,8px)] flex items-center gap-0.5 opacity-80">
+                  <RotateCcw className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px]" />
+                  <span>Retourner</span>
+                </div>
+              </div>
+            </div>
+
+            {/* ============ VERSO (Back — Professional ID) ============ */}
+            <div
+              className="absolute inset-0 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl"
               style={{
-                transformStyle: "preserve-3d",
-                transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+                backfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
               }}
             >
-              {/* RECTO - Front of card (Institutional) */}
-              <div
-                className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl"
-                style={{ backfaceVisibility: "hidden" }}
-              >
-                {/* Background image */}
-                <img
-                  src={carteRectoBackground}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
+              {/* Background image */}
+              <img
+                src={carteVersoBackground}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+                draggable={false}
+              />
 
-                {/* Card content */}
-                <div className="relative z-10 h-full p-3 flex flex-col overflow-hidden">
-                  <div className="text-center mb-1">
-                    <h3 className="text-white font-bold text-[11px] tracking-wide">
-                      RÉPUBLIQUE GABONAISE
-                    </h3>
-                    <p className="text-white text-[9px] italic">
-                      Union - Travail - Justice
-                    </p>
-                  </div>
+              {/* Content overlay */}
+              <div className="relative z-10 h-full p-[4%] flex flex-col">
+                {/* Header */}
+                <div className="text-center mb-[3%] pr-[20%]">
+                  <h3 className="text-[#0D7377] font-bold text-[clamp(8px,2.8vw,14px)] tracking-wide leading-tight">
+                    CARTE DE PROFESSIONNEL DE SANTÉ
+                  </h3>
+                </div>
 
-                  {/* Emblem area */}
-                  <div className="flex-1 flex flex-col items-center justify-center min-h-0">
-                    {/* Logo */}
-                    <div className="w-32 h-32 flex items-center justify-center flex-shrink-0">
-                      <img
-                        src={logoCnom}
-                        alt="Logo CNOM"
-                        className="w-[115px] h-[115px] object-contain drop-shadow-lg"
-                      />
+                {/* Main content area: Photo + Info */}
+                <div className="flex-1 flex gap-[4%] min-h-0">
+                  {/* Left column: Photo + N° + Fonction */}
+                  <div className="w-[30%] flex flex-col items-center flex-shrink-0">
+                    {/* Photo */}
+                    <div
+                      className="w-full aspect-square rounded-full overflow-hidden bg-gray-200 flex items-center justify-center flex-shrink-0"
+                      style={{ maxWidth: "100px" }}
+                    >
+                      {photoUrl ? (
+                        <img
+                          src={photoUrl}
+                          alt="Photo"
+                          className="w-full h-full object-cover"
+                          draggable={false}
+                        />
+                      ) : (
+                        <svg viewBox="0 0 24 24" className="w-[40%] h-[40%] text-gray-400">
+                          <circle cx="12" cy="8" r="4" fill="currentColor" opacity="0.5" />
+                          <path d="M4 22c0-5 4-8 8-8s8 3 8 8" fill="currentColor" opacity="0.4" />
+                        </svg>
+                      )}
                     </div>
 
-                    {/* Title */}
-                    <div className="text-center mt-1">
-                      <h2 className="text-white font-bold text-sm tracking-wide leading-tight">
-                        CONSEIL NATIONAL DE L'ORDRE DES MÉDECINS
-                      </h2>
-                      <p className="text-white text-[10px] mt-1">
-                        CARTE DE PROFESSIONNEL DE SANTÉ
+                    {/* N° */}
+                    <p className="font-bold text-gray-900 text-[clamp(8px,2.6vw,13px)] mt-[6%] text-center">
+                      N° {orderNumber}
+                    </p>
+
+                    {/* Fonction */}
+                    <div className="text-center mt-[2%]">
+                      <span className="text-gray-500 font-medium italic text-[clamp(6px,1.8vw,10px)] block">
+                        FONCTION
+                      </span>
+                      <p className="font-bold text-[#0D7377] text-[clamp(7px,2vw,11px)] uppercase">
+                        {fonction}
                       </p>
                     </div>
                   </div>
 
-                  {/* Footer */}
-                  <div className="text-center mt-1 flex-shrink-0">
-                    <p className="text-white text-[8px]">
-                      B.P : 12 075 Libreville
-                    </p>
-                    <p className="text-white text-[10px] font-medium">
-                      www.cnom.ga
-                    </p>
-                  </div>
-
-                  {/* Flip hint */}
-                  <div className="absolute bottom-1 right-1 text-white text-[8px] flex items-center gap-1">
-                    <RotateCcw className="w-2.5 h-2.5" />
-                    Retourner
-                  </div>
-                </div>
-              </div>
-
-              {/* VERSO - Back of card (Professional ID) */}
-              <div
-                className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl"
-                style={{
-                  backfaceVisibility: "hidden",
-                  transform: "rotateY(180deg)",
-                }}
-              >
-                {/* Background image */}
-                <img
-                  src={carteVersoBackground}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-
-                {/* Card content */}
-                <div className="relative z-10 h-full p-5 flex flex-col">
-                  {/* Header title */}
-                  <div className="mb-4 pr-20">
-                    <h3 className="text-[#0D7377] font-bold text-sm tracking-wide leading-tight text-center">
-                      CARTE DE PROFESSIONNEL DE SANTÉ
-                    </h3>
-                  </div>
-
-                  {/* Main content - Photo left, Info right */}
-                  <div className="flex-1 flex gap-4">
-                    {/* Left column: Photo, N° ORDRE, FONCTION */}
-                    <div className="w-24 flex-shrink-0 flex flex-col items-center ml-2">
-                      {/* Photo circle */}
-                      <div className="w-[125px] h-[125px] bg-gray-200 rounded-full flex items-center justify-center overflow-hidden mb-1">
-                        {photoUrl ? (
-                          <img
-                            src={photoUrl}
-                            alt="Photo"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <svg viewBox="0 0 24 24" className="w-12 h-12 text-gray-400">
-                            <circle cx="12" cy="8" r="4" fill="currentColor" opacity="0.5" />
-                            <path d="M4 22c0-5 4-8 8-8s8 3 8 8" fill="currentColor" opacity="0.4" />
-                          </svg>
-                        )}
+                  {/* Right column: NOM, PRÉNOMS, SPÉCIALITÉ, NIP + QR */}
+                  <div className="flex-1 flex flex-col justify-between min-w-0">
+                    {/* Info fields */}
+                    <div className="space-y-[4%]">
+                      <div>
+                        <span className="text-gray-500 font-medium italic text-[clamp(6px,1.8vw,10px)] block">
+                          NOM
+                        </span>
+                        <p className="font-bold text-gray-900 text-[clamp(8px,2.6vw,13px)] uppercase truncate">
+                          {doctorName}
+                        </p>
                       </div>
-
-                      {/* Order number below photo */}
-                      <div className="text-center">
-                        <p className="font-bold text-gray-900 text-sm">N° {orderNumber}</p>
+                      <div>
+                        <span className="text-gray-500 font-medium italic text-[clamp(6px,1.8vw,10px)] block">
+                          PRÉNOMS
+                        </span>
+                        <p className="font-bold text-gray-900 text-[clamp(8px,2.6vw,13px)] truncate">
+                          {firstName || "—"}
+                        </p>
                       </div>
-
-                      {/* Function below N° ORDRE */}
-                      <div className="text-center">
-                        <span className="text-gray-500 font-medium italic text-[10px] block">FONCTION</span>
-                        <p className="font-bold text-[#0D7377] text-[11px] uppercase">{fonction}</p>
+                      <div>
+                        <span className="text-gray-500 font-medium italic text-[clamp(6px,1.8vw,10px)] block">
+                          SPÉCIALITÉ
+                        </span>
+                        <p className="font-bold text-[#0D7377] text-[clamp(8px,2.6vw,13px)] uppercase truncate">
+                          {specialty}
+                        </p>
+                      </div>
+                      <div>
+                        <span className="text-gray-500 font-medium italic text-[clamp(6px,1.8vw,10px)] block">
+                          NIP
+                        </span>
+                        <p className="font-bold text-gray-900 text-[clamp(8px,2.6vw,13px)]">
+                          {nip || "—"}
+                        </p>
                       </div>
                     </div>
 
-                    {/* Info labels */}
-                    <div className="flex-1 space-y-1 text-[11px] ml-8">
-                      <div>
-                        <span className="text-gray-500 font-medium italic text-[10px]">NOM</span>
-                        <p className="font-bold text-gray-900 text-sm uppercase">{doctorName}</p>
+                    {/* QR Code — bottom right */}
+                    <div className="flex justify-end mt-auto">
+                      <div className="bg-white p-[2px] rounded shadow-sm">
+                        <QRCodeSVG
+                          value={qrData}
+                          size={40}
+                          level="H"
+                          includeMargin={false}
+                          bgColor="white"
+                          fgColor="#1a1a1a"
+                          className="w-[clamp(28px,10vw,56px)] h-[clamp(28px,10vw,56px)]"
+                        />
                       </div>
-                      <div>
-                        <span className="text-gray-500 font-medium italic text-[10px]">PRÉNOMS</span>
-                        <p className="font-bold text-gray-900 text-sm">{firstName || "—"}</p>
-                      </div>
-                      <div>
-                        <span className="text-gray-500 font-medium italic text-[10px]">SPÉCIALITÉ</span>
-                        <p className="font-bold text-[#0D7377] text-sm uppercase">{specialty}</p>
-                      </div>
-                      <div className="pt-1">
-                        <span className="text-gray-500 font-medium italic text-[10px]">NIP</span>
-                        <p className="font-bold text-gray-900 text-sm">{nip || "—"}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bottom row - QR Code only */}
-                  <div className="flex items-end justify-end -mt-[190px]">
-                    {/* QR Code */}
-                    <div className="bg-white p-1 rounded shadow-sm">
-                      <QRCodeSVG
-                        value={qrData}
-                        size={56}
-                        level="H"
-                        includeMargin={false}
-                        bgColor="white"
-                        fgColor="#1a1a1a"
-                      />
                     </div>
                   </div>
                 </div>
 
                 {/* Flip hint */}
-                <div className="absolute bottom-2 left-2 text-gray-400 text-[9px] flex items-center gap-1">
-                  <RotateCcw className="w-3 h-3" />
-                  Retourner
+                <div className="absolute bottom-[3%] left-[3%] text-gray-400 text-[clamp(5px,1.8vw,9px)] flex items-center gap-0.5">
+                  <RotateCcw className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px]" />
+                  <span>Retourner</span>
                 </div>
               </div>
             </div>

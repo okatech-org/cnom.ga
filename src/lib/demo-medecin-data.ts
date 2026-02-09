@@ -1,4 +1,4 @@
-// Demo data for the Espace Médecin — Dr. Arnaud Akwétéy DANSOU
+// Demo data for the Espace Médecin — Dr. Jean Davy DANSOU OGANDAGA
 import type {
     Doctor,
     Payment,
@@ -13,8 +13,8 @@ export const DEMO_DOCTOR: Doctor = {
     id: "demo-doc-001",
     user_id: "demo-user-001",
     numero_ordre: 1547,
-    nom: "DANSOU",
-    prenoms: "Arnaud Akwétéy",
+    nom: "DANSOU OGANDAGA",
+    prenoms: "Jean Davy",
     genre: "M",
     specialite_principale: "Médecine Générale",
     ville_exercice: "Libreville",
@@ -22,7 +22,7 @@ export const DEMO_DOCTOR: Doctor = {
     adresse_cabinet: "Quartier Glass, Rue du CHU, Libreville",
     coordonnees_gps: { lat: 0.4162, lng: 9.4673 },
     telephone_pro: "+241 74 00 15 47",
-    email: "a.dansou@cnom-gabon.ga",
+    email: "jd.dansou@cnom-gabon.ga",
     secteur_exercice: "Public",
     etablissement: "CHU de Libreville",
     statut: "Inscrit",
@@ -45,8 +45,8 @@ export const DEMO_APPLICATION: Application = {
     numero_ordre_attribue: 1547,
     is_etranger: false,
     data: {
-        nom: "DANSOU",
-        prenoms: "Arnaud Akwétéy",
+        nom: "DANSOU OGANDAGA",
+        prenoms: "Jean Davy",
         date_naissance: "1992-05-10",
         nationalite: "Gabonaise",
     },

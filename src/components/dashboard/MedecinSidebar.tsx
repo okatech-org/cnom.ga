@@ -51,7 +51,7 @@ export const MedecinSidebar = ({
   };
 
   const displayName = isDemoMode
-    ? "Arnaud A. DANSOU"
+    ? "Jean Davy DANSOU O."
     : user?.email?.split("@")[0] || "Médecin";
 
   const displaySpecialty = isDemoMode ? "Médecine Générale" : "Médecin inscrit";

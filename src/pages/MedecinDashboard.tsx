@@ -237,7 +237,7 @@ const MedecinDashboard = () => {
             <div className="flex items-center gap-2 text-sm text-amber-800 dark:text-amber-200">
               <AlertCircle className="w-4 h-4 flex-shrink-0" />
               <span>
-                <strong>Mode démonstration</strong> — Connecté en tant que <strong>Dr. {demoUser?.name || "Arnaud A. DANSOU"}</strong>
+                <strong>Mode démonstration</strong> — Connecté en tant que <strong>Dr. {demoUser?.name || "Jean Davy DANSOU OGANDAGA"}</strong>
               </span>
             </div>
           </div>
