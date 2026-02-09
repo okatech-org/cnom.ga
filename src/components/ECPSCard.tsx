@@ -219,7 +219,7 @@ const ECPSCard = ({
                   </div>
 
                   {/* Right: info fields + QR */}
-                  <div className="flex-1 flex flex-col justify-between min-w-0 ml-[75px]">
+                  <div className="flex-1 flex flex-col justify-between min-w-0 ml-[57px]">
                     {/* Fields */}
                     <div className="space-y-1">
                       <div>
