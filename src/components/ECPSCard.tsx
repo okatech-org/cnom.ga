@@ -259,7 +259,7 @@ const ECPSCard = ({
                     <QRCodeSVG
                       value={qrData}
                       size={60}
-                      level="H"
+                      level="L"
                       includeMargin={false}
                       bgColor="white"
                       fgColor="#1a1a1a"
