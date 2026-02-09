@@ -247,7 +247,7 @@ const ECPSCard = ({
                 {/* NIP — rotated 90° on the right edge of white area */}
                 <div
                   className="absolute right-[105px] top-1/2 -translate-y-1/2"
-                  style={{ transform: "translateY(-50%) rotate(90deg)", transformOrigin: "center" }}
+                  style={{ transform: "translateY(-50%) rotate(-90deg)", transformOrigin: "center" }}
                 >
                   <span className="text-gray-500 font-medium italic text-[9px] block text-center">NIP</span>
                   <p className="font-bold text-gray-900 text-[12px] text-center whitespace-nowrap">{nip || "—"}</p>
