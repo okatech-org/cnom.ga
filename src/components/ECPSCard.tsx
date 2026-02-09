@@ -254,7 +254,7 @@ const ECPSCard = ({
                 </div>
 
                 {/* QR Code — bottom right */}
-                <div className="absolute bottom-3 right-3">
+                <div className="absolute bottom-3 right-[144px]">
                   <div className="bg-white p-0.5 rounded shadow-sm">
                     <QRCodeSVG
                       value={qrData}
