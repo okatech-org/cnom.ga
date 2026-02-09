@@ -246,10 +246,10 @@ const ECPSCard = ({
                       </div>
                       {/* QR Code below NIP */}
                       <div className="relative ml-[75px]" style={{ top: -38 }}>
-                        <div className="bg-white p-0.5 rounded-full shadow-sm inline-block overflow-hidden">
+                        <div className="bg-white p-0.5 rounded shadow-sm inline-block">
                           <QRCodeSVG
                             value={qrData}
-                            size={40}
+                            size={80}
                             level="H"
                             includeMargin={false}
                             bgColor="white"
