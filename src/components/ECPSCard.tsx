@@ -244,19 +244,18 @@ const ECPSCard = ({
                         <span className="text-gray-500 font-medium italic text-[9px]">NIP</span>
                         <p className="font-bold text-gray-900 text-[12px]">{nip || "—"}</p>
                       </div>
-                    </div>
-
-                    {/* QR — bottom-right */}
-                    <div className="flex justify-end">
-                      <div className="bg-white p-0.5 rounded shadow-sm">
-                        <QRCodeSVG
-                          value={qrData}
-                          size={48}
-                          level="H"
-                          includeMargin={false}
-                          bgColor="white"
-                          fgColor="#1a1a1a"
-                        />
+                      {/* QR Code below NIP */}
+                      <div className="pt-0.5">
+                        <div className="bg-white p-0.5 rounded shadow-sm inline-block">
+                          <QRCodeSVG
+                            value={qrData}
+                            size={40}
+                            level="H"
+                            includeMargin={false}
+                            bgColor="white"
+                            fgColor="#1a1a1a"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
