@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, QrCode, FileText, CreditCard, User,
-  LogOut, X, Bell, HelpCircle, FileCheck, Phone
+  LogOut, X, Bell, HelpCircle, FileCheck, Phone, MessageCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +25,7 @@ const navItems = [
   { id: "dossier", label: "Mon dossier", icon: FileText, badge: null },
   { id: "paiements", label: "Mes paiements", icon: CreditCard, badge: null },
   { id: "documents", label: "Mes documents", icon: FileCheck, badge: null },
+  { id: "communication", label: "Communication", icon: MessageCircle, badge: null },
   { id: "notifications", label: "Notifications", icon: Bell, badge: null },
   { id: "profil", label: "Mon profil", icon: User, badge: null },
 ];

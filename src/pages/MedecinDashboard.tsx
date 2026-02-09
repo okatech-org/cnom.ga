@@ -16,6 +16,7 @@ import MesPaiements from "@/components/dashboard/medecin/MesPaiements";
 import MesDocuments from "@/components/dashboard/medecin/MesDocuments";
 import Notifications from "@/components/dashboard/medecin/Notifications";
 import MonProfil from "@/components/dashboard/medecin/MonProfil";
+import Communication from "@/components/dashboard/medecin/Communication";
 
 // Demo data
 import {
@@ -27,11 +28,17 @@ import {
   DEMO_VERIFICATIONS,
   DEMO_DOSSIER_DOCUMENTS,
 } from "@/lib/demo-medecin-data";
+import {
+  DEMO_CONVERSATIONS,
+  DEMO_MESSAGES,
+  DEMO_WORK_GROUPS,
+  DEMO_MEMBERS,
+} from "@/lib/demo-communication-data";
 
 import type { Doctor, Payment, Notification as NotifType, Application, DocumentRequest, Verification, DossierDocument } from "@/types/medecin";
 import drDansouPhoto from "@/assets/dr-dansou-photo.jpeg";
 
-type TabId = "dashboard" | "ecps" | "dossier" | "paiements" | "documents" | "notifications" | "profil";
+type TabId = "dashboard" | "ecps" | "dossier" | "paiements" | "documents" | "communication" | "notifications" | "profil";
 
 const tabTitles: Record<TabId, string> = {
   dashboard: "Tableau de bord",
@@ -39,6 +46,7 @@ const tabTitles: Record<TabId, string> = {
   dossier: "Mon dossier",
   paiements: "Mes paiements",
   documents: "Mes documents",
+  communication: "Communication",
   notifications: "Notifications",
   profil: "Mon profil",
 };
@@ -207,6 +215,16 @@ const MedecinDashboard = () => {
             requests={documentRequests}
             doctorStatut={doctor.statut}
             cotisationAJour={cotisationAJour}
+          />
+        );
+      case "communication":
+        return (
+          <Communication
+            conversations={DEMO_CONVERSATIONS}
+            messages={DEMO_MESSAGES}
+            workGroups={DEMO_WORK_GROUPS}
+            members={DEMO_MEMBERS}
+            currentUserId="m-current"
           />
         );
       case "notifications":
