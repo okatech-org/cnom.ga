@@ -107,11 +107,12 @@ const ECPSCard = ({
           >
             {/* ═══════════ RECTO ═══════════ */}
             <div
-              className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl"
+              className="absolute inset-0 rounded-2xl overflow-hidden"
               style={{
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden",
                 transform: "translate3d(0, 0, 0)",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.1), 0 8px 15px rgba(0,0,0,0.08), 0 2px 0 0 #d4d4d4, 0 3px 0 0 #c0c0c0, 0 4px 0 0 #ababab",
               } as React.CSSProperties}
             >
               <img
@@ -163,15 +164,24 @@ const ECPSCard = ({
                   Retourner
                 </div>
               </div>
+              {/* Lamination overlay */}
+              <div
+                className="absolute inset-0 rounded-2xl pointer-events-none"
+                style={{
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 40%, transparent 60%, rgba(255,255,255,0.1) 100%)",
+                  zIndex: 20,
+                }}
+              />
             </div>
 
             {/* ═══════════ VERSO ═══════════ */}
             <div
-              className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl"
+              className="absolute inset-0 rounded-2xl overflow-hidden"
               style={{
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden",
                 transform: "rotateY(180deg) translate3d(0, 0, 0)",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.1), 0 8px 15px rgba(0,0,0,0.08), 0 2px 0 0 #d4d4d4, 0 3px 0 0 #c0c0c0, 0 4px 0 0 #ababab",
               } as React.CSSProperties}
             >
               <img
@@ -273,6 +283,14 @@ const ECPSCard = ({
                   Retourner
                 </div>
               </div>
+              {/* Lamination overlay */}
+              <div
+                className="absolute inset-0 rounded-2xl pointer-events-none"
+                style={{
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 40%, transparent 60%, rgba(255,255,255,0.1) 100%)",
+                  zIndex: 20,
+                }}
+              />
             </div>
           </div>
         </div>
